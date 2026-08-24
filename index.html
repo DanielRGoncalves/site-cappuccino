@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cappuccino Taparuba — O sabor de casa, no seu tempo</title>
+    <meta
+      name="description"
+      content="O autêntico cappuccino artesanal de Taparuba, MG. Feito com afeto pela nossa família, direto para a sua xícara."
+    />
+
+    <!--
+  ATENÇÃO DEV (notas de handoff):
+  1. Troque "Taparuba" no logo (.logo) pelo nome definitivo da marca, se necessário.
+  2. O bloco .hero-visual contém uma ilustração SVG feita à mão como placeholder.
+     Quando tiver a foto real do produto, substitua o <svg class="cup-illustration">
+     por um <img src="sua-foto.jpg" alt="..."> — as classes de layout continuam válidas.
+  3. Formulário (#formPedido): os campos já têm ids/classes estáveis para manipulação em JS:
+     - #nomeCompleto, #pedido, #quantidade
+     - radios name="localizacao" (#radioTaparuba value="taparuba" / #radioES value="es")
+     - #enderecoContainer e #cidadeContainer começam com a classe .hidden (display:none).
+       Ao detectar o "change" dos radios, alterne a classe .hidden no container correspondente.
+     - #btnEnviarPedido é type="button" (não envia o form nativamente) — nele você vai
+       montar a string do pedido e disparar a URL da API do WhatsApp (wa.me/...).
+-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <a href="#inicio" class="logo">Cappuccino <span>Taparuba</span></a>
+        <nav class="main-nav" aria-label="Navegação principal">
+          <a href="#historia">Nossa História</a>
+          <a href="#produto">O Cappuccino</a>
+          <a href="#encomendar" class="nav-cta">Encomendar</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- HERO -->
+      <section id="inicio" class="hero">
+        <div class="hero-inner">
+          <div class="hero-content">
+            <span class="steam-icon" aria-hidden="true">
+              <svg
+                class="steam-svg"
+                viewBox="0 0 60 40"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  class="steam-path-1"
+                  d="M15 38 C15 30, 25 30, 25 22 C25 14, 15 14, 15 6"
+                />
+                <path
+                  class="steam-path-2"
+                  d="M30 38 C30 30, 40 30, 40 22 C40 14, 30 14, 30 6"
+                />
+                <path
+                  class="steam-path-3"
+                  d="M45 38 C45 30, 55 30, 55 22 C55 14, 45 14, 45 6"
+                />
+              </svg>
+            </span>
+            <h1>O sabor de casa,<br />no seu tempo.</h1>
+            <p class="hero-subtitle">
+              O autêntico cappuccino artesanal de Taparuba. Feito com afeto pela
+              nossa família, direto para a sua xícara.
+            </p>
+            <a href="#encomendar" class="btn btn-primary">Quero provar</a>
+          </div>
+
+          <!-- Placeholder ilustrado: substituir por foto real do produto quando disponível -->
+          <div class="hero-visual">
+            <svg
+              class="cup-illustration"
+              viewBox="0 0 320 260"
+              xmlns="http://www.w3.org/2000/svg"
+              role="img"
+              aria-label="Ilustração de um cappuccino artesanal servido em xícara de cerâmica sobre uma mesa de madeira"
+            >
+              <g class="cup-steam">
+                <path
+                  d="M130 70 C130 58, 145 58, 145 46 C145 34, 130 34, 130 22"
+                />
+                <path
+                  d="M160 70 C160 58, 175 58, 175 46 C175 34, 160 34, 160 22"
+                />
+                <path
+                  d="M190 70 C190 58, 205 58, 205 46 C205 34, 190 34, 190 22"
+                />
+              </g>
+              <ellipse class="cup-saucer" cx="160" cy="205" rx="105" ry="17" />
+              <path
+                class="cup-body"
+                d="M85 95 L95 185 Q95 203 160 203 Q225 203 225 185 L235 95 Z"
+              />
+              <path
+                class="cup-handle"
+                d="M235 112 Q272 112 272 140 Q272 168 235 168"
+              />
+              <path
+                class="foam-swirl"
+                d="M108 103 Q160 76 212 103 Q182 117 160 103 Q138 117 108 103 Z"
+              />
+            </svg>
+            <p class="visual-caption">
+              Foto do cappuccino pronto — substitua por uma imagem real quando
+              disponível.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- NOSSA HISTÓRIA -->
+      <section id="historia" class="section section-historia">
+        <div class="container narrow">
+          <p class="eyebrow">Nossa História</p>
+          <h2>Raízes de Minas.</h2>
+          <p>
+            Tudo começa na nossa cozinha em Taparuba, MG. Não somos uma fábrica,
+            somos uma família. Nossa receita foi pensada para resgatar aquele
+            momento de pausa no meio da tarde, equilibrando ingredientes
+            selecionados com o carinho de quem faz para os próprios de casa.
+            Cada embalagem carrega um pouco da nossa tradição.
+          </p>
+        </div>
+      </section>
+
+      <!-- O CAPPUCCINO / DESTAQUES -->
+      <section id="produto" class="section section-produto">
+        <div class="container">
+          <p class="eyebrow">O Cappuccino</p>
+          <h2>Simplicidade em cada detalhe.</h2>
+
+          <div class="highlights-grid">
+            <article class="highlight-card">
+              <span class="bean-icon" aria-hidden="true"></span>
+              <h3>Cremosidade Absoluta</h3>
+              <p>Uma proporção exata para um cappuccino aveludado.</p>
+            </article>
+
+            <article class="highlight-card">
+              <span class="bean-icon" aria-hidden="true"></span>
+              <h3>Feito à Mão</h3>
+              <p>Misturado e embalado artesanalmente, garantindo o frescor.</p>
+            </article>
+
+            <article class="highlight-card">
+              <span class="bean-icon" aria-hidden="true"></span>
+              <h3>Preparo Fácil</h3>
+              <p>
+                Basta adicionar água quente ou leite para um momento perfeito.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ENCOMENDAR -->
+      <section id="encomendar" class="section section-encomendar">
+        <div class="container narrow">
+          <p class="eyebrow">Encomendar</p>
+          <h2>Um convite para um café.</h2>
+          <p class="section-subtitle">
+            Preencha os dados abaixo. Nossa família vai receber sua mensagem no
+            WhatsApp para combinar a entrega com todo o cuidado.
+          </p>
+
+          <form id="formPedido" class="order-form" novalidate>
+            <div class="form-group">
+              <label for="nomeCompleto">Nome completo</label>
+              <input
+                type="text"
+                id="nomeCompleto"
+                name="nomeCompleto"
+                class="form-input"
+                placeholder="Como podemos te chamar?"
+                autocomplete="name"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="pedido">Qual o seu pedido?</label>
+              <select
+                id="pedido"
+                name="pedido"
+                class="form-input form-select"
+                required
+              >
+                <option value="" disabled selected>Escolha um sabor</option>
+                <option value="Cappuccino Tradicional 250g">
+                  Cappuccino Tradicional 250g
+                </option>
+                <option value="Cappuccino Doce de Leite 250g">
+                  Cappuccino Doce de Leite 250g
+                </option>
+                <option value="Cappuccino com Chocolate 250g">
+                  Cappuccino com Chocolate 250g
+                </option>
+                <option value="Cappuccino Avelã 250g">
+                  Cappuccino Avelã 250g
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="quantidade">Quantidade</label>
+              <input
+                type="number"
+                id="quantidade"
+                name="quantidade"
+                class="form-input"
+                min="1"
+                step="1"
+                value="1"
+                required
+              />
+            </div>
+
+            <fieldset class="form-group form-radio-group" id="localizacaoGroup">
+              <legend>Onde você está?</legend>
+
+              <label class="radio-option" for="radioTaparuba">
+                <input
+                  type="radio"
+                  name="localizacao"
+                  id="radioTaparuba"
+                  value="taparuba"
+                  class="radio-input"
+                />
+                <span>Taparuba e região</span>
+              </label>
+
+              <label class="radio-option" for="radioES">
+                <input
+                  type="radio"
+                  name="localizacao"
+                  id="radioES"
+                  value="es"
+                  class="radio-input"
+                />
+                <span>Espírito Santo</span>
+              </label>
+            </fieldset>
+
+            <!-- Exibir quando #radioTaparuba estiver marcado (remover a classe .hidden via JS) -->
+            <div id="enderecoContainer" class="form-conditional hidden">
+              <p class="helper-text">Entregaremos direto na sua porta!</p>
+              <div class="form-group">
+                <label for="enderecoCompleto">Endereço completo</label>
+                <input
+                  type="text"
+                  id="enderecoCompleto"
+                  name="enderecoCompleto"
+                  class="form-input"
+                  placeholder="Rua, número, bairro"
+                  autocomplete="street-address"
+                />
+              </div>
+            </div>
+
+            <!-- Exibir quando #radioES estiver marcado (remover a classe .hidden via JS) -->
+            <div id="cidadeContainer" class="form-conditional hidden">
+              <p class="helper-text">
+                Como estamos em Minas, vamos conversar no WhatsApp para combinar
+                a melhor forma de fazer esse cappuccino chegar ao ES.
+              </p>
+              <div class="form-group">
+                <label for="cidadeES">Cidade</label>
+                <input
+                  type="text"
+                  id="cidadeES"
+                  name="cidadeES"
+                  class="form-input"
+                  placeholder="Sua cidade no Espírito Santo"
+                  autocomplete="address-level2"
+                />
+              </div>
+            </div>
+
+            <!-- type="button" de propósito: o envio/montagem da URL do WhatsApp será feito via JS externo -->
+            <button
+              type="button"
+              id="btnEnviarPedido"
+              class="btn btn-primary btn-whatsapp"
+            >
+              <svg
+                class="whatsapp-icon"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <path
+                  d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.1-1.33C8.55 21.5 10.24 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 2c4.42 0 8 3.58 8 8s-3.58 8-8 8c-1.53 0-2.96-.43-4.17-1.18l-.3-.18-3.02.79.8-2.94-.2-.31A7.94 7.94 0 0 1 4 12c0-4.42 3.58-8 8-8zm-2.1 4.28c-.15 0-.4.06-.6.3-.2.24-.8.78-.8 1.9s.82 2.2.94 2.35c.11.16 1.6 2.5 4 3.4.55.2 1 .33 1.33.42.56.15 1.07.13 1.47.08.45-.07 1.38-.56 1.57-1.1.2-.55.2-1.02.14-1.1-.06-.1-.22-.16-.45-.28-.24-.13-1.38-.68-1.6-.76-.21-.08-.37-.12-.53.12-.15.24-.6.75-.74.9-.13.16-.27.18-.5.06-.24-.13-1-.37-1.9-1.18-.7-.63-1.18-1.4-1.32-1.64-.14-.24-.02-.37.1-.5.12-.11.24-.28.37-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.13-.53-1.32-.74-1.8-.2-.47-.4-.4-.53-.4z"
+                />
+              </svg>
+              Combinar entrega pelo WhatsApp
+            </button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <p class="footer-text">
+          Feito com afeto em Taparuba, MG. Entregas locais e para o Espírito
+          Santo.
+        </p>
+        <div class="footer-links">
+          <a href="#" class="footer-link" id="linkWhatsapp">WhatsApp</a>
+          <a href="#" class="footer-link" id="linkInstagram">Instagram</a>
+        </div>
+      </div>
+    </footer>
+    <script src="js/script.js" defer></script>
+  </body>
+</html>
