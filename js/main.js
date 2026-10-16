@@ -1,6 +1,7 @@
 import { config } from "./config.js";
 import { formatarReais, montarLinkWhatsApp } from "./pedido.js";
 import { calcularResultado } from "./calculadora.js";
+import { montarPreparo } from "./preparo.js";
 
 // ======== ESTADO DO CARRINHO ========
 // cada item: { produto, quantidade }
@@ -127,10 +128,35 @@ function montarCalculadora() {
   produtoInput.addEventListener("change", atualizarResultado);
 }
 
+function renderizarPreparo() {
+  const preparo = montarPreparo(config.textos.preparo);
+  document.getElementById("preparo-title").textContent = preparo.titulo;
+  const lista = document.getElementById("preparo-steps");
+
+  preparo.passos.forEach((passo) => {
+    const card = document.createElement("article");
+    card.className = "step";
+    const numero = document.createElement("div");
+    numero.className = "step-number";
+    numero.setAttribute("aria-hidden", "true");
+    numero.textContent = passo.numero;
+    const titulo = document.createElement("h3");
+    titulo.textContent = passo.titulo;
+    const descricao = document.createElement("p");
+    descricao.textContent = passo.descricao;
+    card.append(numero, titulo, descricao);
+    lista.appendChild(card);
+  });
+
+  document.getElementById("preparo-dica").textContent = preparo.dica;
+  document.getElementById("preparo-rendimento").textContent = preparo.rendimento;
+}
+
 montarIdentidade();
 montarProdutos();
 montarPagamentos();
 montarCalculadora();
+renderizarPreparo();
 
 const cartCountEl = document.querySelector(".cart-count");
 const cartButton = document.querySelector(".cart-button");

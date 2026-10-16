@@ -60,6 +60,7 @@ export const config = {
     },
     conservacao: "Local seco e protegido da luz solar",
     preparo: {
+      titulo: "Como preparar",
       passos: [
         { titulo: "30 g na xícara.", descricao: "Cerca de 3 colheres." },
         {
