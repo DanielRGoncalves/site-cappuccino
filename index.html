@@ -305,6 +305,42 @@
       </section>
 
       <section
+        class="section bakery-section"
+        id="padarias"
+        aria-labelledby="padarias-title"
+      >
+        <div class="container">
+          <div class="section-heading">
+            <h2 id="padarias-title"></h2>
+            <p id="padarias-description"></p>
+          </div>
+
+          <div class="calculator-card">
+            <div class="calculator-fields">
+              <div>
+                <label for="calculator-product">Produto</label>
+                <select id="calculator-product" class="calculator-input"></select>
+              </div>
+              <div>
+                <label for="calculator-price">Preço de venda da xícara (R$)</label>
+                <input id="calculator-price" class="calculator-input" type="text" inputmode="decimal" autocomplete="off" />
+              </div>
+            </div>
+
+            <div id="calculator-result" class="calculator-result" aria-live="polite" hidden>
+              <dl>
+                <div><dt>Custo do pó por xícara</dt><dd id="calculator-cost"></dd></div>
+                <div><dt>Ganho por xícara</dt><dd id="calculator-gain"></dd></div>
+                <div><dt>Margem</dt><dd id="calculator-margin"></dd></div>
+                <div><dt>Ganho por pacote de 250 g</dt><dd id="calculator-package-gain"></dd></div>
+              </dl>
+              <p id="calculator-notice"></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
         class="section preparation"
         id="preparo"
         aria-labelledby="preparo-title"

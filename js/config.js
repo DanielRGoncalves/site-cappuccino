@@ -16,6 +16,8 @@ export const config = {
     endereco: "CRG Santa Clara, S/N, Taparuba/MG, 36953-000",
   },
   formasPagamento: ["PIX", "Dinheiro"],
+  pesoPacoteGramas: 250,
+  porcaoGramas: 30,
   produtos: [
     {
       id: "com-acucar",
@@ -49,11 +51,21 @@ export const config = {
   depoimentos: [],
   textos: {
     introducaoProdutos: "",
+    padarias: {
+      titulo: "Quanto rende na sua padaria",
+      descricao:
+        "Cada xícara leva 30 g. Um pacote de 250 g rende cerca de 8 xícaras. Digite por quanto você vende a xícara e veja a conta.",
+      aviso:
+        "A conta considera só o custo do cappuccino em pó. Copo, energia, perdas e outros custos não entram.",
+    },
     conservacao: "Local seco e protegido da luz solar",
     preparo: {
       passos: [
         { titulo: "30 g na xícara.", descricao: "Cerca de 3 colheres." },
-        { titulo: "100 ml de água fervente.", descricao: "Despeje sobre o pó." },
+        {
+          titulo: "100 ml de água fervente.",
+          descricao: "Despeje sobre o pó.",
+        },
         { titulo: "Mexa devagar.", descricao: "Até dissolver por completo." },
       ],
       dica: "Quer mais cremoso? Use um pouco menos de água.",

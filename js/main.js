@@ -1,5 +1,6 @@
 import { config } from "./config.js";
 import { formatarReais, montarLinkWhatsApp } from "./pedido.js";
+import { calcularResultado } from "./calculadora.js";
 
 // ======== ESTADO DO CARRINHO ========
 // cada item: { produto, quantidade }
@@ -88,9 +89,48 @@ function montarPagamentos() {
   });
 }
 
+function montarCalculadora() {
+  document.getElementById("padarias-title").textContent = config.textos.padarias.titulo;
+  document.getElementById("padarias-description").textContent = config.textos.padarias.descricao;
+  document.getElementById("calculator-notice").textContent = config.textos.padarias.aviso;
+
+  const produtoInput = document.getElementById("calculator-product");
+  const precoInput = document.getElementById("calculator-price");
+  const resultadoEl = document.getElementById("calculator-result");
+  const percentual = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 1 });
+
+  config.produtos.forEach((produto) => {
+    const opcao = document.createElement("option");
+    opcao.value = produto.id;
+    opcao.textContent = produto.nome;
+    produtoInput.appendChild(opcao);
+  });
+
+  function atualizarResultado() {
+    const produto = config.produtos.find((item) => item.id === produtoInput.value);
+    const resultado = produto && calcularResultado(
+      precoInput.value,
+      produto.precoCentavos,
+      config.pesoPacoteGramas,
+      config.porcaoGramas,
+    );
+    resultadoEl.hidden = !resultado;
+    if (!resultado) return;
+
+    document.getElementById("calculator-cost").textContent = formatarReais(resultado.custoCentavos);
+    document.getElementById("calculator-gain").textContent = formatarReais(resultado.ganhoCentavos);
+    document.getElementById("calculator-margin").textContent = `${percentual.format(resultado.margemPercentual)}%`;
+    document.getElementById("calculator-package-gain").textContent = formatarReais(resultado.ganhoPacoteCentavos);
+  }
+
+  precoInput.addEventListener("input", atualizarResultado);
+  produtoInput.addEventListener("change", atualizarResultado);
+}
+
 montarIdentidade();
 montarProdutos();
 montarPagamentos();
+montarCalculadora();
 
 const cartCountEl = document.querySelector(".cart-count");
 const cartButton = document.querySelector(".cart-button");
