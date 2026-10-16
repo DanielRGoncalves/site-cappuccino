@@ -19,11 +19,10 @@
         <a
           href="#inicio"
           class="logo-wrap"
-          aria-label="Cheiro das Águas - início"
         >
           <!-- O espaço agora respeita a proporção circular do seu leão -->
-          <img src="logo-cheiro.png" alt="Cheiro das Águas" class="logo" />
-          <span class="logo-fallback">Cheiro das Águas</span>
+          <img class="logo" width="611" height="735" />
+          <span class="logo-fallback"></span>
         </a>
 
         <nav class="nav" aria-label="Navegação principal">
@@ -252,24 +251,6 @@
           <div class="form-group" id="grupo-pagamento">
             <label class="form-label">Forma de pagamento</label>
             <div class="option-group">
-              <div class="option-pill">
-                <input
-                  type="radio"
-                  id="pagamento-pix"
-                  name="pagamento"
-                  value="PIX"
-                />
-                <label for="pagamento-pix">PIX</label>
-              </div>
-              <div class="option-pill">
-                <input
-                  type="radio"
-                  id="pagamento-dinheiro"
-                  name="pagamento"
-                  value="Dinheiro"
-                />
-                <label for="pagamento-dinheiro">Dinheiro</label>
-              </div>
             </div>
             <span class="form-error">Escolha uma forma de pagamento.</span>
           </div>
@@ -316,117 +297,10 @@
           <div class="section-heading">
             <div class="eyebrow">Seleção da casa</div>
             <h2 id="products-title">Nossos Produtos</h2>
-            <p>
-              A experiência completa do Cheiro das Águas, pronta para chegar à
-              sua xícara.
-            </p>
+            <p id="products-intro"></p>
           </div>
 
-          <div class="products-grid">
-            <!-- CARD 01: Tradicional -->
-            <article class="product-card">
-              <div class="product-image">
-                <img
-                  src="cappuccino-tradicional.png"
-                  alt="Cappuccino Tradicional 250g"
-                />
-              </div>
-              <div class="product-body">
-                <span class="product-tag">O Clássico</span>
-                <h3>Cappuccino Tradicional</h3>
-                <p>A receita original com o sabor da roça (250g)</p>
-                <div class="product-footer">
-                  <span class="price">R$ 34,90</span>
-                  <button
-                    class="add-button"
-                    type="button"
-                    data-produto="Cappuccino Tradicional 250g"
-                    data-preco="34.90"
-                  >
-                    Adicionar
-                  </button>
-                </div>
-              </div>
-            </article>
-
-            <!-- CARD 02: Sem Açúcar -->
-            <article class="product-card">
-              <div class="product-image">
-                <img
-                  src="cappuccino-tradicional.png"
-                  alt="Cappuccino Sem Açúcar 250g"
-                />
-              </div>
-              <div class="product-body">
-                <span class="product-tag">Zero Açúcar</span>
-                <h3>Cappuccino Sem Açúcar</h3>
-                <p>Todo o sabor artesanal, sem adição de açúcar (250g)</p>
-                <div class="product-footer">
-                  <span class="price">R$ 34,90</span>
-                  <button
-                    class="add-button"
-                    type="button"
-                    data-produto="Cappuccino Sem Adição de Açúcar 250g"
-                    data-preco="34.90"
-                  >
-                    Adicionar
-                  </button>
-                </div>
-              </div>
-            </article>
-
-            <!-- CARD 03: Descafeinado -->
-            <article class="product-card">
-              <div class="product-image">
-                <img
-                  src="cappuccino-tradicional.png"
-                  alt="Cappuccino Descafeinado 250g"
-                />
-              </div>
-              <div class="product-body">
-                <span class="product-tag">Leveza</span>
-                <h3>Cappuccino Descafeinado</h3>
-                <p>Aconchego e sabor para qualquer hora do dia (250g)</p>
-                <div class="product-footer">
-                  <span class="price">R$ 36,90</span>
-                  <button
-                    class="add-button"
-                    type="button"
-                    data-produto="Cappuccino Descafeinado 250g"
-                    data-preco="36.90"
-                  >
-                    Adicionar
-                  </button>
-                </div>
-              </div>
-            </article>
-
-            <!-- CARD 04: Cacau 50% -->
-            <article class="product-card">
-              <div class="product-image">
-                <img
-                  src="cappuccino-tradicional.png"
-                  alt="Cappuccino Cacau 50% 250g"
-                />
-              </div>
-              <div class="product-body">
-                <span class="product-tag">Intenso</span>
-                <h3>Cappuccino Cacau 50%</h3>
-                <p>O toque marcante do chocolate intenso (250g)</p>
-                <div class="product-footer">
-                  <span class="price">R$ 38,90</span>
-                  <button
-                    class="add-button"
-                    type="button"
-                    data-produto="Cappuccino com Cacau 50% 250g"
-                    data-preco="38.90"
-                  >
-                    Adicionar
-                  </button>
-                </div>
-              </div>
-            </article>
-          </div>
+          <div class="products-grid"></div>
         </div>
       </section>
 
@@ -473,15 +347,12 @@
         </div>
       </section>
 
-      <section class="brand-story">
+      <section class="brand-story" hidden>
         <div class="container">
           <div class="story-card">
-            <div class="eyebrow">Cheiro das Águas</div>
-            <h2>Um sabor que carrega o ritmo tranquilo do interior.</h2>
-            <p>
-              Feito artesanalmente para quem valoriza a qualidade dos
-              ingredientes e o tempo de um bom café.
-            </p>
+            <div class="eyebrow"></div>
+            <h2></h2>
+            <p></p>
           </div>
         </div>
       </section>
@@ -491,27 +362,15 @@
       <div class="container">
         <div class="footer-grid">
           <div class="footer-brand">
-            <h3>Cheiro das Águas</h3>
-            <p>
-              Produzido de forma artesanal. Cada cappuccino carrega o aroma da
-              terra, o aconchego do campo e o cuidado em cada detalhe.
-            </p>
+            <h3></h3>
           </div>
 
           <div>
-            <div class="footer-meta">
-              <strong>Agropecuária Cheiro das Águas Ltda.</strong>
-            </div>
-            <div class="footer-meta">
-              <strong>CNPJ:</strong> 57.813.645/0001-60
-            </div>
-            <div class="footer-meta">
-              <strong>Endereço:</strong> CRG Santa Clara, S/N - Taparuba/MG -
-              36953-000
-            </div>
+            <div class="footer-meta" id="legal-name"></div>
+            <div class="footer-meta" id="legal-cnpj"></div>
+            <div class="footer-meta" id="legal-address"></div>
             <div class="footer-meta" style="margin-top: 12px">
-              <strong>Conservação:</strong> Conservar em local seco e protegido
-              da luz solar.
+              <strong>Conservação:</strong> <span id="storage-text"></span>
             </div>
           </div>
 
@@ -520,26 +379,12 @@
               <strong>Fale Conosco</strong>
             </div>
             <div class="socials">
-              <a
-                class="social-link"
-                href="https://instagram.com/cheirodasaguasagro"
-                target="_blank"
-                aria-label="Instagram"
-                >@cheirodasaguasagro</a
-              >
-              <a
-                class="social-link"
-                href="https://cheirodasaguasagro.com.br"
-                target="_blank"
-                aria-label="Site"
-                >cheirodasaguasagro.com.br</a
-              >
+              <a class="social-link" id="instagram-link" target="_blank" aria-label="Instagram"></a>
             </div>
           </div>
         </div>
         <div class="footer-bottom">
-          © 2026 Agropecuária Cheiro das Águas Ltda. Todos os direitos
-          reservados.
+          © 2026 <span id="copyright-name"></span> Todos os direitos reservados.
         </div>
       </div>
     </footer>

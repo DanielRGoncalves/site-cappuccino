@@ -1,13 +1,99 @@
+import { config } from "./config.js";
+import { formatarReais, montarLinkWhatsApp } from "./pedido.js";
+
 // ======== ESTADO DO CARRINHO ========
-// cada item: { produto, preco, quantidade }
+// cada item: { produto, quantidade }
 let cart = [];
 
-// Número oficial para o envio dos pedidos via WhatsApp
-const numeroWhatsApp = "5527998480547";
+function montarIdentidade() {
+  const logoWrap = document.querySelector(".logo-wrap");
+  logoWrap.setAttribute("aria-label", `${config.marca} - início`);
+  const logo = logoWrap.querySelector("img");
+  logo.src = config.logo.foto;
+  logo.alt = config.logo.alt;
+  logoWrap.querySelector(".logo-fallback").textContent = config.marca;
+
+  const introducao = document.getElementById("products-intro");
+  introducao.textContent = config.textos.introducaoProdutos;
+  introducao.hidden = !config.textos.introducaoProdutos;
+
+  document.querySelector(".footer-brand h3").textContent = config.marca;
+  document.getElementById("legal-name").textContent = config.dadosLegais.razaoSocial;
+  document.getElementById("legal-cnpj").textContent = `CNPJ: ${config.dadosLegais.cnpj}`;
+  document.getElementById("legal-address").textContent = `Endereço: ${config.dadosLegais.endereco}`;
+  document.getElementById("storage-text").textContent = config.textos.conservacao;
+  document.getElementById("copyright-name").textContent = config.dadosLegais.razaoSocial;
+  const instagram = document.getElementById("instagram-link");
+  instagram.href = config.instagram.url;
+  instagram.textContent = config.instagram.usuario;
+
+  const historia = document.querySelector(".brand-story");
+  historia.hidden = !config.historia;
+  historia.querySelector(".eyebrow").textContent = config.marca;
+  historia.querySelector("h2").textContent = config.historia;
+}
+
+function montarProdutos() {
+  const grade = document.querySelector(".products-grid");
+  config.produtos.forEach((produto) => {
+    const card = document.createElement("article");
+    card.className = "product-card";
+    const imagemArea = document.createElement("div");
+    imagemArea.className = "product-image";
+    const imagem = document.createElement("img");
+    imagem.src = produto.foto;
+    imagem.alt = produto.alt;
+    imagem.width = 2048;
+    imagem.height = 2048;
+    imagem.loading = "lazy";
+    imagemArea.appendChild(imagem);
+    const corpo = document.createElement("div");
+    corpo.className = "product-body";
+    const titulo = document.createElement("h3");
+    titulo.textContent = produto.nome;
+    const descricao = document.createElement("p");
+    descricao.textContent = `${produto.descricao} ${produto.peso}`;
+    const rodape = document.createElement("div");
+    rodape.className = "product-footer";
+    const preco = document.createElement("span");
+    preco.className = "price";
+    preco.textContent = formatarReais(produto.precoCentavos);
+    const botao = document.createElement("button");
+    botao.className = "add-button";
+    botao.type = "button";
+    botao.textContent = "Adicionar";
+    botao.addEventListener("click", () => adicionarAoCarrinho(produto));
+    rodape.append(preco, botao);
+    corpo.append(titulo, descricao, rodape);
+    card.append(imagemArea, corpo);
+    grade.appendChild(card);
+  });
+}
+
+function montarPagamentos() {
+  const grupo = document.querySelector("#grupo-pagamento .option-group");
+  config.formasPagamento.forEach((forma, index) => {
+    const opcao = document.createElement("div");
+    opcao.className = "option-pill";
+    const input = document.createElement("input");
+    input.type = "radio";
+    input.id = `pagamento-${index}`;
+    input.name = "pagamento";
+    input.value = forma;
+    const label = document.createElement("label");
+    label.htmlFor = input.id;
+    label.textContent = forma;
+    opcao.append(input, label);
+    grupo.appendChild(opcao);
+  });
+}
+
+montarIdentidade();
+montarProdutos();
+montarPagamentos();
 
 const cartCountEl = document.querySelector(".cart-count");
 const cartButton = document.querySelector(".cart-button");
-const addButtons = document.querySelectorAll(".add-button");
 const cartToast = document.getElementById("cart-toast");
 
 const overlay = document.getElementById("cart-overlay");
@@ -32,9 +118,6 @@ const endBairro = document.getElementById("end-bairro");
 const endCidade = document.getElementById("end-cidade");
 const grupoPagamento = document.getElementById("grupo-pagamento");
 
-const formatBRL = (valor) =>
-  valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-
 // ======== LÓGICA DO TOAST (AVISO VISUAL) ========
 let toastTimeout;
 function mostrarAvisoAdicionado() {
@@ -48,7 +131,7 @@ function mostrarAvisoAdicionado() {
 // ======== CÁLCULOS ========
 function totalCarrinho() {
   return cart.reduce(
-    (soma, item) => soma + item.preco * item.quantidade,
+    (soma, item) => soma + item.produto.precoCentavos * item.quantidade,
     0,
   );
 }
@@ -59,7 +142,7 @@ function quantidadeTotal() {
 // ======== RENDERIZAÇÃO DO CARRINHO ========
 function renderCarrinho() {
   cartCountEl.textContent = quantidadeTotal();
-  cartTotalEl.textContent = formatBRL(totalCarrinho());
+  cartTotalEl.textContent = formatarReais(totalCarrinho());
   openCheckoutBtn.disabled = cart.length === 0;
 
   cartList.innerHTML = "";
@@ -74,8 +157,8 @@ function renderCarrinho() {
     el.className = "cart-item";
     el.innerHTML = `
       <div class="cart-item-info">
-        <h4>${item.produto}</h4>
-        <p>${formatBRL(item.preco)} · un.</p>
+        <h4>${item.produto.nome}</h4>
+        <p>${formatarReais(item.produto.precoCentavos)} · un.</p>
         <button class="cart-item-remove" type="button" data-index="${index}">Remover</button>
       </div>
       <div class="cart-item-controls">
@@ -88,12 +171,12 @@ function renderCarrinho() {
   });
 }
 
-function adicionarAoCarrinho(produto, preco) {
-  const existente = cart.find((item) => item.produto === produto);
+function adicionarAoCarrinho(produto) {
+  const existente = cart.find((item) => item.produto.id === produto.id);
   if (existente) {
     existente.quantidade += 1;
   } else {
-    cart.push({ produto, preco, quantidade: 1 });
+    cart.push({ produto, quantidade: 1 });
   }
   renderCarrinho();
   mostrarAvisoAdicionado();
@@ -125,20 +208,11 @@ function fecharCheckout() {
 function renderResumoCheckout() {
   let html = "";
   cart.forEach((item) => {
-    html += `<div class="checkout-summary-item"><span>${item.quantidade}x ${item.produto}</span><span>${formatBRL(item.preco * item.quantidade)}</span></div>`;
+    html += `<div class="checkout-summary-item"><span>${item.quantidade}x ${item.produto.nome}</span><span>${formatarReais(item.produto.precoCentavos * item.quantidade)}</span></div>`;
   });
-  html += `<div class="checkout-summary-total"><span>Total</span><span>${formatBRL(totalCarrinho())}</span></div>`;
+  html += `<div class="checkout-summary-total"><span>Total</span><span>${formatarReais(totalCarrinho())}</span></div>`;
   checkoutSummary.innerHTML = html;
 }
-
-// ======== EVENTOS: ADICIONAR PRODUTO ========
-addButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const produto = button.getAttribute("data-produto");
-    const preco = parseFloat(button.getAttribute("data-preco"));
-    adicionarAoCarrinho(produto, preco);
-  });
-});
 
 // ======== EVENTOS: CARRINHO ========
 cartButton.addEventListener("click", abrirCarrinho);
@@ -254,14 +328,14 @@ checkoutForm.addEventListener("submit", (event) => {
 
 function enviarPedidoWhatsApp(dados) {
   // Monta a mensagem final com itens, total, dados do cliente e pagamento
-  let mensagem = `Olá, Cheiro das Águas! ☕\n\n`;
+  let mensagem = `Olá, ${config.marca}! ☕\n\n`;
   mensagem += `*Novo pedido:*\n`;
 
   cart.forEach((item) => {
-    mensagem += `• ${item.quantidade}x ${item.produto} — ${formatBRL(item.preco * item.quantidade)}\n`;
+    mensagem += `• ${item.quantidade}x ${item.produto.nome} — ${formatarReais(item.produto.precoCentavos * item.quantidade)}\n`;
   });
 
-  mensagem += `\n*Total: ${formatBRL(totalCarrinho())}*\n\n`;
+  mensagem += `\n*Total: ${formatarReais(totalCarrinho())}*\n\n`;
   mensagem += `*Cliente:* ${dados.nome}\n`;
 
   if (dados.entrega === "endereco") {
@@ -273,8 +347,7 @@ function enviarPedidoWhatsApp(dados) {
   mensagem += `*Pagamento:* ${dados.pagamento}\n\n`;
   mensagem += `Podemos confirmar o pedido?`;
 
-  const textoCodificado = encodeURIComponent(mensagem);
-  const urlFinal = `https://wa.me/${numeroWhatsApp}?text=${textoCodificado}`;
+  const urlFinal = montarLinkWhatsApp(config.whatsapp, mensagem);
 
   window.location.href = urlFinal;
 
