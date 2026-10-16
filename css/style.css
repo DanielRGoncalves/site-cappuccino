@@ -52,7 +52,6 @@ body {
   color: var(--text);
   font-family: var(--font-sans);
   line-height: 1.6;
-  overflow-x: hidden;
 }
 body::selection {
   background: var(--gold);
@@ -80,6 +79,12 @@ button {
 }
 .section {
   padding: 82px 0;
+}
+#produtos,
+#padarias,
+#preparo,
+#contato {
+  scroll-margin-top: calc(var(--header-height) + 16px);
 }
 
 .eyebrow {
@@ -165,6 +170,28 @@ button {
   align-items: center;
   gap: 32px;
 }
+@media (max-width: 919px) {
+  .nav.is-open {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 8px 16px 16px;
+    background: var(--bg-soft);
+    border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+  .nav.is-open a {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 0 12px;
+  }
+}
 .nav a {
   position: relative;
   color: #d7d2c9;
@@ -243,6 +270,10 @@ button {
   background: transparent;
   color: var(--text);
   cursor: pointer;
+}
+.menu-toggle:focus-visible {
+  outline: 2px solid var(--gold-light);
+  outline-offset: 4px;
 }
 
 /* =========================================================

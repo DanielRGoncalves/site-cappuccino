@@ -162,6 +162,36 @@ document.getElementById("pedir-amostra").href = montarLinkWhatsApp(
   config.textos.whatsapp.amostra,
 );
 
+const menuToggle = document.querySelector(".menu-toggle");
+const nav = document.getElementById("site-nav");
+
+function fecharMenu(devolverFoco = false) {
+  const estavaAberto = menuToggle.getAttribute("aria-expanded") === "true";
+  nav.classList.remove("is-open");
+  menuToggle.setAttribute("aria-expanded", "false");
+  menuToggle.setAttribute("aria-label", "Abrir menu");
+  if (estavaAberto && devolverFoco) menuToggle.focus();
+}
+
+menuToggle.addEventListener("click", () => {
+  if (menuToggle.getAttribute("aria-expanded") === "true") {
+    fecharMenu();
+    return;
+  }
+  nav.classList.add("is-open");
+  menuToggle.setAttribute("aria-expanded", "true");
+  menuToggle.setAttribute("aria-label", "Fechar menu");
+  nav.querySelector("a").focus();
+});
+
+nav.querySelectorAll("a").forEach((link) => {
+  link.addEventListener("click", () => fecharMenu());
+});
+
+window.matchMedia("(min-width: 920px)").addEventListener("change", (event) => {
+  if (event.matches) fecharMenu();
+});
+
 const cartCountEl = document.querySelector(".cart-count");
 const cartButton = document.querySelector(".cart-button");
 const cartToast = document.getElementById("cart-toast");
@@ -292,6 +322,7 @@ overlay.addEventListener("click", () => {
 });
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
+    fecharMenu(true);
     fecharCarrinho();
     fecharCheckout();
   }
