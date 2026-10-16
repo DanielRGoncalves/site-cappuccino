@@ -10,10 +10,10 @@ import {
 } from "../js/pedido.js";
 
 test("os preços do config são centavos e são formatados em reais", () => {
-  assert.deepEqual(config.produtos.map((produto) => produto.precoCentavos), [2200, 3000, 3000]);
-  assert.equal(formatarReais(2200), "R$ 22,00");
+  assert.deepEqual(config.produtos.map((produto) => produto.precoCentavos), [3000, 3500, 3500]);
   assert.equal(formatarReais(3000), "R$ 30,00");
-  assert.equal(formatarReais(5200), "R$ 52,00");
+  assert.equal(formatarReais(3500), "R$ 35,00");
+  assert.equal(formatarReais(6500), "R$ 65,00");
 });
 
 test("o link do WhatsApp preserva acentos, ampersand e emoji", () => {
@@ -38,10 +38,10 @@ test("montarPedido cria dados independentes do envio com dois produtos", () => {
 
   assert.deepEqual(pedido, {
     itens: [
-      { id: "com-acucar", nome: config.produtos[0].nome, precoCentavos: 2200, quantidade: 2, subtotalCentavos: 4400 },
-      { id: "sem-acucar", nome: config.produtos[1].nome, precoCentavos: 3000, quantidade: 1, subtotalCentavos: 3000 },
+      { id: "com-acucar", nome: config.produtos[0].nome, precoCentavos: 3000, quantidade: 2, subtotalCentavos: 6000 },
+      { id: "sem-acucar", nome: config.produtos[1].nome, precoCentavos: 3500, quantidade: 1, subtotalCentavos: 3500 },
     ],
-    totalCentavos: 7400,
+    totalCentavos: 9500,
     cliente,
   });
   assert.notStrictEqual(pedido.cliente, cliente);
@@ -63,9 +63,9 @@ test("mensagem e link usam os dados do pedido e codificam o nome", () => {
   const mensagem = montarMensagemPedido(pedido);
   const link = linkWhatsApp(pedido);
 
-  assert.match(mensagem, /2x Cappuccino com açúcar — R\$\s44,00/);
-  assert.match(mensagem, /1x Cappuccino descafeinado — R\$\s30,00/);
-  assert.match(mensagem, /\*Total: R\$\s74,00\*/);
+  assert.match(mensagem, /2x Cappuccino com açúcar — R\$\s60,00/);
+  assert.match(mensagem, /1x Cappuccino descafeinado — R\$\s35,00/);
+  assert.match(mensagem, /\*Total: R\$\s95,00\*/);
   assert.match(mensagem, /\*Cliente:\* João & Zé ☕/);
   assert.match(mensagem, /\*Padaria:\* Padaria do Bairro/);
   assert.match(mensagem, /\*Cidade ou bairro:\* Vila Velha/);
