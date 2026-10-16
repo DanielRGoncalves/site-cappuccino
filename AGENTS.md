@@ -23,9 +23,9 @@ index.html          estrutura; no <head>, só as meta tags marcadas
 css/style.css       todo o CSS
 js/config.js        ÚNICA fonte de marca, contatos, preços, produtos, fotos e textos variáveis
 js/main.js          inicialização e montagem da página
-js/agenda.js        funções puras da agenda (sem DOM), testáveis no Node
-js/pedido.js        funções puras: montar a mensagem e o link do WhatsApp, formatar R$
-agenda.json         agenda editável à mão
+js/calculadora.js   funções puras: custo por xícara, ganho e margem (sem DOM)
+js/preparo.js       funções puras: dados do preparo a partir do config
+js/pedido.js        funções puras: montar o objeto do pedido, a mensagem e o link do WhatsApp, formatar R$
 img/                imagens otimizadas (img/produtos/, logo, og)
 testes/*.test.mjs   testes com `node --test` (sem dependências)
 README.md           como mudar preço, foto e agenda, e como publicar
@@ -37,7 +37,7 @@ Funções com regra de negócio (agenda, mensagem, preço) ficam em módulos **s
 
 1. **Config único.** Marca, domínio, Instagram, WhatsApp, preços, produtos, fotos, formas de pagamento, dados legais e textos variáveis vêm de `js/config.js`. Exceção: as meta tags do `<head>`, dentro de um bloco entre `<!-- SINCRONIZAR COM js/config.js -->` e `<!-- /SINCRONIZAR -->`.
 2. **Preços** ficam como número em centavos no config (ex.: `2200`). Formate com `Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" })`.
-3. **Sem entrega.** Nunca crie opção, campo ou texto de entrega, envio ou frete. Retirada só na feira.
+3. **Sem promessa de entrega.** Nunca crie opção, campo ou texto que prometa entrega, envio, frete, prazo, pedido mínimo ou nota fiscal, nem campo de endereço. **Exceções aprovadas no brief, usadas exatamente como estão:** a linha "Entrega ou retirada: a combinar." no fim da mensagem do pedido e as respostas do FAQ que dizem que a forma de receber é combinada pelo WhatsApp.
 4. **Não invente fatos**: preços, ingredientes, histórias, depoimentos, feiras, benefícios de saúde. Use só o brief. Se faltar algo, deixe o campo vazio, esconda a seção e registre no relatório.
 5. **Textos do brief** são usados como estão.
 6. **Datas:** converta `"AAAA-MM-DD"` à mão para data local (`new Date(ano, mes - 1, dia)`). **Nunca** use `new Date("AAAA-MM-DD")`, porque isso lê como UTC e erra o dia no Brasil. As funções da agenda recebem `hoje` como parâmetro. A página aceita `?hoje=AAAA-MM-DD` para teste manual.
@@ -46,8 +46,13 @@ Funções com regra de negócio (agenda, mensagem, preço) ficam em módulos **s
 9. **Sem `overflow-x: hidden` em `html` ou `body`.** Corrija a causa do transbordo.
 10. **Imagens:** toda `<img>` tem `width`, `height` e `alt`. Use `loading="lazy"` fora da primeira tela.
 11. **Apagar arquivos** só com `git rm`.
+12. **Pedido como dados.** `js/pedido.js` cria um objeto de pedido (itens, quantidades, subtotais, total, cliente) e dele gera a mensagem e o link do WhatsApp. Não implemente pagamento online.
+13. **Foco em padarias.** O brief manda: nada de feira, agenda ou retirada na feira no site.
+14. **Contradição entre documentos:** se `AGENTS.md`, `brief.md`, `criterios.md` e `tarefas.md` se contradisserem, **pare e pergunte**, como já manda a seção "Antes de começar".
 
-## Formato do `agenda.json`
+## Formato do `agenda.json` (SUSPENSO — não crie `agenda.json` nem `js/agenda.js`)
+
+> Mantido só como referência, caso a agenda de feiras volte.
 
 ```json
 {

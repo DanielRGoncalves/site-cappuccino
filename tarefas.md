@@ -38,7 +38,7 @@ Feita, aprovada e publicada no repositório. O preparo já está no config com o
 - Remover entrega, endereço e qualquer menção à retirada na feira do checkout. Campos: nome (obrigatório), padaria (obrigatório), cidade ou bairro (obrigatório), forma de pagamento (lista do config + "Combinar pelo WhatsApp").
 - `js/pedido.js`: criar `montarPedido(sacola, cliente)`, que devolve um **objeto de pedido** (itens, quantidades, subtotais, total, cliente), e `linkWhatsApp(pedido)`, que o consome. A mensagem termina com "Valores de referência, a confirmar." e "Entrega ou retirada: a combinar." Testes dos dois.
 - Botão "Pedir amostra" com a mensagem própria do brief (seção 8), vinda do config.
-- **Pronto quando:** C-06, C-12, C-22 a C-25.
+- **Pronto quando:** C-06, C-07, C-12, C-22 a C-26.
 
 ## T5 — Menu do celular
 - Abaixo de 920 px, o botão de menu abre a navegação. Itens: Produtos, Para padarias, Preparo, Dúvidas, Contato. No desktop, os mesmos itens.
@@ -47,8 +47,9 @@ Feita, aprovada e publicada no repositório. O preparo já está no config com o
 
 ## T6 — Botão flutuante de WhatsApp e botões do hero
 - Link fixo no canto inferior, com a mensagem padrão do brief vinda do config. Ele se esconde com a sacola ou o checkout abertos.
-- Hero: botão "Pedir amostra" (principal) e botão "Fazer pedido" (rola até `#produtos`).
-- **Pronto quando:** C-20, C-21.
+- Hero: botão "Pedir amostra" (principal) e botão "Fazer pedido" (rola até `#produtos`, estilo secundário). Hoje há dois botões principais lado a lado: só um pode ser principal.
+- Acessibilidade do "Pedir amostra": hoje é um `<a>` sem `href` no HTML (o `href` só existe depois que o JS roda). Deixar um `href` válido já no HTML (ex.: `#contato`), que o JS troca pelo link do WhatsApp, para o botão receber foco por teclado.
+- **Pronto quando:** C-20, C-21, C-26, C-07.
 
 ## T7 — Conteúdo: hero, FAQ, história e depoimentos
 - Aplicar os textos da seção 8 do brief (subtítulo do hero, FAQ). O preparo já foi feito na T3.1; aqui só conferir que continua igual ao do brief.
