@@ -12,7 +12,7 @@ Servidor local para testar: `python -m http.server 8000` na raiz do projeto, dep
 |---|---|---|
 | C-01 | Não há `<style>` nem `<script>` com código dentro do `index.html`. O CSS fica em `css/style.css` e o JS em `js/*.js` (ES modules). | Procurar `<style` no `index.html`: 0 resultados. Procurar `<script>` sem `src`: 0 resultados. |
 | C-02 | O arquivo antigo `js/script.js` não existe mais e nenhum arquivo o referencia. | `git ls-files js/script.js` não mostra nada; procurar `script.js` no projeto: 0 resultados. |
-| C-03 | Marca, domínio, Instagram, WhatsApp, preços, produtos e fotos ficam **só** em `js/config.js`. | Procurar `Cheiro das Águas`, `5527998480547`, `cheirodasaguas` e `22,00`/`22.0`/`30,00`/`30.0` fora de `js/config.js`. Só pode haver ocorrências dentro do bloco do `<head>` marcado `SINCRONIZAR COM js/config.js`, no `agenda.json` (que não deve tê-las), no `README.md`, em `testes/` e nos `.md` de documentação. |
+| C-03 | Marca, domínio, Instagram, WhatsApp, preços, produtos e fotos ficam **só** em `js/config.js`. | Procurar `Cheiro das Águas`, `5527998480547`, `cheirodasaguas` e `22,00`/`22.0`/`30,00`/`30.0` fora de `js/config.js`. Só pode haver ocorrências dentro do bloco do `<head>` marcado `SINCRONIZAR COM js/config.js`, no `README.md`, em `testes/` e nos `.md` de documentação. |
 | C-04 | Trocar um valor no config muda o site inteiro. | Teste manual: mudar o preço do "com açúcar" para 23 no config e recarregar. O card, a sacola, o total e a mensagem do WhatsApp mostram R$ 23,00. Depois desfazer. |
 | C-05 | Trocar a foto de um produto é mudar um caminho no config. | O `README.md` explica isso em até 5 passos. Teste: apontar um produto para `img/logo.webp`; só aquele card muda. |
 | C-06 | Os testes automáticos passam. | `node --test testes/` termina sem falhas. |
@@ -24,7 +24,7 @@ Servidor local para testar: `python -m http.server 8000` na raiz do projeto, dep
 |---|---|---|
 | C-10 | Aparecem exatamente 3 produtos, com o nome, 250 g e o preço da tabela do brief. O Cacau 50% não aparece. | Visual, mais procurar `50%` no texto renderizado: 0 resultados (ignorar CSS). |
 | C-11 | O preparo diz 30 g, 100 ml, água **fervente**, mexer devagar, a dica de menos água para ficar mais cremoso e o rendimento de cerca de 8 xícaras. Não aparecem "35 g", "150 ml" nem "sem ferver". | Leitura da seção mais busca no código-fonte. |
-| C-12 | Nenhuma opção ou texto oferece entrega, envio, frete ou correio, exceto a resposta "não" no FAQ. | Procurar `entreg`, `envio`, `frete`, `correio`, `endereço de` no HTML e JS. Só pode sobrar o FAQ. |
+| C-12 | O site não promete entrega, frete, prazo, pedido mínimo, nota fiscal nem pagamento a prazo. Só pode dizer que a forma de receber é **combinada pelo WhatsApp**. Não há campo de endereço. | Procurar `entreg`, `envio`, `frete`, `correio`, `prazo`, `mínimo`, `nota fiscal`, `endereço de` no HTML e JS. Só podem sobrar as frases aprovadas no brief (FAQ e linha "Entrega ou retirada: a combinar" do pedido). |
 | C-13 | A validade de 365 dias e a conservação aparecem no FAQ. | Leitura. |
 | C-14 | O rodapé mostra o Instagram `@cheirodasaguasgourmet` com link correto e não tem nenhum link para `cheirodasaguasagro`. | Procurar `cheirodasaguasagro`: 0 resultados. Clicar no link do Instagram. |
 | C-15 | As seções de história e de depoimentos ficam ocultas quando os campos no config estão vazios e aparecem quando são preenchidos. | Teste com o campo vazio e preenchido (só localmente, sem commitar texto falso). |
@@ -34,13 +34,25 @@ Servidor local para testar: `python -m http.server 8000` na raiz do projeto, dep
 
 | ID | Critério | Como verificar |
 |---|---|---|
-| C-20 | Existe um botão flutuante de WhatsApp em todas as rolagens, fora da sacola. Ele abre `https://wa.me/5527998480547?text=` com a mensagem padrão codificada. | Inspecionar o `href`; num celular real, tocar: abre a conversa com o número certo e o texto preenchido. |
+| C-20 | Existe um botão flutuante de WhatsApp em todas as rolagens, fora da sacola. Ele abre `https://wa.me/5527998480547?text=` com a mensagem padrão do brief (padaria), codificada. | Inspecionar o `href`; num celular real, tocar: abre a conversa com o número certo e o texto preenchido. |
 | C-21 | O botão flutuante tem área de toque ≥ 48×48 px e `aria-label`, e não cobre o botão "Finalizar pedido" nem os controles da sacola (fica oculto com a sacola ou o checkout abertos). | DevTools a 360 px, abrir a sacola. |
-| C-22 | O checkout pede: nome (obrigatório), feira de retirada (lista das próximas feiras da agenda + "Combinar pelo WhatsApp") e forma de pagamento (lista do config). Não tem campos de endereço. | Visual e validação: enviar vazio mostra os erros. |
-| C-23 | A mensagem do pedido contém: os itens com quantidade e subtotal, o total, o nome, a feira com data (ou "combinar") e o pagamento. Os valores batem com a sacola. | Teste automático da função que monta a mensagem, mais um teste manual com 2 produtos diferentes. |
+| C-22 | O checkout pede: nome (obrigatório), padaria (obrigatório), cidade ou bairro (obrigatório) e forma de pagamento (lista do config + "Combinar pelo WhatsApp"). Não tem campo de endereço completo. | Visual e validação: enviar vazio mostra os erros. |
+| C-23 | A mensagem do pedido contém: os itens com quantidade e subtotal, o total, o nome, a padaria, a cidade ou bairro, o pagamento e as linhas "Valores de referência, a confirmar." e "Entrega ou retirada: a combinar." Os valores batem com a sacola. | Teste automático da função que monta a mensagem, mais um teste manual com 2 produtos diferentes. |
 | C-24 | O link do pedido é montado só com `encodeURIComponent`. Um nome com acento, `&` e emoji chega certo. | Teste automático com o nome `João & Zé ☕`. |
+| C-25 | O pedido é um **objeto de dados** (itens, quantidades, subtotais, total, cliente) criado por `montarPedido`, separado do envio. O link do WhatsApp é gerado a partir desse objeto. | Ler `js/pedido.js`; teste automático que valida o objeto sem passar pelo link. |
+| C-26 | O botão "Pedir amostra" abre o WhatsApp com a mensagem própria de amostra do brief, vinda do config, codificada. | Inspecionar o `href`; teste em celular real. |
 
-## Agenda
+## Calculadora para padarias
+
+| ID | Critério | Como verificar |
+|---|---|---|
+| C-60 | As contas ficam em `js/calculadora.js`, funções puras sem DOM. Xícaras por pacote = 250 ÷ porção, arredondado para baixo. Custo do pó por xícara = preço do pacote × porção ÷ 250. | Teste automático: com os preços do brief, o custo é R$ 2,64 (com açúcar) e R$ 3,60 (sem açúcar e descafeinado) e o rendimento é 8. |
+| C-61 | Ganho por xícara = preço de venda − custo do pó. Margem = ganho ÷ preço de venda, em %. Ganho por pacote = ganho por xícara × xícaras por pacote. | Teste automático com pelo menos 3 preços de venda, incluindo um menor que o custo (ganho negativo é mostrado, não escondido). |
+| C-62 | Preço de venda vazio, zero, negativo ou texto não gera `NaN` nem erro: mostra o estado "sem resultado" (nenhum valor na tela). Aceita vírgula e ponto. | Teste automático e teste manual digitando `abc`, `0`, `-5`, `9,5` e `9.5`. |
+| C-63 | A porção (30 g), os preços e os nomes vêm do config. Trocar o preço ou a porção no config muda a calculadora. | Teste manual como em C-04. |
+| C-64 | O aviso do brief aparece junto do resultado e o texto não promete lucro ou economia. | Leitura. |
+
+## Agenda (SUSPENSA: foco em padarias; ignorar C-30 a C-37)
 
 | ID | Critério | Como verificar |
 |---|---|---|
@@ -86,7 +98,7 @@ Feito por Daniel, com os pais nos itens marcados (👪), **antes de divulgar o l
 - [ ] **H-02** 👪 O preparo está certo, inclusive a quantidade de colheres para 30 g (pesar a colher).
 - [ ] **H-03** 👪 Os nomes dos produtos são iguais aos da embalagem (ex.: "sem açúcar" × "sem adição de açúcar").
 - [ ] **H-04** 👪 As formas de pagamento listadas são as aceitas de verdade na feira.
-- [ ] **H-05** 👪 As feiras do `agenda.json` (dia, horário, endereço) estão certas.
+- [ ] **H-05** *(suspenso: agenda de feiras fora do site)*
 - [ ] **H-06** 👪 Nenhum texto promete algo que eles não fazem (entrega, sabor "o melhor", benefícios de saúde).
 - [ ] **H-07** 👪 Os dados legais no rodapé (razão social, CNPJ, endereço) estão atualizados.
 - [ ] **H-08** 👪 Os textos do hero e da seção "da casa" são verdadeiros para eles (ex.: "nascentes", "roça").
@@ -96,5 +108,9 @@ Feito por Daniel, com os pais nos itens marcados (👪), **antes de divulgar o l
 - [ ] **H-12** O link do Instagram abre o perfil certo.
 - [ ] **H-13** Leitura completa no celular, em voz alta: não tem erro de português nem frase estranha.
 - [ ] **H-14** Teste com internet fraca (DevTools → Network → "Slow 4G"): o produto e o botão de WhatsApp aparecem em até ~3 s.
-- [ ] **H-15** Alguém de fora da família, que nunca viu o site, consegue dizer em 30 s onde a barraca vai estar e como pedir.
-- [ ] **H-16** Você sabe sozinho, seguindo o `README.md`: mudar um preço, adicionar uma feira e trocar uma foto.
+- [ ] **H-15** Um dono de padaria, que nunca viu o site, consegue dizer em 30 s o que é o produto, quanto rende e como pedir uma amostra.
+- [ ] **H-16** Você sabe sozinho, seguindo o `README.md`: mudar um preço e trocar uma foto.
+- [ ] **H-17** 👪 Oferecer amostra é verdade: existe amostra e eles aceitam combinar o envio ou a entrega.
+- [ ] **H-18** 👪 Os preços de tabela do site valem para padarias, ou há preço próprio (então trocar no config).
+- [ ] **H-19** 👪 "Atendemos a Grande Vitória" e "combinamos como receber" é verdade hoje.
+- [ ] **H-20** A calculadora: digite o preço de uma xícara que você conhece (ex.: R$ 9,00) e confira à mão o custo, o ganho e a margem.

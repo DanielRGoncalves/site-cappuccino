@@ -8,47 +8,45 @@
 
 Cada tarefa vale ✅ quando os seus critérios **e** os das tarefas anteriores continuam passando.
 
+> **Foco desde 16/10/2026:** venda direta a padarias da Grande Vitória, com pedido pelo WhatsApp. A agenda de feiras e a retirada na feira saíram. Pagamento online é a Fase 2 e não faz parte destas tarefas.
+
 ---
 
-## T1 — Separar CSS e JS do index.html (sem mudança visual)
-- Mover o CSS embutido para `css/style.css` e o JS para `js/main.js` (`type="module"`).
-- `git rm js/script.js`.
-- **Não** mudar nenhum comportamento ou estilo, nem mesmo os bugs conhecidos (eles ficam para as próximas tarefas).
-- **Pronto quando:** C-01, C-02, C-07, mais capturas a 360 e 1280 px idênticas às de antes da tarefa.
+## T1 — Separar CSS e JS do index.html ✅
+Feita e aprovada.
 
-## T2 — Config único e produtos vindos do config
-- Criar `js/config.js` com: marca, URL do site (GitHub Pages), WhatsApp, Instagram, dados legais, formas de pagamento (`["PIX", "Dinheiro"]`) e os 3 produtos (id, nome, descrição curta, peso, preço em centavos, foto, alt da foto). Campos `historia`, `depoimentos` e textos de preparo também ficam no config, vazios ou com o texto do brief.
-- Gerar os cards de produto a partir do config. A sacola usa os preços do config. Remover o Cacau 50%.
-- Grade com 3 colunas no desktop.
-- Rodapé: Instagram correto, sem o link do domínio `cheirodasaguasagro`, dados legais vindos do config. O `alt` do logo também vem do config.
-- Criar `js/pedido.js` (formatar R$, montar o link do WhatsApp), mais os testes dele.
-- **Pronto quando:** C-03 (exceto o `<head>`, que é da T9), C-04, C-05, C-06, C-10, C-14, C-24 e C-45 (só a grade).
+## T2 — Config único e produtos vindos do config ✅
+Feita, aprovada e publicada no repositório. O preparo já está no config com o texto do brief.
 
-## T3 — Agenda de feiras
-- `agenda.json` com `"feiras": []`. `js/agenda.js` com funções puras (validar o item, expandir as semanais, filtrar a partir de `hoje`, ordenar, limitar a 6, formatar "sáb, 07/11").
-- Seção `#agenda` no site, com estado vazio. Suporte a `?hoje=AAAA-MM-DD`.
-- Testes em `testes/agenda.test.mjs` cobrindo C-31 a C-35.
-- Seção curta no `README.md` de como adicionar uma feira (com o exemplo do AGENTS.md).
-- **Pronto quando:** C-06, C-30 a C-37.
+## T3 — Calculadora "Quanto rende na sua padaria"
+- Em `js/config.js`, adicionar `porcaoGramas: 30` (se ainda não existir).
+- Criar `js/calculadora.js` com **funções puras, sem DOM**: xícaras por pacote (250 ÷ porção, arredondado para baixo), custo do pó por xícara (em centavos, a partir do preço do pacote), ganho por xícara, margem em %, ganho por pacote. Preço de venda inválido (vazio, zero, negativo, texto) devolve "sem resultado", nunca `NaN`.
+- Seção `#padarias` entre os produtos e o preparo, com o texto da seção 8 do brief: campo de preço de venda da xícara, escolha do produto (3 opções, vindas do config), resultado e aviso. O resultado aparece ao digitar. Valores em R$ no formato brasileiro (aceitar vírgula ou ponto).
+- Testes em `testes/calculadora.test.mjs`, incluindo os valores de referência da seção 4 do brief (R$ 2,64 e R$ 3,60 por xícara com os preços atuais) e entradas inválidas.
+- Não mexer em menu, hero, checkout nem FAQ.
+- **Pronto quando:** C-06, C-60 a C-64.
 
-## T4 — Checkout com retirada na feira
-- Remover entrega e endereço. Campos: nome, feira de retirada (próximas feiras da agenda + "Combinar pelo WhatsApp") e pagamento (lista do config).
-- A mensagem é montada em `js/pedido.js`, com testes.
-- **Pronto quando:** C-12 (parte do checkout), C-22, C-23, C-24, C-06.
+## T4 — Pedido pelo WhatsApp e "Pedir amostra"
+- Remover entrega, endereço e qualquer menção à retirada na feira do checkout. Campos: nome (obrigatório), padaria (obrigatório), cidade ou bairro (obrigatório), forma de pagamento (lista do config + "Combinar pelo WhatsApp").
+- `js/pedido.js`: criar `montarPedido(sacola, cliente)`, que devolve um **objeto de pedido** (itens, quantidades, subtotais, total, cliente), e `linkWhatsApp(pedido)`, que o consome. A mensagem termina com "Valores de referência, a confirmar." e "Entrega ou retirada: a combinar." Testes dos dois.
+- Botão "Pedir amostra" com a mensagem própria do brief (seção 8), vinda do config.
+- **Pronto quando:** C-06, C-12, C-22 a C-25.
 
 ## T5 — Menu do celular
-- Abaixo de 920 px, o botão de menu abre a navegação. Itens: Produtos, Agenda, Preparo, Dúvidas, Contato. Os links da navegação também ganham Agenda e Dúvidas no desktop.
+- Abaixo de 920 px, o botão de menu abre a navegação. Itens: Produtos, Para padarias, Preparo, Dúvidas, Contato. No desktop, os mesmos itens.
 - Usar `scroll-margin-top` nas seções.
 - **Pronto quando:** C-41, C-42, e C-40 com o menu aberto.
 
-## T6 — Botão flutuante de WhatsApp
+## T6 — Botão flutuante de WhatsApp e botões do hero
 - Link fixo no canto inferior, com a mensagem padrão do brief vinda do config. Ele se esconde com a sacola ou o checkout abertos.
-- Botão "Pedir pelo WhatsApp" no hero, usando o mesmo link.
+- Hero: botão "Pedir amostra" (principal) e botão "Fazer pedido" (rola até `#produtos`).
 - **Pronto quando:** C-20, C-21.
 
-## T7 — Conteúdo: hero, preparo, FAQ, história e depoimentos
-- Aplicar os textos da seção 8 do brief. A história e os depoimentos usam o padrão "oculta se vazia".
+## T7 — Conteúdo: hero, FAQ, história e depoimentos
+- Aplicar os textos da seção 8 do brief (subtítulo do hero, FAQ). Conferir que o preparo do site é igual ao do brief.
+- A história e os depoimentos usam o padrão "oculta se vazia".
 - FAQ com `<details>`/`<summary>` (acessível e sem JS).
+- Remover do HTML qualquer texto antigo de feira, agenda ou retirada.
 - **Pronto quando:** C-11, C-12, C-13, C-15, C-16.
 
 ## T8 — Imagens leves
@@ -59,13 +57,13 @@ Cada tarefa vale ✅ quando os seus critérios **e** os das tarefas anteriores c
 - **Pronto quando:** C-05, C-51, C-52, C-53.
 
 ## T9 — Meta tags e compartilhamento
-- Bloco `SINCRONIZAR` no `<head>` com tudo o que pede o C-54. URLs absolutas com a URL do GitHub Pages que está no config.
+- Bloco `SINCRONIZAR` no `<head>` com tudo o que pede o C-54. URLs absolutas com a URL do GitHub Pages que está no config. A descrição fala de cappuccino para padarias, sem preço.
 - Favicon (32 px) e `apple-touch-icon` (180 px) a partir do logo.
 - **Pronto quando:** C-54 e C-03 completo.
 
 ## T10 — Revisão de layout a 360 px e acessibilidade
 - Remover `overflow-x: hidden` de `html`/`body` e corrigir o que transbordar.
-- Conferir 360, 768 e 1280 px com a sacola, o checkout e o menu abertos e fechados.
+- Conferir 360, 768 e 1280 px com a sacola, o checkout, a calculadora e o menu abertos e fechados.
 - **Pronto quando:** C-40, C-43, C-44, C-45, C-07.
 
 ## T11 — Publicar e passar no Lighthouse
@@ -74,6 +72,13 @@ Cada tarefa vale ✅ quando os seus critérios **e** os das tarefas anteriores c
 - **Pronto quando:** C-50, C-55, C-56.
 
 ## T12 — Revisão final
-- **Claude:** auditar o repositório contra **todos** os critérios C-xx.
-- **Daniel + pais:** checklist H-01 a H-16.
+- **Claude:** auditar o repositório contra **todos** os critérios C-xx ativos.
+- **Daniel + pais:** checklist H-01 a H-20 (menos os itens suspensos).
 - Só divulgar o link depois que tudo estiver ✅.
+
+---
+
+## Adiadas
+
+- **Agenda de feiras** (antiga T3, critérios C-30 a C-37): suspensa. Pode voltar se as feiras voltarem a ser um canal.
+- **Fase 2, pagamento online:** escolher um serviço de pagamento terceirizado, ligar o objeto de pedido de `js/pedido.js` a ele. Só depois que a Fase 1 gerar pedidos reais.
