@@ -46,9 +46,11 @@ Medida de sucesso (fora do código): conversas de padarias no WhatsApp citando o
 
 | Produto | Preço |
 |---|---|
-| Cappuccino com açúcar | R$ 22,00 |
-| Cappuccino sem açúcar | R$ 30,00 |
-| Cappuccino descafeinado | R$ 30,00 |
+| Cappuccino com açúcar | R$ 30,00 |
+| Cappuccino sem açúcar | R$ 35,00 |
+| Cappuccino descafeinado | R$ 35,00 |
+
+*(Preços informados pelo pai em 16/10/2026; substituem os de R$ 22 / 30 / 30.)*
 
 - O **Cacau 50% sai do site**.
 - Os nomes no site devem bater com os da embalagem (checklist H-03).
@@ -61,7 +63,7 @@ Medida de sucesso (fora do código): conversas de padarias no WhatsApp citando o
 ### Rendimento e calculadora
 
 - Porção: **30 g por xícara** (`porcaoGramas: 30` no config). Xícaras por pacote = 250 ÷ 30, **arredondado para baixo** (8).
-- Custo do pó por xícara = preço do pacote × 30 ÷ 250. Com os preços atuais: R$ 2,64 (com açúcar) e R$ 3,60 (sem açúcar e descafeinado). O site **calcula** esse valor a partir do config; não escreve o número no texto.
+- Custo do pó por xícara = preço do pacote × 30 ÷ 250. Com os preços atuais: R$ 3,60 (com açúcar) e R$ 4,20 (sem açúcar e descafeinado). O site **calcula** esse valor a partir do config; não escreve o número no texto.
 - A calculadora recebe só **um dado do visitante: o preço de venda da xícara**. Mostra: custo do pó por xícara, ganho bruto por xícara, margem bruta em % e ganho por pacote de 250 g.
 - Aviso obrigatório ao lado do resultado: "A conta considera só o custo do cappuccino em pó. Copo, energia, perdas e outros custos não entram."
 - O site **não promete lucro**: o resultado é a conta do próprio visitante.
@@ -160,3 +162,4 @@ Pagamento online (Fase 2), frete e prazo, login, cadastro de clientes, lembrete 
 - **P-10** Texto da história dos pais.
 - **P-11** Exigências de rotulagem para venda a comércio (perguntar ao contador).
 - **P-12** Se a venda ao consumidor final continua pelo site.
+- **P-13** Pagamento por cartão no site (Fase 2): provedor, regra de frete e entrega, nota fiscal, termos de venda e política de privacidade. Plano em `tarefas.md`, seção "Fase 2".

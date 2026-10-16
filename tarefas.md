@@ -22,7 +22,7 @@ Feita, aprovada e publicada no repositório. O preparo já está no config com o
 - Em `js/config.js`, adicionar `porcaoGramas: 30` (se ainda não existir).
 - Criar `js/calculadora.js` com **funções puras, sem DOM**: xícaras por pacote (250 ÷ porção, arredondado para baixo), custo do pó por xícara (em centavos, a partir do preço do pacote), ganho por xícara, margem em %, ganho por pacote. Preço de venda inválido (vazio, zero, negativo, texto) devolve "sem resultado", nunca `NaN`.
 - Seção `#padarias` entre os produtos e o preparo, com o texto da seção 8 do brief: campo de preço de venda da xícara, escolha do produto (3 opções, vindas do config), resultado e aviso. O resultado aparece ao digitar. Valores em R$ no formato brasileiro (aceitar vírgula ou ponto).
-- Testes em `testes/calculadora.test.mjs`, incluindo os valores de referência da seção 4 do brief (R$ 2,64 e R$ 3,60 por xícara com os preços atuais) e entradas inválidas.
+- Testes em `testes/calculadora.test.mjs`, incluindo os valores de referência da seção 4 do brief (R$ 2,64 e R$ 3,60 por xícara com os preços da época; a T5.1 atualiza para R$ 3,60 e R$ 4,20) e entradas inválidas.
 - Não mexer em menu, hero, checkout nem FAQ.
 - **Pronto quando:** C-06, C-60 a C-64.
 
@@ -41,9 +41,16 @@ Feita, aprovada e publicada no repositório. O preparo já está no config com o
 - **Pronto quando:** C-06, C-07, C-12, C-22 a C-26.
 
 ## T5 — Menu do celular
-- Abaixo de 920 px, o botão de menu abre a navegação. Itens: Produtos, Para padarias, Preparo, Dúvidas, Contato. No desktop, os mesmos itens.
+- Abaixo de 920 px, o botão de menu abre a navegação. Itens: Produtos, Para padarias, Preparo, Contato. No desktop, os mesmos itens. **"Dúvidas" não entra agora**, porque o `#faq` só existe na T7; a T7 adiciona o item.
 - Usar `scroll-margin-top` nas seções.
 - **Pronto quando:** C-41, C-42, e C-40 com o menu aberto.
+
+## T5.1 — Atualizar os preços
+- Em `js/config.js`: com açúcar `3000` centavos; sem açúcar `3500`; descafeinado `3500`.
+- Atualizar os testes que usam os preços antigos: os valores de referência da calculadora passam a ser **R$ 3,60** (360 centavos, com açúcar) e **R$ 4,20** (420 centavos, sem açúcar e descafeinado), com 8 xícaras por pacote. Atualizar também qualquer teste do pedido que use os preços (subtotais e total).
+- Procurar `2200`, `22,00`, `2,64` e `264` no projeto (HTML, JS, testes, README) e atualizar o que for número de preço. Texto de preço fora do config não deve existir.
+- Não mexer em mais nada.
+- **Pronto quando:** C-03, C-04, C-06, C-07, C-10, C-60.
 
 ## T6 — Botão flutuante de WhatsApp e botões do hero
 - Link fixo no canto inferior, com a mensagem padrão do brief vinda do config. Ele se esconde com a sacola ou o checkout abertos.
@@ -54,9 +61,10 @@ Feita, aprovada e publicada no repositório. O preparo já está no config com o
 ## T7 — Conteúdo: hero, FAQ, história e depoimentos
 - Aplicar os textos da seção 8 do brief (subtítulo do hero, FAQ). O preparo já foi feito na T3.1; aqui só conferir que continua igual ao do brief.
 - A história e os depoimentos usam o padrão "oculta se vazia".
-- FAQ com `<details>`/`<summary>` (acessível e sem JS).
+- FAQ com `<details>`/`<summary>` (acessível e sem JS), na seção `#faq`.
+- Adicionar o item **"Dúvidas"** (rola até `#faq`) ao menu do cabeçalho e ao menu do celular, que a T5 deixou sem ele.
 - Remover do HTML qualquer texto antigo de feira, agenda ou retirada.
-- **Pronto quando:** C-11, C-12, C-13, C-15, C-16.
+- **Pronto quando:** C-11, C-12, C-13, C-15, C-16, C-41, C-42.
 
 ## T8 — Imagens leves
 - A partir de `cappuccino-tradicional.png` (2048 px, 1,9 MB), gerar `img/produtos/provisoria-800.webp` (≤ 120 KB) e `-400.webp` com `srcset`. Os 3 produtos apontam para ela no config.
@@ -90,4 +98,14 @@ Feita, aprovada e publicada no repositório. O preparo já está no config com o
 ## Adiadas
 
 - **Agenda de feiras** (antiga T3, critérios C-30 a C-37): suspensa. Pode voltar se as feiras voltarem a ser um canal.
-- **Fase 2, pagamento online:** escolher um serviço de pagamento terceirizado, ligar o objeto de pedido de `js/pedido.js` a ele. Só depois que a Fase 1 gerar pedidos reais.
+## Fase 2 — Pagamento com cartão no site (plano; nada disto é para o executor ainda)
+
+**Condições antes de escrever código** (todas dependem da família, não do site):
+1. Decidir como a padaria recebe e quanto custa: entrega, frete, pedido mínimo, prazo. Sem isso não há preço final para cobrar no cartão.
+2. Abrir conta PJ em um provedor de pagamento com o CNPJ da empresa.
+3. Definir nota fiscal, termos de venda e política de privacidade (LGPD) para publicar no site.
+4. Confirmar com o contador a tributação das vendas online.
+
+**Caminho em dois degraus:**
+- **Degrau A (sem backend):** link de pagamento do provedor. O pedido continua indo ao WhatsApp, e a conversa termina com o link do provedor para a padaria pagar com cartão, Pix ou boleto. Custo de construção: quase zero; a taxa só incide sobre cada venda.
+- **Degrau B (com backend):** função serverless (por exemplo, Cloudflare Workers ou Netlify Functions, com plano gratuito para este volume) que cria a cobrança a partir do objeto de pedido e recebe o aviso de pagamento (webhook) do provedor. Os dados do cartão **nunca passam pelo nosso código**: a página de pagamento é do provedor. O site continua estático.

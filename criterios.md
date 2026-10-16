@@ -12,7 +12,7 @@ Servidor local para testar: `python -m http.server 8000` na raiz do projeto, dep
 |---|---|---|
 | C-01 | Não há `<style>` nem `<script>` com código dentro do `index.html`. O CSS fica em `css/style.css` e o JS em `js/*.js` (ES modules). | Procurar `<style` no `index.html`: 0 resultados. Procurar `<script>` sem `src`: 0 resultados. |
 | C-02 | O arquivo antigo `js/script.js` não existe mais e nenhum arquivo o referencia. | `git ls-files js/script.js` não mostra nada; procurar `script.js` no projeto: 0 resultados. |
-| C-03 | Marca, domínio, Instagram, WhatsApp, preços, produtos e fotos ficam **só** em `js/config.js`. | Procurar `Cheiro das Águas`, `5527998480547`, `cheirodasaguas` e `22,00`/`22.0`/`30,00`/`30.0` fora de `js/config.js`. Só pode haver ocorrências dentro do bloco do `<head>` marcado `SINCRONIZAR COM js/config.js`, no `README.md`, em `testes/` e nos `.md` de documentação. |
+| C-03 | Marca, domínio, Instagram, WhatsApp, preços, produtos e fotos ficam **só** em `js/config.js`. | Procurar `Cheiro das Águas`, `5527998480547`, `cheirodasaguas` e `30,00`/`30.0`/`35,00`/`35.0` (e os valores antigos `22,00`/`22.0`) fora de `js/config.js`. Só pode haver ocorrências dentro do bloco do `<head>` marcado `SINCRONIZAR COM js/config.js`, no `README.md`, em `testes/` e nos `.md` de documentação. |
 | C-04 | Trocar um valor no config muda o site inteiro. | Teste manual: mudar o preço do "com açúcar" para 23 no config e recarregar. O card, a sacola, o total e a mensagem do WhatsApp mostram R$ 23,00. Depois desfazer. |
 | C-05 | Trocar a foto de um produto é mudar um caminho no config. | O `README.md` explica isso em até 5 passos. Teste: apontar um produto para `img/logo.webp`; só aquele card muda. |
 | C-06 | Os testes automáticos passam. | `node --test testes/` termina sem falhas. |
@@ -46,7 +46,7 @@ Servidor local para testar: `python -m http.server 8000` na raiz do projeto, dep
 
 | ID | Critério | Como verificar |
 |---|---|---|
-| C-60 | As contas ficam em `js/calculadora.js`, funções puras sem DOM. Xícaras por pacote = 250 ÷ porção, arredondado para baixo. Custo do pó por xícara = preço do pacote × porção ÷ 250. | Teste automático: com os preços do brief, o custo é R$ 2,64 (com açúcar) e R$ 3,60 (sem açúcar e descafeinado) e o rendimento é 8. |
+| C-60 | As contas ficam em `js/calculadora.js`, funções puras sem DOM. Xícaras por pacote = 250 ÷ porção, arredondado para baixo. Custo do pó por xícara = preço do pacote × porção ÷ 250. | Teste automático: com os preços do brief, o custo é R$ 3,60 (com açúcar) e R$ 4,20 (sem açúcar e descafeinado) e o rendimento é 8. |
 | C-61 | Ganho por xícara = preço de venda − custo do pó. Margem = ganho ÷ preço de venda, em %. Ganho por pacote = ganho por xícara × xícaras por pacote. | Teste automático com pelo menos 3 preços de venda, incluindo um menor que o custo (ganho negativo é mostrado, não escondido). |
 | C-62 | Preço de venda vazio, zero, negativo ou texto não gera `NaN` nem erro: mostra o estado "sem resultado" (nenhum valor na tela). Aceita vírgula e ponto. | Teste automático e teste manual digitando `abc`, `0`, `-5`, `9,5` e `9.5`. |
 | C-63 | A porção (30 g), os preços e os nomes vêm do config. Trocar o preço ou a porção no config muda a calculadora. | Teste manual como em C-04. |
@@ -94,7 +94,7 @@ Servidor local para testar: `python -m http.server 8000` na raiz do projeto, dep
 
 Feito por Daniel, com os pais nos itens marcados (👪), **antes de divulgar o link**. Cada item é sim ou não.
 
-- [ ] **H-01** 👪 Os preços estão certos: com açúcar R$ 22,00; sem açúcar R$ 30,00; descafeinado R$ 30,00.
+- [ ] **H-01** 👪 Os preços estão certos: com açúcar R$ 30,00; sem açúcar R$ 35,00; descafeinado R$ 35,00.
 - [ ] **H-02** 👪 O preparo está certo, inclusive a quantidade de colheres para 30 g (pesar a colher).
 - [ ] **H-03** 👪 Os nomes dos produtos são iguais aos da embalagem (ex.: "sem açúcar" × "sem adição de açúcar").
 - [ ] **H-04** 👪 As formas de pagamento listadas são as aceitas de verdade na feira.
