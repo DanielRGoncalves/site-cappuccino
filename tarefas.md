@@ -26,6 +26,14 @@ Feita, aprovada e publicada no repositório. O preparo já está no config com o
 - Não mexer em menu, hero, checkout nem FAQ.
 - **Pronto quando:** C-06, C-60 a C-64.
 
+## T3.1 — Preparo gerado a partir do config
+- Motivo: o `config.js` já tem o preparo novo, mas o `index.html` ainda mostra o texto antigo escrito à mão (35 g, 150 ml, "sem ferver").
+- Gerar a seção `#preparo` a partir de `config.textos.preparo`: os 3 passos (número, título e descrição), a dica e o rendimento. Remover os 3 cards e os textos antigos escritos no HTML.
+- O subtítulo da seção e qualquer outro texto do preparo que não esteja no brief também vêm do config. O subtítulo atual ("Três passos simples para manter a experiência cremosa...") só fica se for movido para o config; textos que citem "interior" ou "pausa" saem.
+- Teste automático simples: a função que monta o preparo devolve 3 passos, a dica e o rendimento do config. Mudar um texto no config muda a página.
+- Não mexer em mais nada.
+- **Pronto quando:** C-03, C-04, C-06, C-07, C-11.
+
 ## T4 — Pedido pelo WhatsApp e "Pedir amostra"
 - Remover entrega, endereço e qualquer menção à retirada na feira do checkout. Campos: nome (obrigatório), padaria (obrigatório), cidade ou bairro (obrigatório), forma de pagamento (lista do config + "Combinar pelo WhatsApp").
 - `js/pedido.js`: criar `montarPedido(sacola, cliente)`, que devolve um **objeto de pedido** (itens, quantidades, subtotais, total, cliente), e `linkWhatsApp(pedido)`, que o consome. A mensagem termina com "Valores de referência, a confirmar." e "Entrega ou retirada: a combinar." Testes dos dois.
@@ -43,7 +51,7 @@ Feita, aprovada e publicada no repositório. O preparo já está no config com o
 - **Pronto quando:** C-20, C-21.
 
 ## T7 — Conteúdo: hero, FAQ, história e depoimentos
-- Aplicar os textos da seção 8 do brief (subtítulo do hero, FAQ). Conferir que o preparo do site é igual ao do brief.
+- Aplicar os textos da seção 8 do brief (subtítulo do hero, FAQ). O preparo já foi feito na T3.1; aqui só conferir que continua igual ao do brief.
 - A história e os depoimentos usam o padrão "oculta se vazia".
 - FAQ com `<details>`/`<summary>` (acessível e sem JS).
 - Remover do HTML qualquer texto antigo de feira, agenda ou retirada.
