@@ -50,6 +50,12 @@ export const config = {
   historia: "",
   depoimentos: [],
   textos: {
+    pagamentoACombinar: "Combinar pelo WhatsApp",
+    whatsapp: {
+      amostra: "Olá! Vi o site e quero pedir uma amostra do cappuccino para a minha padaria.",
+      valoresReferencia: "Valores de referência, a confirmar.",
+      recebimento: "Entrega ou retirada: a combinar.",
+    },
     introducaoProdutos: "",
     padarias: {
       titulo: "Quanto rende na sua padaria",

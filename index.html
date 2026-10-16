@@ -182,70 +182,21 @@
               name="nome"
               placeholder="Seu nome completo"
               autocomplete="name"
+              required
             />
-            <span class="form-error">Informe seu nome completo.</span>
+            <span class="form-error">Informe seu nome.</span>
           </div>
 
-          <div class="form-group">
-            <label class="form-label">Forma de entrega</label>
-            <div class="option-group">
-              <div class="option-pill">
-                <input
-                  type="radio"
-                  id="entrega-retirada"
-                  name="entrega"
-                  value="retirada"
-                  checked
-                />
-                <label for="entrega-retirada">Retirar no local</label>
-              </div>
-              <div class="option-pill">
-                <input
-                  type="radio"
-                  id="entrega-endereco"
-                  name="entrega"
-                  value="endereco"
-                />
-                <label for="entrega-endereco">Entregar no endereço</label>
-              </div>
-            </div>
+          <div class="form-group" id="grupo-padaria">
+            <label class="form-label" for="campo-padaria">Padaria</label>
+            <input class="form-input" type="text" id="campo-padaria" name="padaria" required />
+            <span class="form-error">Informe a padaria.</span>
+          </div>
 
-            <div class="form-group" id="campo-endereco" style="display: none">
-              <label class="form-label">Endereço de entrega</label>
-              <div class="address-grid">
-                <div class="address-row">
-                  <input
-                    class="form-input"
-                    type="text"
-                    id="end-rua"
-                    placeholder="Rua / Avenida"
-                  />
-                  <input
-                    class="form-input input-curto"
-                    type="text"
-                    id="end-numero"
-                    placeholder="Número"
-                  />
-                </div>
-                <div class="address-row">
-                  <input
-                    class="form-input"
-                    type="text"
-                    id="end-bairro"
-                    placeholder="Bairro"
-                  />
-                  <input
-                    class="form-input"
-                    type="text"
-                    id="end-cidade"
-                    placeholder="Cidade (ex: Taparuba)"
-                  />
-                </div>
-              </div>
-              <span class="form-error"
-                >Preencha todos os campos do endereço.</span
-              >
-            </div>
+          <div class="form-group" id="grupo-cidade-bairro">
+            <label class="form-label" for="campo-cidade-bairro">Cidade ou bairro</label>
+            <input class="form-input" type="text" id="campo-cidade-bairro" name="cidadeBairro" required />
+            <span class="form-error">Informe a cidade ou o bairro.</span>
           </div>
 
           <div class="form-group" id="grupo-pagamento">
@@ -277,6 +228,7 @@
               manhãs calmas do interior.
             </p>
             <div class="hero-cta">
+              <a class="btn btn-primary" id="pedir-amostra">Pedir amostra</a>
               <a class="btn btn-primary" href="#produtos"
                 >Conheça o Cappuccino <span aria-hidden="true">→</span></a
               >

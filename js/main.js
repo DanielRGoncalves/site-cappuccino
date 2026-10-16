@@ -1,5 +1,5 @@
 import { config } from "./config.js";
-import { formatarReais, montarLinkWhatsApp } from "./pedido.js";
+import { formatarReais, linkWhatsApp, montarLinkWhatsApp, montarPedido } from "./pedido.js";
 import { calcularResultado } from "./calculadora.js";
 import { montarPreparo } from "./preparo.js";
 
@@ -74,7 +74,7 @@ function montarProdutos() {
 
 function montarPagamentos() {
   const grupo = document.querySelector("#grupo-pagamento .option-group");
-  config.formasPagamento.forEach((forma, index) => {
+  [...config.formasPagamento, config.textos.pagamentoACombinar].forEach((forma, index) => {
     const opcao = document.createElement("div");
     opcao.className = "option-pill";
     const input = document.createElement("input");
@@ -157,6 +157,10 @@ montarProdutos();
 montarPagamentos();
 montarCalculadora();
 renderizarPreparo();
+document.getElementById("pedir-amostra").href = montarLinkWhatsApp(
+  config.whatsapp,
+  config.textos.whatsapp.amostra,
+);
 
 const cartCountEl = document.querySelector(".cart-count");
 const cartButton = document.querySelector(".cart-button");
@@ -177,11 +181,10 @@ const checkoutSummary = document.getElementById("checkout-summary");
 
 const campoNome = document.getElementById("campo-nome");
 const grupoNome = document.getElementById("grupo-nome");
-const campoEndereco = document.getElementById("campo-endereco");
-const endRua = document.getElementById("end-rua");
-const endNumero = document.getElementById("end-numero");
-const endBairro = document.getElementById("end-bairro");
-const endCidade = document.getElementById("end-cidade");
+const campoPadaria = document.getElementById("campo-padaria");
+const grupoPadaria = document.getElementById("grupo-padaria");
+const campoCidadeBairro = document.getElementById("campo-cidade-bairro");
+const grupoCidadeBairro = document.getElementById("grupo-cidade-bairro");
 const grupoPagamento = document.getElementById("grupo-pagamento");
 
 // ======== LÓGICA DO TOAST (AVISO VISUAL) ========
@@ -323,52 +326,31 @@ cartList.addEventListener("click", (event) => {
 openCheckoutBtn.addEventListener("click", abrirCheckout);
 checkoutClose.addEventListener("click", fecharCheckout);
 
-// ======== ENTREGA: MOSTRAR/ESCONDER CAMPO DE ENDEREÇO ========
-document.querySelectorAll('input[name="entrega"]').forEach((radio) => {
-  radio.addEventListener("change", () => {
-    const isEntrega = document.getElementById("entrega-endereco").checked;
-    campoEndereco.style.display = isEntrega ? "block" : "none";
-    if (!isEntrega) {
-      campoEndereco.classList.remove("has-error");
-    }
-  });
-});
-
-// ======== VALIDAÇÃO E ENVIO DO PEDIDO ========
+// ======== VALIDAÇÃO DO PEDIDO ========
 checkoutForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
   let valido = true;
 
-  // Nome completo obrigatório
-  if (campoNome.value.trim().length < 3) {
+  if (!campoNome.value.trim()) {
     grupoNome.classList.add("has-error");
     valido = false;
   } else {
     grupoNome.classList.remove("has-error");
   }
 
-  // Endereço obrigatório se "Entregar no endereço" estiver marcado
-  const entregaSelecionada = document.querySelector(
-    'input[name="entrega"]:checked',
-  ).value;
+  if (!campoPadaria.value.trim()) {
+    grupoPadaria.classList.add("has-error");
+    valido = false;
+  } else {
+    grupoPadaria.classList.remove("has-error");
+  }
 
-  let enderecoCompleto = "";
-  if (entregaSelecionada === "endereco") {
-    // Verifica se algum campo está vazio
-    if (
-      !endRua.value.trim() ||
-      !endNumero.value.trim() ||
-      !endBairro.value.trim() ||
-      !endCidade.value.trim()
-    ) {
-      campoEndereco.classList.add("has-error");
-      valido = false;
-    } else {
-      campoEndereco.classList.remove("has-error");
-      // Monta a string bonitinha pro WhatsApp
-      enderecoCompleto = `${endRua.value.trim()}, ${endNumero.value.trim()} - ${endBairro.value.trim()}, ${endCidade.value.trim()}`;
-    }
+  if (!campoCidadeBairro.value.trim()) {
+    grupoCidadeBairro.classList.add("has-error");
+    valido = false;
+  } else {
+    grupoCidadeBairro.classList.remove("has-error");
   }
 
   // Forma de pagamento obrigatória
@@ -384,43 +366,21 @@ checkoutForm.addEventListener("submit", (event) => {
 
   if (!valido) return;
 
-  enviarPedidoWhatsApp({
+  const pedido = montarPedido(cart, {
     nome: campoNome.value.trim(),
-    entrega: entregaSelecionada,
-    endereco: enderecoCompleto,
+    padaria: campoPadaria.value.trim(),
+    cidadeBairro: campoCidadeBairro.value.trim(),
     pagamento: pagamentoSelecionado.value,
   });
+  enviarPedidoWhatsApp(pedido);
 });
 
-function enviarPedidoWhatsApp(dados) {
-  // Monta a mensagem final com itens, total, dados do cliente e pagamento
-  let mensagem = `Olá, ${config.marca}! ☕\n\n`;
-  mensagem += `*Novo pedido:*\n`;
+function enviarPedidoWhatsApp(pedido) {
+  window.location.href = linkWhatsApp(pedido);
 
-  cart.forEach((item) => {
-    mensagem += `• ${item.quantidade}x ${item.produto.nome} — ${formatarReais(item.produto.precoCentavos * item.quantidade)}\n`;
-  });
-
-  mensagem += `\n*Total: ${formatarReais(totalCarrinho())}*\n\n`;
-  mensagem += `*Cliente:* ${dados.nome}\n`;
-
-  if (dados.entrega === "endereco") {
-    mensagem += `*Entrega:* ${dados.endereco}\n`;
-  } else {
-    mensagem += `*Entrega:* Retirar no local\n`;
-  }
-
-  mensagem += `*Pagamento:* ${dados.pagamento}\n\n`;
-  mensagem += `Podemos confirmar o pedido?`;
-
-  const urlFinal = montarLinkWhatsApp(config.whatsapp, mensagem);
-
-  window.location.href = urlFinal;
-
-  // Reseta o carrinho e o formulário após o envio
+  // Reseta o carrinho e o formulário após abrir o WhatsApp
   cart = [];
   renderCarrinho();
   checkoutForm.reset();
-  campoEndereco.style.display = "none";
   fecharCheckout();
 }

@@ -1110,10 +1110,6 @@ footer {
   outline-offset: 2px;
 }
 
-#campo-endereco {
-  margin-top: 14px;
-}
-
 .checkout-summary {
   margin: 22px 0;
   padding: 16px;
@@ -1149,23 +1145,6 @@ footer {
   .checkout-panel {
     padding: 36px 34px 30px;
   }
-}
-
-/* Grid para o endereço */
-.address-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
-}
-.address-row {
-  display: flex;
-  gap: 12px;
-}
-.address-row > input {
-  flex: 1;
-}
-.address-row > .input-curto {
-  flex: 0.4;
 }
 
 /* =========================================================
