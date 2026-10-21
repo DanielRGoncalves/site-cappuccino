@@ -97,7 +97,11 @@ export const config = {
       ],
       destaque: "Artesanal e gourmet: qualidade e simplicidade no processo.",
     },
-    produtos: { titulo: "Produtos", detalhesTitulo: "Ingredientes e avisos" },
+    produtos: {
+      titulo: "Produtos",
+      ingredientesTitulo: "Ingredientes",
+      ingredientesRotulo: "Ingredientes: ",
+    },
     porque: {
       titulo: "Por que vender",
       motivos: [

@@ -99,7 +99,13 @@ test("os textos e a ordem da P7 vêm do config", () => {
   assert.doesNotMatch(html + main, /Feito à mão, do jeito simples|Pedir degustação gratuita|Ingredientes: Leite em pó integral/);
 });
 
-test("ingredientes e avisos aparecem em details fechado; campos vazios não geram details", () => {
+test("a frase sobre cacau e achocolatado é permitida onde aparecer", () => {
+  const conteudo = html + main + JSON.stringify(config);
+  assert.doesNotMatch(conteudo, /premium|melhor|saudável|conservante|aditivo|natural|orgânico|solúvel/i);
+  assert.doesNotMatch(conteudo.replace(/cacau 100%, não achocolatado[.,]/gi, ""), /achocolatado/i);
+});
+
+test("avisos ficam visíveis e só ingredientes ficam em details fechado nos dois cards", () => {
   const comAcucar = config.produtos.find((produto) => produto.id === "com-acucar");
   const semAcucar = config.produtos.find((produto) => produto.id === "sem-acucar");
   assert.equal(comAcucar.ingredientes,
@@ -108,7 +114,9 @@ test("ingredientes e avisos aparecem em details fechado; campos vazios não gera
   assert.equal(semAcucar.ingredientes,
     "Leite em pó integral, bicarbonato de sódio, canela em pó, cacau 100% e café Conilon.");
   assert.equal(semAcucar.avisos, "Contém leite e derivados. Não contém glúten.");
-  assert.equal(config.textos.produtos.detalhesTitulo, "Ingredientes e avisos");
+  assert.equal(config.textos.produtos.ingredientesTitulo, "Ingredientes");
+  assert.equal(config.textos.produtos.ingredientesRotulo, "Ingredientes: ");
+  assert.doesNotMatch(main, /Ingredientes: |Ingredientes e avisos/);
 
   const inicio = main.indexOf("function montarProdutos() {");
   const fim = main.indexOf("function montarCalculadora()", inicio);
@@ -129,14 +137,24 @@ test("ingredientes e avisos aparecem em details fechado; campos vazios não gera
     return grade.children[0].children[1].children;
   };
   for (const produto of [comAcucar, semAcucar]) {
-    const detalhes = renderizar(produto).find((node) => node.tagName === "details");
+    const corpo = renderizar(produto);
+    const avisos = corpo.find((node) => node.className === "product-warnings");
+    const detalhes = corpo.find((node) => node.tagName === "details");
+    assert.equal(corpo[2], avisos, "aviso deve vir logo depois da descrição");
+    assert.equal(corpo[3], detalhes, "ingredientes devem vir depois do aviso");
+    assert.equal(avisos.textContent, produto.avisos);
     assert.equal(detalhes.className, "product-details");
     assert.equal(detalhes.open, undefined);
     assert.equal(detalhes.children[0].tagName, "summary");
-    assert.equal(detalhes.children[0].textContent, "Ingredientes e avisos");
-    assert.equal(detalhes.children[1].textContent, `Ingredientes: ${produto.ingredientes}`);
-    assert.equal(detalhes.children[2].textContent, produto.avisos);
+    assert.equal(detalhes.children[0].textContent, config.textos.produtos.ingredientesTitulo);
+    assert.equal(detalhes.children[1].textContent,
+      `${config.textos.produtos.ingredientesRotulo}${produto.ingredientes}`);
+    assert.equal(detalhes.children.length, 2, "aviso não deve ficar dentro de details");
   }
-  assert.ok(!renderizar({ ...semAcucar, ingredientes: "", avisos: "" })
-    .some((node) => node.tagName === "details"));
+  const semIngredientes = renderizar({ ...semAcucar, ingredientes: "" });
+  assert.ok(!semIngredientes.some((node) => node.tagName === "details"));
+  assert.ok(semIngredientes.some((node) => node.className === "product-warnings"));
+  const semAvisos = renderizar({ ...semAcucar, avisos: "" });
+  assert.ok(!semAvisos.some((node) => node.className === "product-warnings"));
+  assert.ok(semAvisos.some((node) => node.tagName === "details"));
 });

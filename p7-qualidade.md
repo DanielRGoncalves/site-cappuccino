@@ -106,3 +106,10 @@ Onde o site mostrar a conservação (`textos.conservacao` no config e qualquer o
 ## Commit
 
 Um commit só, com a mensagem `P7: destacar qualidade e diferenciais`. Sem push. Termine com o relatório final do `AGENTS.md`, citando Q-01 a Q-13.
+
+## Decisões posteriores (21/10/2026)
+
+- O cappuccino sem açúcar foi preenchido: a família confirmou que a lista de ingredientes é a mesma do com açúcar, sem o açúcar refinado. Os avisos são “Contém leite e derivados. Não contém glúten.”. A informação sobre glúten ainda será confirmada.
+- Nos dois cards, o aviso fica sempre visível logo abaixo da descrição. Somente os ingredientes ficam no `<details>`, fechado por padrão, com o título “Ingredientes”. Um campo vazio oculta sua linha.
+- O Q-12 passa a exigir que os dois cards sejam iguais e tenham a mesma altura, com ingredientes e avisos preenchidos em ambos.
+- O Q-06 permite a frase “Cacau 100%, não achocolatado.” no FAQ e em qualquer outro lugar onde ela estiver.
