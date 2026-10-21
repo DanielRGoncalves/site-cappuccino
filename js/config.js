@@ -1,13 +1,18 @@
 export const config = {
   marca: "Cheiro das Águas",
-  siteUrl: "https://danielrgoncalves.github.io/site-cappuccino/",
+  siteUrl: "https://cheirodasaguasgourmet.com.br/",
+  meta: {
+    titulo: "Cheiro das Águas | Cappuccino para padarias",
+    descricao: "Cappuccino com cacau 100% para padarias da Grande Vitória. Conheça o rendimento e peça uma degustação.",
+    imagem: "img/og.jpg",
+  },
   whatsapp: "5527998480547",
   instagram: {
     url: "https://instagram.com/cheirodasaguasgourmet",
     usuario: "@cheirodasaguasgourmet",
   },
   logo: {
-    foto: "logo-cheiro.png",
+    foto: "img/logo.webp",
     alt: "Cheiro das Águas",
   },
   dadosLegais: {
@@ -15,7 +20,6 @@ export const config = {
     cnpj: "57.813.645/0001-60",
     endereco: "CRG Santa Clara, S/N, Taparuba/MG, 36953-000",
   },
-  formasPagamento: ["PIX", "Cartão na entrega (maquininha)", "Dinheiro"],
   pesoPacoteGramas: 250,
   porcaoGramas: 30,
   apresentacao: { mostrarPrecos: false },
@@ -27,7 +31,8 @@ export const config = {
       descricao: "Com cacau 100%.",
       peso: "250 g",
       precoCentavos: 3000,
-      foto: "cappuccino-tradicional.png",
+      foto: "img/produtos/provisoria-800.webp",
+      fotoPequena: "img/produtos/provisoria-400.webp",
       alt: "Foto provisória do cappuccino com açúcar",
     },
     {
@@ -37,7 +42,8 @@ export const config = {
       descricao: "Com cacau 100%.",
       peso: "250 g",
       precoCentavos: 3500,
-      foto: "cappuccino-tradicional.png",
+      foto: "img/produtos/provisoria-800.webp",
+      fotoPequena: "img/produtos/provisoria-400.webp",
       alt: "Foto provisória do cappuccino sem açúcar",
     },
     {
@@ -47,7 +53,8 @@ export const config = {
       descricao: "Com cacau 100%.",
       peso: "250 g",
       precoCentavos: 3500,
-      foto: "cappuccino-tradicional.png",
+      foto: "img/produtos/provisoria-800.webp",
+      fotoPequena: "img/produtos/provisoria-400.webp",
       alt: "Foto provisória do cappuccino descafeinado",
     },
   ],

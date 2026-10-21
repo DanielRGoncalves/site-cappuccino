@@ -92,9 +92,11 @@ function montarProdutos() {
     imagemArea.className = "product-image";
     const imagem = document.createElement("img");
     imagem.src = produto.foto;
+    imagem.srcset = `${produto.fotoPequena} 400w, ${produto.foto} 800w`;
+    imagem.sizes = "(max-width: 600px) 78vw, 400px";
     imagem.alt = produto.alt;
-    imagem.width = 2048;
-    imagem.height = 2048;
+    imagem.width = 800;
+    imagem.height = 800;
     imagem.loading = "lazy";
     imagemArea.appendChild(imagem);
     const corpo = document.createElement("div");
