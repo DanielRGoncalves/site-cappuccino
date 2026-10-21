@@ -18,9 +18,11 @@ export const config = {
   formasPagamento: ["PIX", "Dinheiro"],
   pesoPacoteGramas: 250,
   porcaoGramas: 30,
+  apresentacao: { mostrarPrecos: false },
   produtos: [
     {
       id: "com-acucar",
+      exibir: true,
       nome: "Cappuccino com açúcar",
       descricao: "Com cacau 100%.",
       peso: "250 g",
@@ -30,6 +32,7 @@ export const config = {
     },
     {
       id: "sem-acucar",
+      exibir: true,
       nome: "Cappuccino sem açúcar",
       descricao: "Com cacau 100%.",
       peso: "250 g",
@@ -39,6 +42,7 @@ export const config = {
     },
     {
       id: "descafeinado",
+      exibir: false,
       nome: "Cappuccino descafeinado",
       descricao: "Com cacau 100%.",
       peso: "250 g",
@@ -50,11 +54,8 @@ export const config = {
   historia: "",
   depoimentos: [],
   textos: {
-    pagamentoACombinar: "Combinar pelo WhatsApp",
     whatsapp: {
       amostra: "Olá! Vi o site e quero pedir uma amostra do cappuccino para a minha padaria.",
-      valoresReferencia: "Valores de referência, a confirmar.",
-      recebimento: "Entrega ou retirada: a combinar.",
     },
     introducaoProdutos: "",
     padarias: {
