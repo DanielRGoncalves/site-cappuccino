@@ -4,6 +4,7 @@ import { calcularResultado } from "./calculadora.js";
 import { montarPreparo } from "./preparo.js";
 
 function montarIdentidade() {
+  const textos = config.textos;
   const logoWrap = document.querySelector(".logo-wrap");
   logoWrap.setAttribute("aria-label", `${config.marca} - início`);
   const logo = logoWrap.querySelector("img");
@@ -11,16 +12,32 @@ function montarIdentidade() {
   logo.alt = config.logo.alt;
   logoWrap.querySelector(".logo-fallback").textContent = config.marca;
 
+  document.querySelectorAll("#site-nav a").forEach((link, index) => {
+    link.textContent = textos.menu[index];
+  });
+  document.getElementById("hero-title").textContent = textos.hero.titulo;
+  document.getElementById("hero-subtitle").textContent = textos.hero.subtitulo;
+  document.getElementById("pedir-degustacao").textContent = textos.hero.degustacao;
+  document.getElementById("ver-conta").textContent = textos.hero.conta;
+  document.getElementById("products-title").textContent = textos.produtos.titulo;
+
   const introducao = document.getElementById("products-intro");
   introducao.textContent = config.textos.introducaoProdutos;
   introducao.hidden = !config.textos.introducaoProdutos;
 
   document.querySelector(".footer-brand h3").textContent = config.marca;
   document.getElementById("legal-name").textContent = config.dadosLegais.razaoSocial;
-  document.getElementById("legal-cnpj").textContent = `CNPJ: ${config.dadosLegais.cnpj}`;
-  document.getElementById("legal-address").textContent = `Endereço: ${config.dadosLegais.endereco}`;
+  document.getElementById("legal-cnpj").textContent = `${textos.contato.cnpj} ${config.dadosLegais.cnpj}`;
+  document.getElementById("legal-address").textContent = `${textos.contato.endereco} ${config.dadosLegais.endereco}`;
+  document.getElementById("storage-label").textContent = textos.contato.conservacao;
   document.getElementById("storage-text").textContent = config.textos.conservacao;
+  document.getElementById("contact-title").textContent = textos.contato.titulo;
+  document.getElementById("contact-label").textContent = textos.contato.faleConosco;
+  document.getElementById("contact-whatsapp").textContent = textos.contato.whatsapp;
+  document.getElementById("floating-whatsapp").textContent = textos.contato.flutuante;
+  document.getElementById("copyright-prefix").textContent = textos.contato.direitosPrefixo;
   document.getElementById("copyright-name").textContent = config.dadosLegais.razaoSocial;
+  document.getElementById("copyright-text").textContent = textos.contato.direitos;
   const instagram = document.getElementById("instagram-link");
   instagram.href = config.instagram.url;
   instagram.textContent = config.instagram.usuario;
@@ -29,6 +46,41 @@ function montarIdentidade() {
   historia.hidden = !config.historia;
   historia.querySelector(".eyebrow").textContent = config.marca;
   historia.querySelector("h2").textContent = config.historia;
+}
+
+function montarApresentacao() {
+  const porque = config.textos.porque;
+  document.getElementById("porque-title").textContent = porque.titulo;
+  const motivos = document.getElementById("porque-cards");
+  porque.motivos.forEach((motivo) => {
+    const card = document.createElement("article");
+    card.className = "reason-card";
+    card.textContent = motivo;
+    motivos.appendChild(card);
+  });
+
+  const como = config.textos.como;
+  document.getElementById("como-title").textContent = como.titulo;
+  const passos = document.getElementById("como-passos");
+  como.passos.forEach((passo) => {
+    const card = document.createElement("article");
+    card.className = "process-card";
+    card.textContent = passo;
+    passos.appendChild(card);
+  });
+
+  const faq = config.textos.faq;
+  document.getElementById("faq-title").textContent = faq.titulo;
+  const lista = document.getElementById("faq-items");
+  faq.itens.forEach((item) => {
+    const detalhes = document.createElement("details");
+    const pergunta = document.createElement("summary");
+    pergunta.textContent = item.pergunta;
+    const resposta = document.createElement("p");
+    resposta.textContent = item.resposta;
+    detalhes.append(pergunta, resposta);
+    lista.appendChild(detalhes);
+  });
 }
 
 function montarProdutos() {
@@ -64,9 +116,16 @@ function montarProdutos() {
 }
 
 function montarCalculadora() {
-  document.getElementById("padarias-title").textContent = config.textos.padarias.titulo;
-  document.getElementById("padarias-description").textContent = config.textos.padarias.descricao;
-  document.getElementById("calculator-notice").textContent = config.textos.padarias.aviso;
+  const textos = config.textos.padarias;
+  document.getElementById("padarias-title").textContent = textos.titulo;
+  document.getElementById("padarias-description").textContent = textos.descricao;
+  document.getElementById("calculator-notice").textContent = textos.aviso;
+  document.getElementById("calculator-product-label").textContent = textos.produto;
+  document.getElementById("calculator-price-label").textContent = textos.precoVenda;
+  document.getElementById("calculator-cost-label").textContent = textos.custo;
+  document.getElementById("calculator-gain-label").textContent = textos.ganho;
+  document.getElementById("calculator-margin-label").textContent = textos.margem;
+  document.getElementById("calculator-package-gain-label").textContent = textos.ganhoPacote;
 
   const produtoInput = document.getElementById("calculator-product");
   const precoInput = document.getElementById("calculator-price");
@@ -126,13 +185,17 @@ function renderizarPreparo() {
 }
 
 montarIdentidade();
+montarApresentacao();
 montarProdutos();
 montarCalculadora();
 renderizarPreparo();
-document.getElementById("pedir-amostra").href = linkWhatsApp(
+document.getElementById("pedir-degustacao").href = linkWhatsApp(
   config.whatsapp,
-  config.textos.whatsapp.amostra,
+  config.textos.whatsapp.degustacao,
 );
+const linkGeral = linkWhatsApp(config.whatsapp, config.textos.whatsapp.geral);
+document.getElementById("contact-whatsapp").href = linkGeral;
+document.getElementById("floating-whatsapp").href = linkGeral;
 
 const menuToggle = document.querySelector(".menu-toggle");
 const nav = document.getElementById("site-nav");

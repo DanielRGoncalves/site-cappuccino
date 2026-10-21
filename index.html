@@ -26,10 +26,12 @@
         </a>
 
         <nav class="nav" id="site-nav" aria-label="Navegação principal">
-          <a href="#produtos">Produtos</a>
-          <a href="#padarias">Para padarias</a>
-          <a href="#preparo">Preparo</a>
-          <a href="#contato">Contato</a>
+          <a href="#produtos"></a>
+          <a href="#porque"></a>
+          <a href="#padarias"></a>
+          <a href="#como"></a>
+          <a href="#faq"></a>
+          <a href="#contato"></a>
         </nav>
 
         <div class="header-actions">
@@ -57,22 +59,11 @@
       <section class="hero" aria-labelledby="hero-title">
         <div class="container">
           <div class="hero-content">
-            <div class="eyebrow hero-kicker">Cappuccino artesanal premium</div>
-            <h1 id="hero-title">
-              O encontro entre o sabor da roça e a <span>suavidade.</span>
-            </h1>
-            <p>
-              Nascido entre montanhas e nascentes cristalinas, inspirado nas
-              manhãs calmas do interior.
-            </p>
+            <h1 id="hero-title"></h1>
+            <p id="hero-subtitle"></p>
             <div class="hero-cta">
-              <a class="btn btn-primary" id="pedir-amostra">Pedir amostra</a>
-              <a class="btn btn-primary" href="#produtos"
-                >Conheça o Cappuccino <span aria-hidden="true">→</span></a
-              >
-            </div>
-            <div class="hero-note">
-              Feito para transformar uma pausa simples em um ritual especial.
+              <a class="btn btn-primary" id="pedir-degustacao" href="#contato"></a>
+              <a class="btn btn-secondary" id="ver-conta" href="#padarias"></a>
             </div>
           </div>
         </div>
@@ -85,12 +76,18 @@
       >
         <div class="container">
           <div class="section-heading">
-            <div class="eyebrow">Seleção da casa</div>
-            <h2 id="products-title">Nossos Produtos</h2>
+            <h2 id="products-title"></h2>
             <p id="products-intro"></p>
           </div>
 
           <div class="products-grid"></div>
+        </div>
+      </section>
+
+      <section class="section reasons-section" id="porque" aria-labelledby="porque-title">
+        <div class="container">
+          <div class="section-heading"><h2 id="porque-title"></h2></div>
+          <div class="reasons-grid" id="porque-cards"></div>
         </div>
       </section>
 
@@ -108,21 +105,21 @@
           <div class="calculator-card">
             <div class="calculator-fields">
               <div>
-                <label for="calculator-product">Produto</label>
+                <label for="calculator-product" id="calculator-product-label"></label>
                 <select id="calculator-product" class="calculator-input"></select>
               </div>
               <div>
-                <label for="calculator-price">Preço de venda da xícara (R$)</label>
+                <label for="calculator-price" id="calculator-price-label"></label>
                 <input id="calculator-price" class="calculator-input" type="text" inputmode="decimal" autocomplete="off" />
               </div>
             </div>
 
             <div id="calculator-result" class="calculator-result" aria-live="polite" hidden>
               <dl>
-                <div><dt>Custo do pó por xícara</dt><dd id="calculator-cost"></dd></div>
-                <div><dt>Ganho por xícara</dt><dd id="calculator-gain"></dd></div>
-                <div><dt>Margem</dt><dd id="calculator-margin"></dd></div>
-                <div><dt>Ganho por pacote de 250 g</dt><dd id="calculator-package-gain"></dd></div>
+                <div><dt id="calculator-cost-label"></dt><dd id="calculator-cost"></dd></div>
+                <div><dt id="calculator-gain-label"></dt><dd id="calculator-gain"></dd></div>
+                <div><dt id="calculator-margin-label"></dt><dd id="calculator-margin"></dd></div>
+                <div><dt id="calculator-package-gain-label"></dt><dd id="calculator-package-gain"></dd></div>
               </dl>
               <p id="calculator-notice"></p>
             </div>
@@ -145,6 +142,20 @@
         </div>
       </section>
 
+      <section class="section process-section" id="como" aria-labelledby="como-title">
+        <div class="container">
+          <div class="section-heading"><h2 id="como-title"></h2></div>
+          <div class="process-grid" id="como-passos"></div>
+        </div>
+      </section>
+
+      <section class="section faq-section" id="faq" aria-labelledby="faq-title">
+        <div class="container">
+          <div class="section-heading"><h2 id="faq-title"></h2></div>
+          <div class="faq-list" id="faq-items"></div>
+        </div>
+      </section>
+
       <section class="brand-story" hidden>
         <div class="container">
           <div class="story-card">
@@ -158,6 +169,7 @@
 
     <footer id="contato">
       <div class="container">
+        <div class="section-heading"><h2 id="contact-title"></h2></div>
         <div class="footer-grid">
           <div class="footer-brand">
             <h3></h3>
@@ -168,24 +180,27 @@
             <div class="footer-meta" id="legal-cnpj"></div>
             <div class="footer-meta" id="legal-address"></div>
             <div class="footer-meta" style="margin-top: 12px">
-              <strong>Conservação:</strong> <span id="storage-text"></span>
+              <strong id="storage-label"></strong> <span id="storage-text"></span>
             </div>
           </div>
 
           <div>
             <div class="footer-meta" style="margin-bottom: 12px">
-              <strong>Fale Conosco</strong>
+              <strong id="contact-label"></strong>
             </div>
             <div class="socials">
+              <a class="social-link" id="contact-whatsapp" href="#contato"></a>
               <a class="social-link" id="instagram-link" target="_blank" aria-label="Instagram"></a>
             </div>
           </div>
         </div>
         <div class="footer-bottom">
-          © 2026 <span id="copyright-name"></span> Todos os direitos reservados.
+          <span id="copyright-prefix"></span> <span id="copyright-name"></span> <span id="copyright-text"></span>
         </div>
       </div>
     </footer>
+
+    <a class="floating-whatsapp" id="floating-whatsapp" href="#contato"></a>
 
     <script type="module" src="js/main.js"></script>
   </body>

@@ -17,3 +17,15 @@ test("o arquivo JS antigo não é usado", async () => {
   assert.doesNotMatch(html, /script\.js/);
   await assert.rejects(access(new URL("js/script.js", root)), { code: "ENOENT" });
 });
+
+test("a apresentação tem seções em ordem, menu e links válidos antes do JS", () => {
+  const secoes = ['id="produtos"', 'id="porque"', 'id="padarias"', 'id="preparo"', 'id="como"', 'id="faq"', 'id="contato"'];
+  const posicoes = secoes.map((id) => html.indexOf(id));
+  assert.ok(posicoes.every((posicao) => posicao >= 0));
+  assert.deepEqual(posicoes, [...posicoes].sort((a, b) => a - b));
+  for (const id of ["produtos", "porque", "padarias", "como", "faq", "contato"]) {
+    assert.match(html, new RegExp(`href="#${id}"`));
+  }
+  assert.match(html, /id="pedir-degustacao" href="#contato"/);
+  assert.match(html, /id="floating-whatsapp" href="#contato"/);
+});

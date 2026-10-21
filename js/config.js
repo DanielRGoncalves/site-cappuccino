@@ -15,7 +15,7 @@ export const config = {
     cnpj: "57.813.645/0001-60",
     endereco: "CRG Santa Clara, S/N, Taparuba/MG, 36953-000",
   },
-  formasPagamento: ["PIX", "Dinheiro"],
+  formasPagamento: ["PIX", "Cartão na entrega (maquininha)", "Dinheiro"],
   pesoPacoteGramas: 250,
   porcaoGramas: 30,
   apresentacao: { mostrarPrecos: false },
@@ -55,7 +55,32 @@ export const config = {
   depoimentos: [],
   textos: {
     whatsapp: {
-      amostra: "Olá! Vi o site e quero pedir uma amostra do cappuccino para a minha padaria.",
+      degustacao: "Olá! Vi o site e quero pedir uma degustação do cappuccino para a minha padaria.",
+      geral: "Olá! Vi o site e quero conversar sobre o cappuccino para a minha padaria.",
+    },
+    menu: [
+      "Produtos",
+      "Por que vender",
+      "A conta",
+      "Como funciona",
+      "Dúvidas",
+      "Contato",
+    ],
+    hero: {
+      titulo: "Cappuccino com cacau 100% para a sua padaria",
+      subtitulo: "Pó pronto para preparar com água quente. Entregamos na Grande Vitória, sem taxa. Antes de qualquer venda, você prova.",
+      degustacao: "Pedir degustação",
+      conta: "Ver a conta da padaria",
+    },
+    produtos: { titulo: "Produtos" },
+    porque: {
+      titulo: "Por que vender",
+      motivos: [
+        "Rende cerca de 8 xícaras por pacote de 250 g.",
+        "Preparo em 3 passos, só com água quente.",
+        "Validade de 365 dias.",
+        "Entrega sem taxa na Grande Vitória, de um dia para o outro.",
+      ],
     },
     introducaoProdutos: "",
     padarias: {
@@ -64,6 +89,12 @@ export const config = {
         "Cada xícara leva 30 g. Um pacote de 250 g rende cerca de 8 xícaras. Digite por quanto você vende a xícara e veja a conta.",
       aviso:
         "A conta considera só o custo do cappuccino em pó. Copo, energia, perdas e outros custos não entram.",
+      produto: "Produto",
+      precoVenda: "Preço de venda da xícara (R$)",
+      custo: "Custo do pó por xícara",
+      ganho: "Ganho por xícara",
+      margem: "Margem",
+      ganhoPacote: "Ganho por pacote de 250 g",
     },
     conservacao: "Local seco e protegido da luz solar",
     preparo: {
@@ -78,6 +109,36 @@ export const config = {
       ],
       dica: "Quer mais cremoso? Use um pouco menos de água.",
       rendimento: "Um pacote de 250 g rende cerca de 8 xícaras.",
+    },
+    como: {
+      titulo: "Como funciona",
+      passos: [
+        "1. Você pede uma degustação pelo WhatsApp.",
+        "2. Fazemos a degustação antes da primeira venda e combinamos os detalhes.",
+        "3. Se gostar, faz o pedido e entregamos, sem taxa. Pagamento por Pix, cartão na maquininha na entrega ou dinheiro.",
+      ],
+    },
+    faq: {
+      titulo: "Dúvidas",
+      itens: [
+        { pergunta: "Como funciona a degustação?", resposta: "Antes da primeira venda, fazemos uma degustação. Peça pelo WhatsApp e combinamos os detalhes." },
+        { pergunta: "Quanto rende um pacote?", resposta: "Um pacote de 250 g rende cerca de 8 xícaras, usando 30 g por xícara." },
+        { pergunta: "Como preparar?", resposta: "Coloque 30 g na xícara (cerca de 3 colheres), despeje 100 ml de água fervente e mexa devagar até dissolver." },
+        { pergunta: "Quanto tempo dura?", resposta: "A validade é de 365 dias. Guarde em local seco e protegido da luz solar." },
+        { pergunta: "Como é a entrega?", resposta: "A entrega é feita pela família na Grande Vitória, sem taxa, de um dia para o outro." },
+        { pergunta: "Como posso pagar?", resposta: "Por Pix, cartão na maquininha na entrega ou dinheiro." },
+      ],
+    },
+    contato: {
+      titulo: "Contato",
+      whatsapp: "Falar no WhatsApp",
+      flutuante: "WhatsApp",
+      conservacao: "Conservação:",
+      faleConosco: "Fale Conosco",
+      cnpj: "CNPJ:",
+      endereco: "Endereço:",
+      direitosPrefixo: "© 2026",
+      direitos: "Todos os direitos reservados.",
     },
   },
 };

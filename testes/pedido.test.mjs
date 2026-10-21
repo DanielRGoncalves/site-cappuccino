@@ -21,3 +21,11 @@ test("o link do WhatsApp codifica uma mensagem fixa", () => {
   assert.equal(link, `https://wa.me/${config.whatsapp}?text=${encodeURIComponent(mensagem)}`);
   assert.equal(new URL(link).searchParams.get("text"), mensagem);
 });
+
+test("degustação e contato geral usam mensagens distintas do config", () => {
+  const degustacao = linkWhatsApp(config.whatsapp, config.textos.whatsapp.degustacao);
+  const geral = linkWhatsApp(config.whatsapp, config.textos.whatsapp.geral);
+  assert.equal(new URL(degustacao).searchParams.get("text"), "Olá! Vi o site e quero pedir uma degustação do cappuccino para a minha padaria.");
+  assert.equal(new URL(geral).searchParams.get("text"), "Olá! Vi o site e quero conversar sobre o cappuccino para a minha padaria.");
+  assert.notEqual(degustacao, geral);
+});

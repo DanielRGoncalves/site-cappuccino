@@ -81,8 +81,11 @@ button {
   padding: 82px 0;
 }
 #produtos,
+#porque,
 #padarias,
 #preparo,
+#como,
+#faq,
 #contato {
   scroll-margin-top: calc(var(--header-height) + 16px);
 }
@@ -348,6 +351,14 @@ button {
   box-shadow: 0 14px 36px rgba(201, 164, 91, 0.26);
   outline: none;
 }
+.btn-secondary {
+  border-color: var(--border);
+  color: var(--gold-light);
+}
+.btn-secondary:hover,
+.btn-secondary:focus-visible {
+  border-color: var(--gold-light);
+}
 
 .hero-note {
   margin-top: 26px;
@@ -473,6 +484,41 @@ button {
   font-size: 1.2rem;
   font-weight: 800;
   white-space: nowrap;
+}
+.reasons-grid,
+.process-grid {
+  display: grid;
+  gap: 18px;
+}
+.reason-card,
+.process-card {
+  padding: 28px 22px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--text);
+}
+.reason-card {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+}
+.process-section {
+  background: var(--bg-soft);
+}
+.faq-list {
+  max-width: 860px;
+}
+.faq-list details {
+  border-bottom: 1px solid var(--border);
+  padding: 18px 0;
+}
+.faq-list summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+.faq-list p {
+  margin-top: 12px;
+  color: var(--text-muted);
 }
 
 /* Calculadora para padarias */
@@ -680,6 +726,21 @@ footer {
   color: #77726b;
   font-size: 0.78rem;
 }
+.floating-whatsapp {
+  position: fixed;
+  z-index: 1001;
+  right: 16px;
+  bottom: 16px;
+  min-height: 50px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 20px;
+  border-radius: 999px;
+  background: var(--gold);
+  color: #16120d;
+  font-weight: 800;
+  box-shadow: var(--shadow);
+}
 
 /* =========================================================
  9. RESPONSIVIDADE
@@ -692,6 +753,10 @@ footer {
     padding-top: calc(var(--header-height) + 74px);
   }
   .products-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .reasons-grid,
+  .process-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .steps {
@@ -717,6 +782,12 @@ footer {
   }
   .products-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .reasons-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .process-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   .footer-grid {
     grid-template-columns: 1.2fr 1fr 1fr;
