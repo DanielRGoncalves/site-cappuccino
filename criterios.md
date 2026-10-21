@@ -24,7 +24,7 @@ Servidor local para testar: `python -m http.server 8000` na raiz do projeto, dep
 |---|---|---|
 | C-10 | Aparecem exatamente 3 produtos, com o nome, 250 g e o preço da tabela do brief. O Cacau 50% não aparece. | Visual, mais procurar `50%` no texto renderizado: 0 resultados (ignorar CSS). |
 | C-11 | O preparo diz 30 g, 100 ml, água **fervente**, mexer devagar, a dica de menos água para ficar mais cremoso e o rendimento de cerca de 8 xícaras. Não aparecem "35 g", "150 ml" nem "sem ferver". | Leitura da seção mais busca no código-fonte. |
-| C-12 | O site não promete entrega, frete, prazo, pedido mínimo, nota fiscal nem pagamento a prazo. Só pode dizer que a forma de receber é **combinada pelo WhatsApp**. Não há campo de endereço. | Procurar `entreg`, `envio`, `frete`, `correio`, `prazo`, `mínimo`, `nota fiscal`, `endereço de` no HTML e JS. Só podem sobrar as frases aprovadas no brief (FAQ e linha "Entrega ou retirada: a combinar" do pedido). |
+| C-12 | O site não cria campo de endereço completo, cálculo de frete, pedido mínimo, nota fiscal nem pagamento por cartão no site. Sobre entrega e prazo, só aparecem as frases do brief (FAQ e linha final do pedido). | Procurar `endereço`, `frete`, `mínimo`, `nota fiscal`, `retirar`, `feira` no HTML e JS. Só podem sobrar as frases aprovadas do brief e o endereço legal do rodapé. |
 | C-13 | A validade de 365 dias e a conservação aparecem no FAQ. | Leitura. |
 | C-14 | O rodapé mostra o Instagram `@cheirodasaguasgourmet` com link correto e não tem nenhum link para `cheirodasaguasagro`. | Procurar `cheirodasaguasagro`: 0 resultados. Clicar no link do Instagram. |
 | C-15 | As seções de história e de depoimentos ficam ocultas quando os campos no config estão vazios e aparecem quando são preenchidos. | Teste com o campo vazio e preenchido (só localmente, sem commitar texto falso). |
@@ -36,11 +36,11 @@ Servidor local para testar: `python -m http.server 8000` na raiz do projeto, dep
 |---|---|---|
 | C-20 | Existe um botão flutuante de WhatsApp em todas as rolagens, fora da sacola. Ele abre `https://wa.me/5527998480547?text=` com a mensagem padrão do brief (padaria), codificada. | Inspecionar o `href`; num celular real, tocar: abre a conversa com o número certo e o texto preenchido. |
 | C-21 | O botão flutuante tem área de toque ≥ 48×48 px e `aria-label`, e não cobre o botão "Finalizar pedido" nem os controles da sacola (fica oculto com a sacola ou o checkout abertos). | DevTools a 360 px, abrir a sacola. |
-| C-22 | O checkout pede: nome (obrigatório), padaria (obrigatório), cidade ou bairro (obrigatório) e forma de pagamento (lista do config + "Combinar pelo WhatsApp"). Não tem campo de endereço completo. | Visual e validação: enviar vazio mostra os erros. |
-| C-23 | A mensagem do pedido contém: os itens com quantidade e subtotal, o total, o nome, a padaria, a cidade ou bairro, o pagamento e as linhas "Valores de referência, a confirmar." e "Entrega ou retirada: a combinar." Os valores batem com a sacola. | Teste automático da função que monta a mensagem, mais um teste manual com 2 produtos diferentes. |
+| C-22 | O checkout pede: nome (obrigatório), padaria (obrigatório), cidade ou bairro (obrigatório) e forma de pagamento (lista do config: PIX, Cartão na entrega (maquininha), Dinheiro + "Combinar pelo WhatsApp"). Não tem campo de endereço completo. | Visual e validação: enviar vazio mostra os erros. |
+| C-23 | A mensagem do pedido contém: os itens com quantidade e subtotal, o total, o nome, a padaria, a cidade ou bairro, o pagamento e as linhas finais "Valores de referência, a confirmar." e "Entrega sem taxa na Grande Vitória, horário a combinar." Os valores batem com a sacola. | Teste automático da função que monta a mensagem, mais um teste manual com 2 produtos diferentes. |
 | C-24 | O link do pedido é montado só com `encodeURIComponent`. Um nome com acento, `&` e emoji chega certo. | Teste automático com o nome `João & Zé ☕`. |
 | C-25 | O pedido é um **objeto de dados** (itens, quantidades, subtotais, total, cliente) criado por `montarPedido`, separado do envio. O link do WhatsApp é gerado a partir desse objeto. | Ler `js/pedido.js`; teste automático que valida o objeto sem passar pelo link. |
-| C-26 | O botão "Pedir amostra" abre o WhatsApp com a mensagem própria de amostra do brief, vinda do config, codificada. | Inspecionar o `href`; teste em celular real. |
+| C-26 | O botão "Pedir degustação" abre o WhatsApp com a mensagem própria de degustação do brief, vinda do config, codificada. | Inspecionar o `href`; teste em celular real. |
 
 ## Calculadora para padarias
 
@@ -97,7 +97,7 @@ Feito por Daniel, com os pais nos itens marcados (👪), **antes de divulgar o l
 - [ ] **H-01** 👪 Os preços estão certos: com açúcar R$ 30,00; sem açúcar R$ 35,00; descafeinado R$ 35,00.
 - [ ] **H-02** 👪 O preparo está certo, inclusive a quantidade de colheres para 30 g (pesar a colher).
 - [ ] **H-03** 👪 Os nomes dos produtos são iguais aos da embalagem (ex.: "sem açúcar" × "sem adição de açúcar").
-- [ ] **H-04** 👪 As formas de pagamento listadas são as aceitas de verdade na feira.
+- [ ] **H-04** 👪 As formas de pagamento listadas (Pix, cartão na maquininha na entrega, dinheiro) são as aceitas de verdade.
 - [ ] **H-05** *(suspenso: agenda de feiras fora do site)*
 - [ ] **H-06** 👪 Nenhum texto promete algo que eles não fazem (entrega, sabor "o melhor", benefícios de saúde).
 - [ ] **H-07** 👪 Os dados legais no rodapé (razão social, CNPJ, endereço) estão atualizados.
@@ -108,9 +108,9 @@ Feito por Daniel, com os pais nos itens marcados (👪), **antes de divulgar o l
 - [ ] **H-12** O link do Instagram abre o perfil certo.
 - [ ] **H-13** Leitura completa no celular, em voz alta: não tem erro de português nem frase estranha.
 - [ ] **H-14** Teste com internet fraca (DevTools → Network → "Slow 4G"): o produto e o botão de WhatsApp aparecem em até ~3 s.
-- [ ] **H-15** Um dono de padaria, que nunca viu o site, consegue dizer em 30 s o que é o produto, quanto rende e como pedir uma amostra.
+- [ ] **H-15** Um dono de padaria, que nunca viu o site, consegue dizer em 30 s o que é o produto, quanto rende e como pedir uma degustação.
 - [ ] **H-16** Você sabe sozinho, seguindo o `README.md`: mudar um preço e trocar uma foto.
-- [ ] **H-17** 👪 Oferecer amostra é verdade: existe amostra e eles aceitam combinar o envio ou a entrega.
+- [ ] **H-17** 👪 A degustação funciona como o site diz: eles fazem antes da primeira venda e sabem combinar com a padaria.
 - [ ] **H-18** 👪 Os preços de tabela do site valem para padarias, ou há preço próprio (então trocar no config).
-- [ ] **H-19** 👪 "Atendemos a Grande Vitória" e "combinamos como receber" é verdade hoje.
+- [ ] **H-19** 👪 "Entregamos na Grande Vitória, sem taxa, de um dia para o outro" é verdade e vai continuar sendo (o prazo é editável no config).
 - [ ] **H-20** A calculadora: digite o preço de uma xícara que você conhece (ex.: R$ 9,00) e confira à mão o custo, o ganho e a margem.

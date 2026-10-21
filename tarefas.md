@@ -34,9 +34,9 @@ Feita, aprovada e publicada no repositório. O preparo já está no config com o
 - Não mexer em mais nada.
 - **Pronto quando:** C-03, C-04, C-06, C-07, C-11.
 
-## T4 — Pedido pelo WhatsApp e "Pedir amostra"
+## T4 — Pedido pelo WhatsApp e "Pedir amostra" ✅ (os textos de amostra e entrega foram ajustados na T5.2)
 - Remover entrega, endereço e qualquer menção à retirada na feira do checkout. Campos: nome (obrigatório), padaria (obrigatório), cidade ou bairro (obrigatório), forma de pagamento (lista do config + "Combinar pelo WhatsApp").
-- `js/pedido.js`: criar `montarPedido(sacola, cliente)`, que devolve um **objeto de pedido** (itens, quantidades, subtotais, total, cliente), e `linkWhatsApp(pedido)`, que o consome. A mensagem termina com "Valores de referência, a confirmar." e "Entrega ou retirada: a combinar." Testes dos dois.
+- `js/pedido.js`: criar `montarPedido(sacola, cliente)`, que devolve um **objeto de pedido** (itens, quantidades, subtotais, total, cliente), e `linkWhatsApp(pedido)`, que o consome. A mensagem termina com "Valores de referência, a confirmar." e "Entrega ou retirada: a combinar." (texto da época; a T5.2 troca por "Entrega sem taxa na Grande Vitória, horário a combinar.") Testes dos dois.
 - Botão "Pedir amostra" com a mensagem própria do brief (seção 8), vinda do config.
 - **Pronto quando:** C-06, C-07, C-12, C-22 a C-26.
 
@@ -45,21 +45,29 @@ Feita, aprovada e publicada no repositório. O preparo já está no config com o
 - Usar `scroll-margin-top` nas seções.
 - **Pronto quando:** C-41, C-42, e C-40 com o menu aberto.
 
-## T5.1 — Atualizar os preços
+## T5.1 — Atualizar os preços (se já foi feita, siga para a T5.2)
 - Em `js/config.js`: com açúcar `3000` centavos; sem açúcar `3500`; descafeinado `3500`.
 - Atualizar os testes que usam os preços antigos: os valores de referência da calculadora passam a ser **R$ 3,60** (360 centavos, com açúcar) e **R$ 4,20** (420 centavos, sem açúcar e descafeinado), com 8 xícaras por pacote. Atualizar também qualquer teste do pedido que use os preços (subtotais e total).
 - Procurar `2200`, `22,00`, `2,64` e `264` no projeto (HTML, JS, testes, README) e atualizar o que for número de preço. Texto de preço fora do config não deve existir.
 - Não mexer em mais nada.
 - **Pronto quando:** C-03, C-04, C-06, C-07, C-10, C-60.
 
+## T5.2 — Ajustar ao que o pai respondeu em 18/10/2026
+- **Fatos novos (já no `brief.md`):** a família entrega sem taxa na Grande Vitória, de um dia para o outro; pagamento por Pix, cartão na maquininha na entrega e dinheiro; a venda só acontece depois de uma degustação. Não há pagamento por cartão no site.
+- Em `js/config.js`: `formasPagamento` passa a `["PIX", "Cartão na entrega (maquininha)", "Dinheiro"]`. A mensagem do botão de "amostra" vira a de **degustação** do brief (seção 8). Renomear os identificadores internos de "amostra" para "degustação" também.
+- Em `js/pedido.js`: a última linha da mensagem do pedido passa a ser "Entrega sem taxa na Grande Vitória, horário a combinar." (mantendo antes dela "Valores de referência, a confirmar."). Atualizar os testes.
+- Trocar o texto visível "Pedir amostra" por **"Pedir degustação"** onde existir (HTML, JS, config, testes).
+- Não mexer em mais nada (layout do hero e botão flutuante são da T6; FAQ e textos são da T7).
+- **Pronto quando:** C-06, C-07, C-12, C-22, C-23, C-26.
+
 ## T6 — Botão flutuante de WhatsApp e botões do hero
 - Link fixo no canto inferior, com a mensagem padrão do brief vinda do config. Ele se esconde com a sacola ou o checkout abertos.
-- Hero: botão "Pedir amostra" (principal) e botão "Fazer pedido" (rola até `#produtos`, estilo secundário). Hoje há dois botões principais lado a lado: só um pode ser principal.
-- Acessibilidade do "Pedir amostra": hoje é um `<a>` sem `href` no HTML (o `href` só existe depois que o JS roda). Deixar um `href` válido já no HTML (ex.: `#contato`), que o JS troca pelo link do WhatsApp, para o botão receber foco por teclado.
+- Hero: botão "Pedir degustação" (principal) e botão "Fazer pedido" (rola até `#produtos`, estilo secundário). Hoje há dois botões principais lado a lado: só um pode ser principal.
+- Acessibilidade do "Pedir degustação": hoje é um `<a>` sem `href` no HTML (o `href` só existe depois que o JS roda). Deixar um `href` válido já no HTML (ex.: `#contato`), que o JS troca pelo link do WhatsApp, para o botão receber foco por teclado.
 - **Pronto quando:** C-20, C-21, C-26, C-07.
 
 ## T7 — Conteúdo: hero, FAQ, história e depoimentos
-- Aplicar os textos da seção 8 do brief (subtítulo do hero, FAQ). O preparo já foi feito na T3.1; aqui só conferir que continua igual ao do brief.
+- Aplicar os textos da seção 8 do brief (subtítulo do hero e os 8 itens do FAQ, incluindo "Como posso pagar?" e a entrega sem taxa). O preparo já foi feito na T3.1; aqui só conferir que continua igual ao do brief.
 - A história e os depoimentos usam o padrão "oculta se vazia".
 - FAQ com `<details>`/`<summary>` (acessível e sem JS), na seção `#faq`.
 - Adicionar o item **"Dúvidas"** (rola até `#faq`) ao menu do cabeçalho e ao menu do celular, que a T5 deixou sem ele.
@@ -98,7 +106,9 @@ Feita, aprovada e publicada no repositório. O preparo já está no config com o
 ## Adiadas
 
 - **Agenda de feiras** (antiga T3, critérios C-30 a C-37): suspensa. Pode voltar se as feiras voltarem a ser um canal.
-## Fase 2 — Pagamento com cartão no site (plano; nada disto é para o executor ainda)
+## Fase 2 — Pagamento com cartão no site (ADIADA: a família não pediu; hoje recebe por Pix e maquininha na entrega)
+
+> Só retomar se o negócio passar a precisar de pagamento online. Nada disto é para o executor agora.
 
 **Condições antes de escrever código** (todas dependem da família, não do site):
 1. Decidir como a padaria recebe e quanto custa: entrega, frete, pedido mínimo, prazo. Sem isso não há preço final para cobrar no cartão.
