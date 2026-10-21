@@ -99,14 +99,16 @@ test("os textos e a ordem da P7 vêm do config", () => {
   assert.doesNotMatch(html + main, /Feito à mão, do jeito simples|Pedir degustação gratuita|Ingredientes: Leite em pó integral/);
 });
 
-test("ingredientes e avisos vazios não geram linhas no card", () => {
+test("ingredientes e avisos aparecem em details fechado; campos vazios não geram details", () => {
   const comAcucar = config.produtos.find((produto) => produto.id === "com-acucar");
   const semAcucar = config.produtos.find((produto) => produto.id === "sem-acucar");
   assert.equal(comAcucar.ingredientes,
     "Leite em pó integral, bicarbonato de sódio, canela em pó, cacau 100%, açúcar refinado e café Conilon.");
   assert.equal(comAcucar.avisos, "Contém leite e derivados. Não contém glúten.");
-  assert.equal(semAcucar.ingredientes, "");
-  assert.equal(semAcucar.avisos, "");
+  assert.equal(semAcucar.ingredientes,
+    "Leite em pó integral, bicarbonato de sódio, canela em pó, cacau 100% e café Conilon.");
+  assert.equal(semAcucar.avisos, "Contém leite e derivados. Não contém glúten.");
+  assert.equal(config.textos.produtos.detalhesTitulo, "Ingredientes e avisos");
 
   const inicio = main.indexOf("function montarProdutos() {");
   const fim = main.indexOf("function montarCalculadora()", inicio);
@@ -126,17 +128,15 @@ test("ingredientes e avisos vazios não geram linhas no card", () => {
     montarProdutos(document, { ...config, produtos: [produto] }, () => "");
     return grade.children[0].children[1].children;
   };
-  const classes = (nodes) => nodes.map((node) => node.className);
-  const linhasCom = renderizar(comAcucar);
-  assert.ok(classes(linhasCom).includes("product-ingredients"));
-  assert.ok(classes(linhasCom).includes("product-warnings"));
-  assert.equal(linhasCom.find((node) => node.className === "product-ingredients").textContent,
-    `Ingredientes: ${comAcucar.ingredientes}`);
-  assert.equal(linhasCom.find((node) => node.className === "product-warnings").textContent,
-    comAcucar.avisos);
-  assert.ok(!classes(renderizar(semAcucar)).includes("product-ingredients"));
-  assert.ok(!classes(renderizar(semAcucar)).includes("product-warnings"));
-  const linhasPreenchidas = renderizar({ ...semAcucar, ingredientes: "Ingrediente informado.", avisos: "Aviso informado." });
-  assert.ok(classes(linhasPreenchidas).includes("product-ingredients"));
-  assert.ok(classes(linhasPreenchidas).includes("product-warnings"));
+  for (const produto of [comAcucar, semAcucar]) {
+    const detalhes = renderizar(produto).find((node) => node.tagName === "details");
+    assert.equal(detalhes.className, "product-details");
+    assert.equal(detalhes.open, undefined);
+    assert.equal(detalhes.children[0].tagName, "summary");
+    assert.equal(detalhes.children[0].textContent, "Ingredientes e avisos");
+    assert.equal(detalhes.children[1].textContent, `Ingredientes: ${produto.ingredientes}`);
+    assert.equal(detalhes.children[2].textContent, produto.avisos);
+  }
+  assert.ok(!renderizar({ ...semAcucar, ingredientes: "", avisos: "" })
+    .some((node) => node.tagName === "details"));
 });

@@ -43,8 +43,8 @@ export const config = {
       exibir: true,
       nome: "Cappuccino sem açúcar",
       descricao: "Com cacau 100%.",
-      ingredientes: "",
-      avisos: "",
+      ingredientes: "Leite em pó integral, bicarbonato de sódio, canela em pó, cacau 100% e café Conilon.",
+      avisos: "Contém leite e derivados. Não contém glúten.",
       peso: "250 g",
       precoCentavos: 3500,
       foto: "img/produtos/provisoria-800.webp",
@@ -97,7 +97,7 @@ export const config = {
       ],
       destaque: "Artesanal e gourmet: qualidade e simplicidade no processo.",
     },
-    produtos: { titulo: "Produtos" },
+    produtos: { titulo: "Produtos", detalhesTitulo: "Ingredientes e avisos" },
     porque: {
       titulo: "Por que vender",
       motivos: [

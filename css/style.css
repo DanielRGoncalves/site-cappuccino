@@ -481,6 +481,14 @@ button {
   color: var(--text-muted);
   font-size: 0.92rem;
 }
+.product-details {
+  margin-top: 12px;
+}
+.product-details summary {
+  color: var(--gold-light);
+  cursor: pointer;
+  font-size: 0.92rem;
+}
 .product-card .product-ingredients,
 .product-card .product-warnings {
   margin-top: 12px;

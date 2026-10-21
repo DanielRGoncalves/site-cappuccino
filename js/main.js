@@ -121,17 +121,25 @@ function montarProdutos() {
     const descricao = document.createElement("p");
     descricao.textContent = `${produto.descricao} ${produto.peso}`;
     corpo.append(titulo, descricao);
-    if (produto.ingredientes) {
-      const ingredientes = document.createElement("p");
-      ingredientes.className = "product-ingredients";
-      ingredientes.textContent = `Ingredientes: ${produto.ingredientes}`;
-      corpo.appendChild(ingredientes);
-    }
-    if (produto.avisos) {
-      const avisos = document.createElement("p");
-      avisos.className = "product-warnings";
-      avisos.textContent = produto.avisos;
-      corpo.appendChild(avisos);
+    if (produto.ingredientes || produto.avisos) {
+      const detalhes = document.createElement("details");
+      detalhes.className = "product-details";
+      const resumo = document.createElement("summary");
+      resumo.textContent = config.textos.produtos.detalhesTitulo;
+      detalhes.appendChild(resumo);
+      if (produto.ingredientes) {
+        const ingredientes = document.createElement("p");
+        ingredientes.className = "product-ingredients";
+        ingredientes.textContent = `Ingredientes: ${produto.ingredientes}`;
+        detalhes.appendChild(ingredientes);
+      }
+      if (produto.avisos) {
+        const avisos = document.createElement("p");
+        avisos.className = "product-warnings";
+        avisos.textContent = produto.avisos;
+        detalhes.appendChild(avisos);
+      }
+      corpo.appendChild(detalhes);
     }
     if (config.apresentacao.mostrarPrecos) {
       const preco = document.createElement("span");
