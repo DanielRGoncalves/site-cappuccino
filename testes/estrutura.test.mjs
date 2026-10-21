@@ -1,9 +1,33 @@
 import assert from "node:assert/strict";
 import { readFile, access } from "node:fs/promises";
 import { test } from "node:test";
+import { config } from "../js/config.js";
 
 const root = new URL("../", import.meta.url);
 const html = await readFile(new URL("index.html", root), "utf8");
+
+test("meta tags de título, descrição e URL seguem o config", () => {
+  const bloco = html.match(/<!-- SINCRONIZAR COM js\/config\.js -->([\s\S]*?)<!-- \/SINCRONIZAR -->/)?.[1];
+  assert.ok(bloco, "bloco de meta tags sincronizadas ausente");
+
+  const meta = (chave) => {
+    const escapar = chave.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    return bloco.match(new RegExp(`<meta (?:name|property)="${escapar}" content="([^"]+)"\\s*/>`))?.[1];
+  };
+  const imagemUrl = new URL(config.meta.imagem, config.siteUrl).href;
+
+  assert.equal(bloco.match(/<title>([^<]+)<\/title>/)?.[1], config.meta.titulo);
+  assert.equal(meta("description"), config.meta.descricao);
+  assert.equal(meta("og:title"), config.meta.titulo);
+  assert.equal(meta("og:description"), config.meta.descricao);
+  assert.equal(meta("twitter:title"), config.meta.titulo);
+  assert.equal(meta("twitter:description"), config.meta.descricao);
+  assert.equal(bloco.match(/<link rel="canonical" href="([^"]+)"\s*\/>/)?.[1], config.siteUrl);
+  assert.equal(meta("og:url"), config.siteUrl);
+  assert.equal(meta("og:image"), imagemUrl);
+  assert.equal(meta("twitter:image"), imagemUrl);
+  assert.equal(meta("og:image:alt"), config.meta.imagemAlt);
+});
 
 test("a página carrega CSS externo e JS como módulo", async () => {
   assert.match(html, /<link\s+rel="stylesheet"\s+href="css\/style\.css"\s*\/>/);

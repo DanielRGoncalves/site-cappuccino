@@ -5,6 +5,7 @@ export const config = {
     titulo: "Cheiro das Águas | Cappuccino para padarias",
     descricao: "Cappuccino com cacau 100% para padarias da Grande Vitória. Conheça o rendimento e peça uma degustação.",
     imagem: "img/og.jpg",
+    imagemAlt: "Pacote de cappuccino e logo Cheiro das Águas sobre fundo preto",
   },
   whatsapp: "5527998480547",
   instagram: {

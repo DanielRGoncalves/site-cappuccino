@@ -93,7 +93,7 @@ function montarProdutos() {
     const imagem = document.createElement("img");
     imagem.src = produto.foto;
     imagem.srcset = `${produto.fotoPequena} 400w, ${produto.foto} 800w`;
-    imagem.sizes = "(max-width: 600px) 78vw, 400px";
+    imagem.sizes = "(max-width: 639px) 78vw, (max-width: 919px) 35vw, 450px";
     imagem.alt = produto.alt;
     imagem.width = 800;
     imagem.height = 800;

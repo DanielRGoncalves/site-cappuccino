@@ -2,10 +2,11 @@
 
 ## Trocar a foto de um produto
 
-1. Prepare a foto em formato WebP, quadrada, nas larguras de 800 px e 400 px. Mantenha a versão de 800 px com até 120 KB.
-2. Coloque os dois arquivos em `img/produtos/`.
-3. Em `js/config.js`, encontre o produto pelo `id` e atualize `foto` com o caminho da versão de 800 px e `fotoPequena` com o da versão de 400 px.
-4. Atualize `alt` para descrever a foto e confira o card no servidor local.
+1. Abra [squoosh.app](https://squoosh.app/), clique em **Drop OR Paste** e selecione uma foto quadrada.
+2. No painel da direita, ative **Resize**, mantenha as proporções e digite **800** em **Width**; em **Compress**, escolha **WebP** e ajuste a qualidade até a prévia ficar com no máximo **120 KB**.
+3. Clique no botão de download e salve como `nome-800.webp`. Mude **Width** para **400**, clique em download outra vez e salve como `nome-400.webp`.
+4. Coloque os dois arquivos em `img/produtos/`. Em `js/config.js`, encontre o produto pelo `id` e atualize `foto` com o caminho de `nome-800.webp` e `fotoPequena` com o de `nome-400.webp`.
+5. Atualize `alt` para descrever a foto e confira o card no servidor local.
 
 ## Mostrar os preços nos cards
 
