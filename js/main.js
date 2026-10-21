@@ -49,6 +49,21 @@ function montarIdentidade() {
 }
 
 function montarApresentacao() {
+  const diferenca = config.textos.diferenca;
+  document.getElementById("diferenca-title").textContent = diferenca.titulo;
+  const cartoes = document.getElementById("diferenca-cards");
+  diferenca.cartoes.forEach((item) => {
+    const card = document.createElement("article");
+    card.className = "difference-card";
+    const titulo = document.createElement("h3");
+    titulo.textContent = item.titulo;
+    const descricao = document.createElement("p");
+    descricao.textContent = item.texto;
+    card.append(titulo, descricao);
+    cartoes.appendChild(card);
+  });
+  document.getElementById("diferenca-destaque").textContent = diferenca.destaque;
+
   const porque = config.textos.porque;
   document.getElementById("porque-title").textContent = porque.titulo;
   const motivos = document.getElementById("porque-cards");
@@ -106,6 +121,18 @@ function montarProdutos() {
     const descricao = document.createElement("p");
     descricao.textContent = `${produto.descricao} ${produto.peso}`;
     corpo.append(titulo, descricao);
+    if (produto.ingredientes) {
+      const ingredientes = document.createElement("p");
+      ingredientes.className = "product-ingredients";
+      ingredientes.textContent = `Ingredientes: ${produto.ingredientes}`;
+      corpo.appendChild(ingredientes);
+    }
+    if (produto.avisos) {
+      const avisos = document.createElement("p");
+      avisos.className = "product-warnings";
+      avisos.textContent = produto.avisos;
+      corpo.appendChild(avisos);
+    }
     if (config.apresentacao.mostrarPrecos) {
       const preco = document.createElement("span");
       preco.className = "price";

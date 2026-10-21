@@ -3,7 +3,7 @@ export const config = {
   siteUrl: "https://cheirodasaguasgourmet.com.br/",
   meta: {
     titulo: "Cheiro das Águas | Cappuccino para padarias",
-    descricao: "Cappuccino com cacau 100% para padarias da Grande Vitória. Conheça o rendimento e peça uma degustação.",
+    descricao: "Cheiro das Águas: cappuccino artesanal e gourmet, com café Conilon e cacau 100%, para padarias da Grande Vitória.",
     imagem: "img/og.jpg",
     imagemAlt: "Pacote de cappuccino e logo Cheiro das Águas sobre fundo preto",
   },
@@ -30,6 +30,8 @@ export const config = {
       exibir: true,
       nome: "Cappuccino com açúcar",
       descricao: "Com cacau 100%.",
+      ingredientes: "Leite em pó integral, bicarbonato de sódio, canela em pó, cacau 100%, açúcar refinado e café Conilon.",
+      avisos: "Contém leite e derivados. Não contém glúten.",
       peso: "250 g",
       precoCentavos: 3000,
       foto: "img/produtos/provisoria-800.webp",
@@ -41,6 +43,8 @@ export const config = {
       exibir: true,
       nome: "Cappuccino sem açúcar",
       descricao: "Com cacau 100%.",
+      ingredientes: "",
+      avisos: "",
       peso: "250 g",
       precoCentavos: 3500,
       foto: "img/produtos/provisoria-800.webp",
@@ -52,6 +56,8 @@ export const config = {
       exibir: false,
       nome: "Cappuccino descafeinado",
       descricao: "Com cacau 100%.",
+      ingredientes: "",
+      avisos: "",
       peso: "250 g",
       precoCentavos: 3500,
       foto: "img/produtos/provisoria-800.webp",
@@ -67,6 +73,7 @@ export const config = {
       geral: "Olá! Vi o site e quero conversar sobre o cappuccino para a minha padaria.",
     },
     menu: [
+      "Diferenciais",
       "Produtos",
       "Por que vender",
       "A conta",
@@ -76,14 +83,25 @@ export const config = {
     ],
     hero: {
       titulo: "Cappuccino com cacau 100% para a sua padaria",
-      subtitulo: "Pó pronto para preparar com água quente. Entregamos na Grande Vitória, sem taxa. Antes de qualquer venda, você prova.",
-      degustacao: "Pedir degustação",
+      subtitulo: "Artesanal e gourmet, feito à mão com café Conilon e cacau 100%. Pronto com água quente. Entregamos na Grande Vitória, sem taxa. Antes de qualquer venda, a degustação é gratuita.",
+      degustacao: "Pedir degustação gratuita",
       conta: "Ver a conta da padaria",
+    },
+    diferenca: {
+      titulo: "Feito à mão, do jeito simples",
+      cartoes: [
+        { titulo: "Café Conilon", texto: "Café Conilon para dar mais sabor ao cappuccino." },
+        { titulo: "Cacau 100%", texto: "Cacau 100%, não achocolatado." },
+        { titulo: "Feito à mão, em casa", texto: "Preparado à mão, em casa, sem processo industrial." },
+        { titulo: "Aroma, sensações e cremosidade", texto: "Um aroma que se sente ao preparar, sabor que aparece na xícara e uma textura cremosa." },
+      ],
+      destaque: "Artesanal e gourmet: qualidade e simplicidade no processo.",
     },
     produtos: { titulo: "Produtos" },
     porque: {
       titulo: "Por que vender",
       motivos: [
+        "Um diferencial para o seu cardápio: cappuccino artesanal, feito à mão e com cacau 100%.",
         "Rende cerca de 8 xícaras por pacote de 250 g.",
         "Preparo em 3 passos, só com água quente.",
         "Validade de 365 dias.",
@@ -104,7 +122,7 @@ export const config = {
       margem: "Margem",
       ganhoPacote: "Ganho por pacote de 250 g",
     },
-    conservacao: "Local seco e protegido da luz solar",
+    conservacao: "Local seco, ventilado e protegido da luz solar.",
     preparo: {
       titulo: "Como preparar",
       passos: [
@@ -122,17 +140,18 @@ export const config = {
       titulo: "Como funciona",
       passos: [
         "1. Você pede uma degustação pelo WhatsApp.",
-        "2. Fazemos a degustação antes da primeira venda e combinamos os detalhes.",
+        "2. Fazemos uma degustação gratuita: levamos uma pequena quantidade do cappuccino e a água quente, e você experimenta na hora.",
         "3. Se gostar, faz o pedido e entregamos, sem taxa. Pagamento por Pix, cartão na maquininha na entrega ou dinheiro.",
       ],
     },
     faq: {
       titulo: "Dúvidas",
       itens: [
-        { pergunta: "Como funciona a degustação?", resposta: "Antes da primeira venda, fazemos uma degustação. Peça pelo WhatsApp e combinamos os detalhes." },
+        { pergunta: "O que torna este cappuccino diferente do industrial?", resposta: "Ele é feito à mão, em casa, sem processo industrial. O chocolate é cacau 100%, não achocolatado, e o café é Conilon. A ideia é qualidade e simplicidade no preparo." },
+        { pergunta: "Como funciona a degustação?", resposta: "A degustação é gratuita e acontece antes da primeira venda. Levamos uma pequena quantidade do cappuccino e a água quente, e você experimenta na hora." },
         { pergunta: "Quanto rende um pacote?", resposta: "Um pacote de 250 g rende cerca de 8 xícaras, usando 30 g por xícara." },
         { pergunta: "Como preparar?", resposta: "Coloque 30 g na xícara (cerca de 3 colheres), despeje 100 ml de água fervente e mexa devagar até dissolver." },
-        { pergunta: "Quanto tempo dura?", resposta: "A validade é de 365 dias. Guarde em local seco e protegido da luz solar." },
+        { pergunta: "Quanto tempo dura?", resposta: "A validade é de 365 dias. Conserve em local seco, ventilado e protegido da luz solar." },
         { pergunta: "Como é a entrega?", resposta: "A entrega é feita pela família na Grande Vitória, sem taxa, de um dia para o outro." },
         { pergunta: "Como posso pagar?", resposta: "Por Pix, cartão na maquininha na entrega ou dinheiro." },
       ],

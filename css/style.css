@@ -81,6 +81,7 @@ button {
 .section {
   padding: 82px 0;
 }
+#diferenca,
 #produtos,
 #porque,
 #padarias,
@@ -480,6 +481,42 @@ button {
   color: var(--text-muted);
   font-size: 0.92rem;
 }
+.product-card .product-ingredients,
+.product-card .product-warnings {
+  margin-top: 12px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+.difference-section {
+  background: var(--bg);
+}
+.difference-grid {
+  display: grid;
+  gap: 18px;
+}
+.difference-card {
+  padding: 28px 22px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+.difference-card h3 {
+  color: var(--gold-light);
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+}
+.difference-card p {
+  margin-top: 10px;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+.difference-highlight {
+  margin-top: 28px;
+  color: var(--gold-light);
+  font-family: var(--font-serif);
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  text-align: center;
+}
 .price {
   display: block;
   margin-top: 22px;
@@ -760,8 +797,18 @@ footer {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .reasons-grid,
-  .process-grid {
+  .process-grid,
+  .difference-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .reasons-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+  .reason-card {
+    grid-column: span 2;
+  }
+  .reason-card:nth-last-child(-n + 2) {
+    grid-column: span 3;
   }
   .steps {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -780,6 +827,10 @@ footer {
   .nav {
     display: flex;
     margin-left: auto;
+    gap: clamp(12px, 1.6vw, 24px);
+  }
+  .nav a {
+    font-size: 0.85rem;
   }
   .menu-toggle {
     display: none;
@@ -787,7 +838,7 @@ footer {
   .products-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .reasons-grid {
+  .difference-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
   .process-grid {
@@ -806,6 +857,13 @@ footer {
   }
 }
 @media (min-width: 1180px) {
+  .reasons-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+  .reason-card,
+  .reason-card:nth-last-child(-n + 2) {
+    grid-column: auto;
+  }
   .hero {
     min-height: 94svh;
   }
