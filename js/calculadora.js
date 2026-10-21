@@ -1,3 +1,7 @@
+export function produtosDaCalculadora(produtos) {
+  return produtos.filter((produto) => produto.exibir);
+}
+
 export function xicarasPorPacote(pesoPacoteGramas, porcaoGramas) {
   return Math.floor(pesoPacoteGramas / porcaoGramas);
 }

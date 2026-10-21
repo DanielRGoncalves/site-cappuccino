@@ -1,6 +1,6 @@
 import { config } from "./config.js";
 import { formatarReais, linkWhatsApp } from "./pedido.js";
-import { calcularResultado } from "./calculadora.js";
+import { calcularResultado, produtosDaCalculadora } from "./calculadora.js";
 import { montarPreparo } from "./preparo.js";
 
 function montarIdentidade() {
@@ -132,7 +132,8 @@ function montarCalculadora() {
   const resultadoEl = document.getElementById("calculator-result");
   const percentual = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 1 });
 
-  config.produtos.filter((produto) => produto.exibir).forEach((produto) => {
+  const produtos = produtosDaCalculadora(config.produtos);
+  produtos.forEach((produto) => {
     const opcao = document.createElement("option");
     opcao.value = produto.id;
     opcao.textContent = produto.nome;
@@ -140,7 +141,7 @@ function montarCalculadora() {
   });
 
   function atualizarResultado() {
-    const produto = config.produtos.find((item) => item.exibir && item.id === produtoInput.value);
+    const produto = produtos.find((item) => item.id === produtoInput.value);
     const resultado = produto && calcularResultado(
       precoInput.value,
       produto.precoCentavos,

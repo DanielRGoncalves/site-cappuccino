@@ -5,16 +5,20 @@ import {
   calcularResultado,
   custoPoPorXicara,
   precoVendaCentavos,
+  produtosDaCalculadora,
   xicarasPorPacote,
 } from "../js/calculadora.js";
 
-test("rendimento e custos usam a porção e os preços do config", () => {
+test("a calculadora oferece só os dois produtos visíveis, com os custos de referência", () => {
   const { pesoPacoteGramas, porcaoGramas } = config;
+  const produtos = produtosDaCalculadora(config.produtos);
+  assert.deepEqual(produtos.map((produto) => produto.id), ["com-acucar", "sem-acucar"]);
   assert.equal(xicarasPorPacote(pesoPacoteGramas, porcaoGramas), 8);
   assert.deepEqual(
-    config.produtos.map((produto) => custoPoPorXicara(produto.precoCentavos, pesoPacoteGramas, porcaoGramas)),
-    [360, 420, 420],
+    produtos.map((produto) => custoPoPorXicara(produto.precoCentavos, pesoPacoteGramas, porcaoGramas)),
+    [360, 420],
   );
+  assert.equal(config.textos.padarias.aviso, "A conta considera só o custo do cappuccino em pó. Copo, energia, perdas e outros custos não entram.");
   assert.equal(xicarasPorPacote(250, 40), 6);
   assert.equal(custoPoPorXicara(2300, 250, 30), 276);
 });
