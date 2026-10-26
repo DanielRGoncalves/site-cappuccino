@@ -25,7 +25,11 @@ test("o link do WhatsApp codifica uma mensagem fixa", () => {
 test("degustação e contato geral usam mensagens distintas do config", () => {
   const degustacao = linkWhatsApp(config.whatsapp, config.textos.whatsapp.degustacao);
   const geral = linkWhatsApp(config.whatsapp, config.textos.whatsapp.geral);
-  assert.equal(new URL(degustacao).searchParams.get("text"), "Olá! Vi o site e quero pedir uma degustação do cappuccino para a minha padaria.");
-  assert.equal(new URL(geral).searchParams.get("text"), "Olá! Vi o site e quero conversar sobre o cappuccino para a minha padaria.");
+  assert.equal(new URL(degustacao).searchParams.get("text"),
+    "Olá! Vi o site e quero pedir uma degustação do cappuccino para o meu negócio.\nNome do negócio: ");
+  assert.equal(new URL(geral).searchParams.get("text"),
+    "Olá! Vi o site e quero conversar sobre o cappuccino para o meu negócio.\nNome do negócio: ");
+  assert.match(degustacao, /%0ANome%20do%20neg%C3%B3cio%3A%20$/);
+  assert.match(geral, /%0ANome%20do%20neg%C3%B3cio%3A%20$/);
   assert.notEqual(degustacao, geral);
 });

@@ -2,8 +2,8 @@ export const config = {
   marca: "Cheiro das Águas",
   siteUrl: "https://cheirodasaguasgourmet.com.br/",
   meta: {
-    titulo: "Cheiro das Águas | Cappuccino para padarias",
-    descricao: "Cheiro das Águas: cappuccino artesanal e gourmet, com café Conilon e cacau 100%, para padarias da Grande Vitória.",
+    titulo: "Cheiro das Águas | Cappuccino artesanal e gourmet",
+    descricao: "Cheiro das Águas: cappuccino artesanal e gourmet, com café Conilon e cacau 100%, para padarias, cafeterias, restaurantes e outros negócios da Grande Vitória.",
     imagem: "img/og.jpg",
     imagemAlt: "Pacote de cappuccino e logo Cheiro das Águas sobre fundo preto",
   },
@@ -69,8 +69,8 @@ export const config = {
   depoimentos: [],
   textos: {
     whatsapp: {
-      degustacao: "Olá! Vi o site e quero pedir uma degustação do cappuccino para a minha padaria.",
-      geral: "Olá! Vi o site e quero conversar sobre o cappuccino para a minha padaria.",
+      degustacao: "Olá! Vi o site e quero pedir uma degustação do cappuccino para o meu negócio.\nNome do negócio: ",
+      geral: "Olá! Vi o site e quero conversar sobre o cappuccino para o meu negócio.\nNome do negócio: ",
     },
     menu: [
       "Diferenciais",
@@ -82,10 +82,10 @@ export const config = {
       "Contato",
     ],
     hero: {
-      titulo: "Cappuccino com cacau 100% para a sua padaria",
-      subtitulo: "Artesanal e gourmet, feito à mão com café Conilon e cacau 100%. Pronto com água quente. Entregamos na Grande Vitória, sem taxa. Antes de qualquer venda, a degustação é gratuita.",
+      titulo: "Cappuccino com cacau 100% para o seu negócio",
+      subtitulo: "Para padarias, cafeterias, restaurantes e outros negócios: artesanal e gourmet, feito à mão com café Conilon e cacau 100%. Pronto com água quente. Entregamos na Grande Vitória, sem taxa. Antes de qualquer venda, a degustação é gratuita.",
       degustacao: "Pedir degustação gratuita",
-      conta: "Ver a conta da padaria",
+      conta: "Ver a conta do seu negócio",
     },
     diferenca: {
       titulo: "Feito à mão, do jeito simples",
@@ -114,7 +114,7 @@ export const config = {
     },
     introducaoProdutos: "",
     padarias: {
-      titulo: "Quanto rende na sua padaria",
+      titulo: "Quanto rende no seu negócio",
       descricao:
         "Cada xícara leva 30 g. Um pacote de 250 g rende cerca de 8 xícaras. Digite por quanto você vende a xícara e veja a conta.",
       aviso:

@@ -58,11 +58,14 @@ test("a apresentação tem seções em ordem, menu e links válidos antes do JS"
   assert.match(html, /id="floating-whatsapp" href="#contato"/);
 });
 
-test("os textos e a ordem da P7 vêm do config", () => {
+test("os textos e a ordem da apresentação vêm do config", () => {
   const textos = config.textos;
+  assert.equal(textos.hero.titulo, "Cappuccino com cacau 100% para o seu negócio");
   assert.equal(textos.hero.subtitulo,
-    "Artesanal e gourmet, feito à mão com café Conilon e cacau 100%. Pronto com água quente. Entregamos na Grande Vitória, sem taxa. Antes de qualquer venda, a degustação é gratuita.");
+    "Para padarias, cafeterias, restaurantes e outros negócios: artesanal e gourmet, feito à mão com café Conilon e cacau 100%. Pronto com água quente. Entregamos na Grande Vitória, sem taxa. Antes de qualquer venda, a degustação é gratuita.");
   assert.equal(textos.hero.degustacao, "Pedir degustação gratuita");
+  assert.equal(textos.hero.conta, "Ver a conta do seu negócio");
+  assert.equal(textos.padarias.titulo, "Quanto rende no seu negócio");
   assert.deepEqual(textos.diferenca, {
     titulo: "Feito à mão, do jeito simples",
     cartoes: [
@@ -94,8 +97,9 @@ test("os textos e a ordem da P7 vêm do config", () => {
     "A degustação é gratuita e acontece antes da primeira venda. Levamos uma pequena quantidade do cappuccino e a água quente, e você experimenta na hora.");
   assert.equal(textos.faq.itens[4].resposta,
     "A validade é de 365 dias. Conserve em local seco, ventilado e protegido da luz solar.");
+  assert.equal(config.meta.titulo, "Cheiro das Águas | Cappuccino artesanal e gourmet");
   assert.equal(config.meta.descricao,
-    "Cheiro das Águas: cappuccino artesanal e gourmet, com café Conilon e cacau 100%, para padarias da Grande Vitória.");
+    "Cheiro das Águas: cappuccino artesanal e gourmet, com café Conilon e cacau 100%, para padarias, cafeterias, restaurantes e outros negócios da Grande Vitória.");
   assert.doesNotMatch(html + main, /Feito à mão, do jeito simples|Pedir degustação gratuita|Ingredientes: Leite em pó integral/);
 });
 
