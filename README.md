@@ -14,6 +14,8 @@ Em `js/config.js`, mude `apresentacao.mostrarPrecos` de `false` para `true`. Par
 
 ## Mudar os preços da calculadora
 
-O visitante informa o valor combinado do pacote; a calculadora não usa os preços dos produtos. Em `js/config.js`, `calculadora.copos` define os tamanhos e as porções em gramas, e `calculadora.exemploPrecoCopoCentavos` define o exemplo do preço de venda (`900` = R$ 9,00). Mantenha `calculadora.aConfirmar: true` enquanto os valores forem exemplos; `false` oculta o aviso.
+O visitante informa o valor combinado do pacote, compartilhado entre as abas de revenda e xícara; a calculadora não usa os preços dos produtos. Todos os campos de preço começam vazios.
+
+Em `js/config.js`, `calculadora.xicara.tamanhos` define os tamanhos e as porções em gramas, e `calculadora.xicara.tamanhoInicialMl` escolhe o tamanho inicial entre os disponíveis. Mantenha `calculadora.xicara.aConfirmar: true` enquanto as porções forem exemplos; `false` oculta o aviso da aba Xícara. O texto de comparação da revenda fica em `calculadora.revenda.exemploPrecoVenda`; a dica de preço da xícara fica em `textos.padarias.dicaPrecoXicara`.
 
 Os textos dos diferenciais ficam em `js/config.js`, em `textos.diferenca`. Os ingredientes e avisos do cappuccino sem açúcar já estão preenchidos. Para editar cada produto, encontre seu `id` em `produtos` no mesmo arquivo e altere os campos `ingredientes` e `avisos`. Um campo vazio (`""`) oculta a respectiva linha no card.

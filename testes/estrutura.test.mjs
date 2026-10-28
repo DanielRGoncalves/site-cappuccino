@@ -158,7 +158,7 @@ test("avisos ficam visíveis e só ingredientes ficam em details fechado nos doi
   assert.equal(config.textos.produtos.ingredientesRotulo, "Ingredientes: ");
   assert.doesNotMatch(main, /Ingredientes: |Ingredientes e avisos/);
 
-  const inicio = main.indexOf("function montarProdutos() {");
+  const inicio = main.indexOf("function configurarAbas(");
   const fim = main.indexOf("function montarCalculadora()", inicio);
   assert.ok(inicio >= 0 && fim > inicio);
   const montarProdutos = new Function("document", "config", "formatarReais", "produtosVisiveis", "indiceDaAba",

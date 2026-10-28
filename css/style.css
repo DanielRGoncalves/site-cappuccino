@@ -429,7 +429,8 @@ button {
   color: var(--leite);
 }
 .product-tab:focus-visible,
-.product-card:focus-visible {
+.product-card:focus-visible,
+.calculator-panel:focus-visible {
   outline-color: var(--cacau);
 }
 .products-grid {
@@ -596,6 +597,9 @@ button {
 .calculator-fields {
   display: grid;
   gap: 18px;
+}
+.calculator-tabs {
+  margin-top: 24px;
 }
 .calculator-fields label,
 .cup-fieldset legend,

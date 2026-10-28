@@ -11,6 +11,18 @@ export function precoVendaCentavos(valor) {
   return Number.isSafeInteger(centavos) && centavos > 0 ? centavos : null;
 }
 
+export function calcularRevenda(precoVenda, precoPacote) {
+  const vendaCentavos = precoVendaCentavos(precoVenda);
+  const pacoteCentavos = precoVendaCentavos(precoPacote);
+  if (vendaCentavos === null || pacoteCentavos === null) return null;
+
+  const ganhoCentavos = vendaCentavos - pacoteCentavos;
+  return {
+    ganhoCentavos,
+    margemPercentual: (ganhoCentavos / vendaCentavos) * 100,
+  };
+}
+
 export function calcularResultado(precoVenda, precoPacote, pesoPacoteGramas, porcaoGramas) {
   const vendaCentavos = precoVendaCentavos(precoVenda);
   const pacoteCentavos = precoVendaCentavos(precoPacote);

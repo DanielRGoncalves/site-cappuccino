@@ -24,13 +24,18 @@ export const config = {
   pesoPacoteGramas: 250,
   porcaoGramas: 30,
   calculadora: {
-    aConfirmar: true,
-    copos: [
-      { ml: 100, gramas: 30 },
-      { ml: 150, gramas: 45 },
-      { ml: 200, gramas: 60 },
-    ],
-    exemploPrecoCopoCentavos: 900,
+    revenda: {
+      exemploPrecoVenda: "Para comparar: um cliente nosso vende o com açúcar por R$ 39,00 e o sem açúcar por R$ 59,00.",
+    },
+    xicara: {
+      aConfirmar: true,
+      tamanhos: [
+        { ml: 150, gramas: 45 },
+        { ml: 200, gramas: 60 },
+        { ml: 300, gramas: 90 },
+      ],
+      tamanhoInicialMl: 200,
+    },
   },
   apresentacao: {
     mostrarPrecos: false,
@@ -150,20 +155,26 @@ export const config = {
     padarias: {
       titulo: "Quanto rende no seu negócio",
       descricao:
-        "Escolha o tamanho do copo, digite quanto você paga no pacote e por quanto vende o copo, e veja a conta.",
+        "Veja quanto você ganha revendendo o pacote na prateleira ou servindo o cappuccino na xícara.",
       aviso:
-        "A conta considera só o custo do cappuccino em pó. Copo, energia, perdas e outros custos não entram.",
-      tamanhoCopo: "Tamanho do copo",
+        "A conta considera só o custo do cappuccino em pó. Açúcar extra, energia e perdas não entram.",
       precoPacote: "Quanto você paga no pacote (R$)",
       dicaPacote: "O valor combinado com a gente.",
-      precoVenda: "Por quanto você vende o copo (R$)",
-      copos: "Copos por pacote",
-      custo: "Custo do pó por copo",
-      ganho: "Ganho por copo",
+      abaRevenda: "Revender o pacote",
+      abaXicara: "Servir na xícara",
+      precoVendaPacote: "Por quanto você vende o pacote (R$)",
+      ganhoRevenda: "Ganho por pacote",
+      semResultadoRevenda: "Preencha os dois valores para ver o ganho.",
+      tamanhoXicara: "Tamanho da xícara",
+      precoVenda: "Por quanto você vende a xícara (R$)",
+      dicaPrecoXicara: "Na região, a xícara costuma sair de R$ 8,00 a R$ 24,00, conforme o estabelecimento.",
+      copos: "Xícaras por pacote",
+      custo: "Custo do pó por xícara",
+      ganho: "Ganho por xícara",
       margem: "Margem",
       ganhoPacote: "Ganho por pacote de 250 g",
       avisoExemplo: "Valores de exemplo, ainda a confirmar.",
-      semResultado: "Preencha o valor do pacote para ver o ganho.",
+      semResultado: "Preencha os dois valores para ver o ganho.",
     },
     degustacao: {
       titulo: "Pedir degustação gratuita",

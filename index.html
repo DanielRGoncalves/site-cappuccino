@@ -143,33 +143,60 @@
           </div>
 
           <div class="calculator-card">
-            <p id="calculator-example-notice" class="calculator-example" hidden></p>
             <div class="calculator-fields">
-              <fieldset class="cup-fieldset">
-                <legend id="calculator-cup-label"></legend>
-                <div class="cup-options" id="calculator-cups"></div>
-              </fieldset>
               <div>
                 <label for="calculator-package-price" id="calculator-package-price-label"></label>
                 <input id="calculator-package-price" class="calculator-input" type="text" inputmode="decimal" autocomplete="off" aria-describedby="calculator-package-hint" />
                 <p id="calculator-package-hint" class="field-hint"></p>
               </div>
-              <div>
-                <label for="calculator-price" id="calculator-price-label"></label>
-                <input id="calculator-price" class="calculator-input" type="text" inputmode="decimal" autocomplete="off" />
+            </div>
+
+            <div class="product-tabs calculator-tabs" role="tablist" aria-labelledby="padarias-title">
+              <button type="button" class="product-tab" id="calculator-tab-resale" role="tab" aria-controls="calculator-panel-resale" aria-selected="true"></button>
+              <button type="button" class="product-tab" id="calculator-tab-cup" role="tab" aria-controls="calculator-panel-cup" aria-selected="false" tabindex="-1"></button>
+            </div>
+
+            <div class="calculator-panel" id="calculator-panel-resale" role="tabpanel" aria-labelledby="calculator-tab-resale" tabindex="0">
+              <div class="calculator-fields">
+                <div>
+                  <label for="calculator-resale-price" id="calculator-resale-price-label"></label>
+                  <input id="calculator-resale-price" class="calculator-input" type="text" inputmode="decimal" autocomplete="off" aria-describedby="calculator-resale-hint" />
+                  <p id="calculator-resale-hint" class="field-hint"></p>
+                </div>
+              </div>
+              <div class="calculator-result" aria-live="polite" aria-atomic="true">
+                <p id="calculator-resale-empty"></p>
+                <dl id="calculator-resale-result" hidden>
+                  <div><dt id="calculator-resale-gain-label"></dt><dd id="calculator-resale-gain"></dd></div>
+                  <div><dt id="calculator-resale-margin-label"></dt><dd id="calculator-resale-margin"></dd></div>
+                </dl>
               </div>
             </div>
 
-            <div class="calculator-result" aria-live="polite" aria-atomic="true">
-              <dl><div><dt id="calculator-cups-label"></dt><dd id="calculator-cups-count"></dd></div></dl>
-              <p id="calculator-empty"></p>
-              <dl id="calculator-result" hidden>
-                <div><dt id="calculator-cost-label"></dt><dd id="calculator-cost"></dd></div>
-                <div><dt id="calculator-gain-label"></dt><dd id="calculator-gain"></dd></div>
-                <div><dt id="calculator-margin-label"></dt><dd id="calculator-margin"></dd></div>
-                <div><dt id="calculator-package-gain-label"></dt><dd id="calculator-package-gain"></dd></div>
-              </dl>
-              <p id="calculator-notice"></p>
+            <div class="calculator-panel" id="calculator-panel-cup" role="tabpanel" aria-labelledby="calculator-tab-cup" tabindex="0" hidden>
+              <p id="calculator-example-notice" class="calculator-example" hidden></p>
+              <div class="calculator-fields">
+                <fieldset class="cup-fieldset">
+                  <legend id="calculator-cup-label"></legend>
+                  <div class="cup-options" id="calculator-cups"></div>
+                </fieldset>
+                <div>
+                  <label for="calculator-price" id="calculator-price-label"></label>
+                  <input id="calculator-price" class="calculator-input" type="text" inputmode="decimal" autocomplete="off" aria-describedby="calculator-price-hint" />
+                  <p id="calculator-price-hint" class="field-hint"></p>
+                </div>
+              </div>
+              <div class="calculator-result" aria-live="polite" aria-atomic="true">
+                <dl><div><dt id="calculator-cups-label"></dt><dd id="calculator-cups-count"></dd></div></dl>
+                <p id="calculator-empty"></p>
+                <dl id="calculator-result" hidden>
+                  <div><dt id="calculator-cost-label"></dt><dd id="calculator-cost"></dd></div>
+                  <div><dt id="calculator-gain-label"></dt><dd id="calculator-gain"></dd></div>
+                  <div><dt id="calculator-margin-label"></dt><dd id="calculator-margin"></dd></div>
+                  <div><dt id="calculator-package-gain-label"></dt><dd id="calculator-package-gain"></dd></div>
+                </dl>
+                <p id="calculator-notice"></p>
+              </div>
             </div>
           </div>
         </div>

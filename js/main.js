@@ -1,6 +1,6 @@
 import { config } from "./config.js";
 import { formatarReais, linkWhatsApp, validarDegustacao, montarMensagemDegustacao } from "./pedido.js";
-import { calcularResultado, coposPorPacote } from "./calculadora.js";
+import { calcularResultado, calcularRevenda, coposPorPacote } from "./calculadora.js";
 import { montarPreparo } from "./preparo.js";
 import { produtosVisiveis, indiceDaAba } from "./produtos.js";
 
@@ -128,12 +128,7 @@ function montarApresentacao() {
   });
 }
 
-function montarProdutos() {
-  const grade = document.querySelector(".products-grid");
-  const listaAbas = document.getElementById("product-tabs");
-  const abas = [];
-  const paineis = [];
-
+function configurarAbas(abas, paineis) {
   function selecionarAba(index, focar = false) {
     abas.forEach((aba, posicao) => {
       const selecionada = posicao === index;
@@ -144,7 +139,24 @@ function montarProdutos() {
     if (focar) abas[index].focus();
   }
 
-  produtosVisiveis(config.produtos).forEach((produto, index) => {
+  abas.forEach((aba, index) => {
+    aba.addEventListener("click", () => selecionarAba(index));
+    aba.addEventListener("keydown", (event) => {
+      if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+      event.preventDefault();
+      selecionarAba(indiceDaAba(index, event.key, abas.length), true);
+    });
+  });
+  selecionarAba(0);
+}
+
+function montarProdutos() {
+  const grade = document.querySelector(".products-grid");
+  const listaAbas = document.getElementById("product-tabs");
+  const abas = [];
+  const paineis = [];
+
+  produtosVisiveis(config.produtos).forEach((produto) => {
     const aba = document.createElement("button");
     aba.type = "button";
     aba.id = `tab-${produto.id}`;
@@ -152,12 +164,6 @@ function montarProdutos() {
     aba.setAttribute("role", "tab");
     aba.setAttribute("aria-controls", `panel-${produto.id}`);
     aba.textContent = produto.selo;
-    aba.addEventListener("click", () => selecionarAba(index));
-    aba.addEventListener("keydown", (event) => {
-      if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
-      event.preventDefault();
-      selecionarAba(indiceDaAba(index, event.key, abas.length), true);
-    });
     abas.push(aba);
     listaAbas.appendChild(aba);
     const card = document.createElement("article");
@@ -218,7 +224,7 @@ function montarProdutos() {
     card.append(imagemArea, corpo);
     grade.appendChild(card);
   });
-  selecionarAba(0);
+  configurarAbas(abas, paineis);
   document.getElementById("products-shared").textContent = config.textos.produtos.igual;
 }
 
@@ -229,10 +235,18 @@ function montarCalculadora() {
     "padarias-description": textos.descricao,
     "calculator-notice": textos.aviso,
     "calculator-example-notice": textos.avisoExemplo,
-    "calculator-cup-label": textos.tamanhoCopo,
+    "calculator-cup-label": textos.tamanhoXicara,
     "calculator-package-price-label": textos.precoPacote,
     "calculator-package-hint": textos.dicaPacote,
+    "calculator-tab-resale": textos.abaRevenda,
+    "calculator-tab-cup": textos.abaXicara,
+    "calculator-resale-price-label": textos.precoVendaPacote,
+    "calculator-resale-hint": config.calculadora.revenda.exemploPrecoVenda,
+    "calculator-resale-gain-label": textos.ganhoRevenda,
+    "calculator-resale-margin-label": textos.margem,
+    "calculator-resale-empty": textos.semResultadoRevenda,
     "calculator-price-label": textos.precoVenda,
+    "calculator-price-hint": textos.dicaPrecoXicara,
     "calculator-cups-label": textos.copos,
     "calculator-cost-label": textos.custo,
     "calculator-gain-label": textos.ganho,
@@ -243,18 +257,28 @@ function montarCalculadora() {
   Object.entries(rotulos).forEach(([id, texto]) => {
     document.getElementById(id).textContent = texto;
   });
-  document.getElementById("calculator-example-notice").hidden = !config.calculadora.aConfirmar;
+  document.getElementById("calculator-example-notice").hidden = !config.calculadora.xicara.aConfirmar;
+  configurarAbas(
+    [document.getElementById("calculator-tab-resale"), document.getElementById("calculator-tab-cup")],
+    [document.getElementById("calculator-panel-resale"), document.getElementById("calculator-panel-cup")],
+  );
 
   const pacoteInput = document.getElementById("calculator-package-price");
   const precoInput = document.getElementById("calculator-price");
-  precoInput.value = (config.calculadora.exemploPrecoCopoCentavos / 100).toFixed(2).replace(".", ",");
+  const revendaInput = document.getElementById("calculator-resale-price");
   const resultadoEl = document.getElementById("calculator-result");
   const percentual = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 1 });
-  let copo = config.calculadora.copos[0];
+  let xicara = config.calculadora.xicara.tamanhos.find(({ ml }) => ml === config.calculadora.xicara.tamanhoInicialMl);
 
   function atualizarResultado() {
-    document.getElementById("calculator-cups-count").textContent = coposPorPacote(config.pesoPacoteGramas, copo.gramas);
-    const resultado = calcularResultado(precoInput.value, pacoteInput.value, config.pesoPacoteGramas, copo.gramas);
+    const revenda = calcularRevenda(revendaInput.value, pacoteInput.value);
+    document.getElementById("calculator-resale-result").hidden = !revenda;
+    document.getElementById("calculator-resale-empty").hidden = Boolean(revenda);
+    document.getElementById("calculator-resale-gain").textContent = revenda ? formatarReais(revenda.ganhoCentavos) : "";
+    document.getElementById("calculator-resale-margin").textContent = revenda ? `${percentual.format(revenda.margemPercentual)}%` : "";
+
+    document.getElementById("calculator-cups-count").textContent = coposPorPacote(config.pesoPacoteGramas, xicara.gramas);
+    const resultado = calcularResultado(precoInput.value, pacoteInput.value, config.pesoPacoteGramas, xicara.gramas);
     resultadoEl.hidden = !resultado;
     document.getElementById("calculator-empty").hidden = Boolean(resultado);
     document.getElementById("calculator-cost").textContent = resultado ? formatarReais(resultado.custoCentavos) : "";
@@ -264,24 +288,25 @@ function montarCalculadora() {
   }
 
   const opcoes = document.getElementById("calculator-cups");
-  config.calculadora.copos.forEach((tamanho, index) => {
+  config.calculadora.xicara.tamanhos.forEach((tamanho) => {
     const rotulo = document.createElement("label");
     rotulo.className = "cup-option";
     const radio = document.createElement("input");
     radio.type = "radio";
     radio.name = "calculator-cup";
     radio.value = tamanho.ml;
-    radio.checked = index === 0;
+    radio.checked = tamanho.ml === config.calculadora.xicara.tamanhoInicialMl;
     const texto = document.createElement("span");
     texto.textContent = `${tamanho.ml} ml`;
     radio.addEventListener("change", () => {
-      copo = tamanho;
+      xicara = tamanho;
       atualizarResultado();
     });
     rotulo.append(radio, texto);
     opcoes.appendChild(rotulo);
   });
   precoInput.addEventListener("input", atualizarResultado);
+  revendaInput.addEventListener("input", atualizarResultado);
   pacoteInput.addEventListener("input", atualizarResultado);
   atualizarResultado();
 }
