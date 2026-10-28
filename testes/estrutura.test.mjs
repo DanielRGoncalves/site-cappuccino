@@ -11,7 +11,7 @@ const main = await readFile(new URL("js/main.js", root), "utf8");
 test("protótipo tem noindex fora das metas sincronizadas e conteúdo visual no config", () => {
   assert.match(html, /<!-- Remover ao publicar a versão oficial -->\s*<meta name="robots" content="noindex"\s*\/>/);
   assert.ok(html.indexOf('name="robots"') > html.indexOf("<!-- /SINCRONIZAR -->"));
-  assert.equal(config.apresentacao.prototipo, true);
+  assert.equal(config.apresentacao.prototipo, false);
   assert.equal(config.apresentacao.avisoPrototipo,
     "Protótipo: algumas fotos ainda serão trocadas por outras do nosso dia a dia.");
   assert.equal(config.textos.origem.titulo, "Feito à mão em Taparuba, Minas Gerais");

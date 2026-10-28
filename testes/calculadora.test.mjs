@@ -12,7 +12,7 @@ test("K-03: tamanhos de xícara rendem 22, 16 e 11 por kg; começa em 200 ml", (
   assert.equal(config.pesoPacoteGramas, 250);
   assert.equal(coposPorPacote(500, 60), 8);
   assert.equal(config.calculadora.xicara.tamanhoInicialMl, 200);
-  assert.equal(config.calculadora.xicara.aConfirmar, true);
+  assert.equal(config.calculadora.xicara.aConfirmar, false);
 });
 
 test("K-02: revenda de 30 por 39 e de 35 por 59", () => {
