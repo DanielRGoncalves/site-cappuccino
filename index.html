@@ -143,14 +143,6 @@
           </div>
 
           <div class="calculator-card">
-            <div class="calculator-fields">
-              <div>
-                <label for="calculator-package-price" id="calculator-package-price-label"></label>
-                <input id="calculator-package-price" class="calculator-input" type="text" inputmode="decimal" autocomplete="off" aria-describedby="calculator-package-hint" />
-                <p id="calculator-package-hint" class="field-hint"></p>
-              </div>
-            </div>
-
             <div class="product-tabs calculator-tabs" role="tablist" aria-labelledby="padarias-title">
               <button type="button" class="product-tab" id="calculator-tab-resale" role="tab" aria-controls="calculator-panel-resale" aria-selected="true"></button>
               <button type="button" class="product-tab" id="calculator-tab-cup" role="tab" aria-controls="calculator-panel-cup" aria-selected="false" tabindex="-1"></button>
@@ -158,6 +150,11 @@
 
             <div class="calculator-panel" id="calculator-panel-resale" role="tabpanel" aria-labelledby="calculator-tab-resale" tabindex="0">
               <div class="calculator-fields">
+                <div>
+                  <label for="calculator-package-price" id="calculator-package-price-label"></label>
+                  <input id="calculator-package-price" class="calculator-input" type="text" inputmode="decimal" autocomplete="off" aria-describedby="calculator-package-hint" />
+                  <p id="calculator-package-hint" class="field-hint"></p>
+                </div>
                 <div>
                   <label for="calculator-resale-price" id="calculator-resale-price-label"></label>
                   <input id="calculator-resale-price" class="calculator-input" type="text" inputmode="decimal" autocomplete="off" aria-describedby="calculator-resale-hint" />
@@ -176,6 +173,11 @@
             <div class="calculator-panel" id="calculator-panel-cup" role="tabpanel" aria-labelledby="calculator-tab-cup" tabindex="0" hidden>
               <p id="calculator-example-notice" class="calculator-example" hidden></p>
               <div class="calculator-fields">
+                <div>
+                  <label for="calculator-kg-price" id="calculator-kg-price-label"></label>
+                  <input id="calculator-kg-price" class="calculator-input" type="text" inputmode="decimal" autocomplete="off" aria-describedby="calculator-kg-hint" />
+                  <p id="calculator-kg-hint" class="field-hint"></p>
+                </div>
                 <fieldset class="cup-fieldset">
                   <legend id="calculator-cup-label"></legend>
                   <div class="cup-options" id="calculator-cups"></div>

@@ -25,10 +25,11 @@ export const config = {
   porcaoGramas: 30,
   calculadora: {
     revenda: {
-      exemploPrecoVenda: "Para comparar: um cliente nosso vende o com açúcar por R$ 39,00 e o sem açúcar por R$ 59,00.",
+      exemploPrecoVenda: "Para comparar: um cliente nosso vende o tradicional por R$ 39,00 e o diet por R$ 59,00.",
     },
     xicara: {
       aConfirmar: true,
+      pesoGramas: 1000,
       tamanhos: [
         { ml: 150, gramas: 45 },
         { ml: 200, gramas: 60 },
@@ -158,8 +159,10 @@ export const config = {
         "Veja quanto você ganha revendendo o pacote na prateleira ou servindo o cappuccino na xícara.",
       aviso:
         "A conta considera só o custo do cappuccino em pó. Açúcar extra, energia e perdas não entram.",
-      precoPacote: "Quanto você paga no pacote (R$)",
+      precoPacote: "Quanto você paga no pacote de 250 g (R$)",
       dicaPacote: "O valor combinado com a gente.",
+      precoKg: "Quanto você paga no kg (R$)",
+      dicaKg: "O valor combinado com a gente. Para servir na xícara, vendemos por kg.",
       abaRevenda: "Revender o pacote",
       abaXicara: "Servir na xícara",
       precoVendaPacote: "Por quanto você vende o pacote (R$)",
@@ -168,11 +171,11 @@ export const config = {
       tamanhoXicara: "Tamanho da xícara",
       precoVenda: "Por quanto você vende a xícara (R$)",
       dicaPrecoXicara: "Na região, a xícara costuma sair de R$ 8,00 a R$ 24,00, conforme o estabelecimento.",
-      copos: "Xícaras por pacote",
+      copos: "Xícaras por kg",
       custo: "Custo do pó por xícara",
       ganho: "Ganho por xícara",
       margem: "Margem",
-      ganhoPacote: "Ganho por pacote de 250 g",
+      ganhoPacote: "Ganho por kg",
       avisoExemplo: "Valores de exemplo, ainda a confirmar.",
       semResultado: "Preencha os dois valores para ver o ganho.",
     },

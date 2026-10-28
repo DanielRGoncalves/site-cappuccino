@@ -238,6 +238,8 @@ function montarCalculadora() {
     "calculator-cup-label": textos.tamanhoXicara,
     "calculator-package-price-label": textos.precoPacote,
     "calculator-package-hint": textos.dicaPacote,
+    "calculator-kg-price-label": textos.precoKg,
+    "calculator-kg-hint": textos.dicaKg,
     "calculator-tab-resale": textos.abaRevenda,
     "calculator-tab-cup": textos.abaXicara,
     "calculator-resale-price-label": textos.precoVendaPacote,
@@ -264,6 +266,7 @@ function montarCalculadora() {
   );
 
   const pacoteInput = document.getElementById("calculator-package-price");
+  const kgInput = document.getElementById("calculator-kg-price");
   const precoInput = document.getElementById("calculator-price");
   const revendaInput = document.getElementById("calculator-resale-price");
   const resultadoEl = document.getElementById("calculator-result");
@@ -277,8 +280,8 @@ function montarCalculadora() {
     document.getElementById("calculator-resale-gain").textContent = revenda ? formatarReais(revenda.ganhoCentavos) : "";
     document.getElementById("calculator-resale-margin").textContent = revenda ? `${percentual.format(revenda.margemPercentual)}%` : "";
 
-    document.getElementById("calculator-cups-count").textContent = coposPorPacote(config.pesoPacoteGramas, xicara.gramas);
-    const resultado = calcularResultado(precoInput.value, pacoteInput.value, config.pesoPacoteGramas, xicara.gramas);
+    document.getElementById("calculator-cups-count").textContent = coposPorPacote(config.calculadora.xicara.pesoGramas, xicara.gramas);
+    const resultado = calcularResultado(precoInput.value, kgInput.value, config.calculadora.xicara.pesoGramas, xicara.gramas);
     resultadoEl.hidden = !resultado;
     document.getElementById("calculator-empty").hidden = Boolean(resultado);
     document.getElementById("calculator-cost").textContent = resultado ? formatarReais(resultado.custoCentavos) : "";
@@ -308,6 +311,7 @@ function montarCalculadora() {
   precoInput.addEventListener("input", atualizarResultado);
   revendaInput.addEventListener("input", atualizarResultado);
   pacoteInput.addEventListener("input", atualizarResultado);
+  kgInput.addEventListener("input", atualizarResultado);
   atualizarResultado();
 }
 

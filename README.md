@@ -14,8 +14,8 @@ Em `js/config.js`, mude `apresentacao.mostrarPrecos` de `false` para `true`. Par
 
 ## Mudar os preços da calculadora
 
-O visitante informa o valor combinado do pacote, compartilhado entre as abas de revenda e xícara; a calculadora não usa os preços dos produtos. Todos os campos de preço começam vazios.
+O visitante informa o valor combinado do pacote de 250 g na aba Revenda e o valor do kg na aba Xícara, em campos independentes; a calculadora não usa os preços dos produtos. Todos os campos de preço começam vazios.
 
-Em `js/config.js`, `calculadora.xicara.tamanhos` define os tamanhos e as porções em gramas, e `calculadora.xicara.tamanhoInicialMl` escolhe o tamanho inicial entre os disponíveis. Mantenha `calculadora.xicara.aConfirmar: true` enquanto as porções forem exemplos; `false` oculta o aviso da aba Xícara. O texto de comparação da revenda fica em `calculadora.revenda.exemploPrecoVenda`; a dica de preço da xícara fica em `textos.padarias.dicaPrecoXicara`.
+Em `js/config.js`, `calculadora.xicara.pesoGramas` define o peso usado na conta da xícara (1000 g, por kg); `pesoPacoteGramas` continua em 250 g para o restante do site. `calculadora.xicara.tamanhos` define os tamanhos e as porções em gramas, e `calculadora.xicara.tamanhoInicialMl` escolhe o tamanho inicial entre os disponíveis. Mantenha `calculadora.xicara.aConfirmar: true` enquanto as porções forem exemplos; `false` oculta o aviso da aba Xícara. O texto de comparação da revenda fica em `calculadora.revenda.exemploPrecoVenda`; a dica de preço da xícara fica em `textos.padarias.dicaPrecoXicara`. Os rótulos e dicas de compra ficam em `textos.padarias.precoPacote`, `dicaPacote`, `precoKg` e `dicaKg`; `copos` e `ganhoPacote` rotulam os resultados por kg.
 
 Os textos dos diferenciais ficam em `js/config.js`, em `textos.diferenca`. Os ingredientes e avisos do cappuccino sem açúcar já estão preenchidos. Para editar cada produto, encontre seu `id` em `produtos` no mesmo arquivo e altere os campos `ingredientes` e `avisos`. Um campo vazio (`""`) oculta a respectiva linha no card.
