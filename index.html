@@ -25,10 +25,13 @@
     <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png" />
     <!-- /SINCRONIZAR -->
 
+    <!-- Remover ao publicar a versão oficial -->
+    <meta name="robots" content="noindex" />
     <link rel="stylesheet" href="css/style.css" />
   </head>
 
   <body>
+    <div class="prototype-banner" id="prototype-banner" hidden></div>
     <header class="site-header" aria-label="Cabeçalho principal">
       <div class="container header-inner">
         <a
@@ -73,7 +76,7 @@
 
     <main id="inicio">
       <section class="hero" aria-labelledby="hero-title">
-        <div class="container">
+        <div class="container hero-layout">
           <div class="hero-content">
             <h1 id="hero-title"></h1>
             <p id="hero-subtitle"></p>
@@ -81,6 +84,17 @@
               <a class="btn btn-primary" id="pedir-degustacao" href="#contato"></a>
               <a class="btn btn-secondary" id="ver-conta" href="#padarias"></a>
             </div>
+          </div>
+          <div class="hero-photo" id="hero-photo"></div>
+        </div>
+      </section>
+
+      <section class="section origin-section" id="origem" aria-labelledby="origem-title">
+        <div class="container origin-layout">
+          <div class="origin-photo" id="origem-photo"></div>
+          <div class="section-heading">
+            <h2 id="origem-title"></h2>
+            <p id="origem-text"></p>
           </div>
         </div>
       </section>
@@ -104,7 +118,9 @@
             <p id="products-intro"></p>
           </div>
 
-          <div class="products-grid"></div>
+          <div class="product-tabs" id="product-tabs" role="tablist" aria-labelledby="products-title"></div>
+          <div class="products-grid" id="product-panels"></div>
+          <p class="products-shared" id="products-shared"></p>
         </div>
       </section>
 

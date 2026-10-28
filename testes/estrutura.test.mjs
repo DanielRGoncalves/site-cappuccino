@@ -1,11 +1,47 @@
 import assert from "node:assert/strict";
-import { readFile, access } from "node:fs/promises";
+import { readFile, access, stat } from "node:fs/promises";
 import { test } from "node:test";
 import { config } from "../js/config.js";
+import { produtosVisiveis, indiceDaAba } from "../js/produtos.js";
 
 const root = new URL("../", import.meta.url);
 const html = await readFile(new URL("index.html", root), "utf8");
 const main = await readFile(new URL("js/main.js", root), "utf8");
+
+test("protótipo tem noindex fora das metas sincronizadas e conteúdo visual no config", () => {
+  assert.match(html, /<!-- Remover ao publicar a versão oficial -->\s*<meta name="robots" content="noindex"\s*\/>/);
+  assert.ok(html.indexOf('name="robots"') > html.indexOf("<!-- /SINCRONIZAR -->"));
+  assert.equal(config.apresentacao.prototipo, true);
+  assert.equal(config.apresentacao.avisoPrototipo,
+    "Protótipo: as fotos são ilustrativas e serão trocadas por fotos reais.");
+  assert.equal(config.textos.origem.titulo, "Feito à mão em Taparuba, Minas Gerais");
+  assert.equal(config.textos.origem.texto,
+    "Cada pacote é preparado pela família, em casa, com café Conilon e cacau 100%.");
+  assert.equal(config.textos.produtos.titulo, "Qual escolher?");
+  assert.equal(config.textos.produtos.igual, "Nos dois: café Conilon, cacau 100% e o mesmo preparo.");
+  assert.deepEqual(config.textos.diferenca.cartoes.map((c) => c.foto), [
+    "img/ilustrativas/cafe-720.webp", "img/ilustrativas/cacau-720.webp", "", "",
+  ]);
+  assert.deepEqual(config.textos.preparo.passos.map((p) => p.foto), [
+    "", "img/ilustrativas/preparo-2-480.webp", "",
+  ]);
+  assert.doesNotMatch(html + main,
+    /Foto a definir|Cada pacote é preparado pela família|Nos dois: café Conilon/);
+});
+
+test("fotos ilustrativas WebP respeitam os limites da P9", async () => {
+  for (const [arquivo, limite] of [
+    ["hero-720.webp", 120000], ["hero-480.webp", 120000],
+    ["origem-720.webp", 100000], ["cafe-720.webp", 100000],
+    ["cacau-720.webp", 100000], ["preparo-2-480.webp", 70000],
+  ]) {
+    const url = new URL(`img/ilustrativas/${arquivo}`, root);
+    assert.ok((await stat(url)).size <= limite, arquivo);
+    const bytes = await readFile(url);
+    assert.equal(bytes.toString("ascii", 0, 4), "RIFF");
+    assert.equal(bytes.toString("ascii", 8, 12), "WEBP");
+  }
+});
 
 test("meta tags de título, descrição e URL seguem o config", () => {
   const bloco = html.match(/<!-- SINCRONIZAR COM js\/config\.js -->([\s\S]*?)<!-- \/SINCRONIZAR -->/)?.[1];
@@ -44,7 +80,7 @@ test("o arquivo JS antigo não é usado", async () => {
 });
 
 test("a apresentação tem seções em ordem, menu e links válidos antes do JS", () => {
-  const secoes = ['id="diferenca"', 'id="produtos"', 'id="porque"', 'id="padarias"', 'id="preparo"', 'id="como"', 'id="faq"', 'id="contato"'];
+  const secoes = ['id="origem"', 'id="diferenca"', 'id="produtos"', 'id="porque"', 'id="padarias"', 'id="preparo"', 'id="como"', 'id="faq"', 'id="contato"'];
   const posicoes = secoes.map((id) => html.indexOf(id));
   assert.ok(posicoes.every((posicao) => posicao >= 0));
   assert.deepEqual(posicoes, [...posicoes].sort((a, b) => a - b));
@@ -66,7 +102,7 @@ test("os textos e a ordem da apresentação vêm do config", () => {
   assert.equal(textos.hero.degustacao, "Pedir degustação gratuita");
   assert.equal(textos.hero.conta, "Ver a conta do seu negócio");
   assert.equal(textos.padarias.titulo, "Quanto rende no seu negócio");
-  assert.deepEqual(textos.diferenca, {
+  assert.deepEqual({ ...textos.diferenca, cartoes: textos.diferenca.cartoes.map(({ titulo, texto }) => ({ titulo, texto })) }, {
     titulo: "Feito à mão, do jeito simples",
     cartoes: [
       { titulo: "Café Conilon", texto: "Café Conilon para dar mais sabor ao cappuccino." },
@@ -125,27 +161,30 @@ test("avisos ficam visíveis e só ingredientes ficam em details fechado nos doi
   const inicio = main.indexOf("function montarProdutos() {");
   const fim = main.indexOf("function montarCalculadora()", inicio);
   assert.ok(inicio >= 0 && fim > inicio);
-  const montarProdutos = new Function("document", "config", "formatarReais",
+  const montarProdutos = new Function("document", "config", "formatarReais", "produtosVisiveis", "indiceDaAba",
     `${main.slice(inicio, fim)}; montarProdutos();`);
   const renderizar = (produto) => {
     const grade = { children: [], appendChild(node) { this.children.push(node); } };
     const document = {
       querySelector: () => grade,
+      getElementById: () => ({ appendChild() {} }),
       createElement: (tagName) => ({
         tagName, children: [],
+        setAttribute(nome, valor) { this[nome] = valor; },
+        addEventListener() {},
         appendChild(node) { this.children.push(node); },
         append(...nodes) { this.children.push(...nodes); },
       }),
     };
-    montarProdutos(document, { ...config, produtos: [produto] }, () => "");
+    montarProdutos(document, { ...config, produtos: [produto] }, () => "", produtosVisiveis, indiceDaAba);
     return grade.children[0].children[1].children;
   };
   for (const produto of [comAcucar, semAcucar]) {
     const corpo = renderizar(produto);
     const avisos = corpo.find((node) => node.className === "product-warnings");
     const detalhes = corpo.find((node) => node.tagName === "details");
-    assert.equal(corpo[2], avisos, "aviso deve vir logo depois da descrição");
-    assert.equal(corpo[3], detalhes, "ingredientes devem vir depois do aviso");
+    assert.equal(corpo[4], avisos, "aviso deve vir logo depois do peso");
+    assert.equal(corpo[5], detalhes, "ingredientes devem vir depois do aviso");
     assert.equal(avisos.textContent, produto.avisos);
     assert.equal(detalhes.className, "product-details");
     assert.equal(detalhes.open, undefined);

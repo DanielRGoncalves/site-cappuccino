@@ -2,9 +2,35 @@ import { config } from "./config.js";
 import { formatarReais, linkWhatsApp } from "./pedido.js";
 import { calcularResultado, produtosDaCalculadora } from "./calculadora.js";
 import { montarPreparo } from "./preparo.js";
+import { produtosVisiveis, indiceDaAba } from "./produtos.js";
+
+function montarFoto(dados, primeiraTela = false) {
+  if (!dados.foto) {
+    const quadro = document.createElement("div");
+    quadro.className = "photo-placeholder";
+    quadro.textContent = config.apresentacao.fotoPendente;
+    return quadro;
+  }
+  const imagem = document.createElement("img");
+  imagem.src = dados.foto;
+  imagem.alt = dados.alt;
+  imagem.width = dados.largura;
+  imagem.height = dados.altura;
+  if (!primeiraTela) imagem.loading = "lazy";
+  return imagem;
+}
 
 function montarIdentidade() {
   const textos = config.textos;
+  const faixa = document.getElementById("prototype-banner");
+  faixa.textContent = config.apresentacao.avisoPrototipo;
+  faixa.hidden = !config.apresentacao.prototipo;
+  const hero = config.apresentacao.hero;
+  const fotoHero = montarFoto(hero, true);
+  fotoHero.srcset = `${hero.fotoPequena} 480w, ${hero.foto} 720w`;
+  fotoHero.sizes = "(min-width: 920px) 440px, (min-width: 640px) 380px, 280px";
+  fotoHero.fetchPriority = "high";
+  document.getElementById("hero-photo").appendChild(fotoHero);
   const logoWrap = document.querySelector(".logo-wrap");
   logoWrap.setAttribute("aria-label", `${config.marca} - início`);
   const logo = logoWrap.querySelector("img");
@@ -49,6 +75,10 @@ function montarIdentidade() {
 }
 
 function montarApresentacao() {
+  const origem = config.textos.origem;
+  document.getElementById("origem-title").textContent = origem.titulo;
+  document.getElementById("origem-text").textContent = origem.texto;
+  document.getElementById("origem-photo").appendChild(montarFoto(origem));
   const diferenca = config.textos.diferenca;
   document.getElementById("diferenca-title").textContent = diferenca.titulo;
   const cartoes = document.getElementById("diferenca-cards");
@@ -59,7 +89,7 @@ function montarApresentacao() {
     titulo.textContent = item.titulo;
     const descricao = document.createElement("p");
     descricao.textContent = item.texto;
-    card.append(titulo, descricao);
+    card.append(montarFoto(item), titulo, descricao);
     cartoes.appendChild(card);
   });
   document.getElementById("diferenca-destaque").textContent = diferenca.destaque;
@@ -100,15 +130,49 @@ function montarApresentacao() {
 
 function montarProdutos() {
   const grade = document.querySelector(".products-grid");
-  config.produtos.filter((produto) => produto.exibir).forEach((produto) => {
+  const listaAbas = document.getElementById("product-tabs");
+  const abas = [];
+  const paineis = [];
+
+  function selecionarAba(index, focar = false) {
+    abas.forEach((aba, posicao) => {
+      const selecionada = posicao === index;
+      aba.setAttribute("aria-selected", String(selecionada));
+      aba.tabIndex = selecionada ? 0 : -1;
+      paineis[posicao].hidden = !selecionada;
+    });
+    if (focar) abas[index].focus();
+  }
+
+  produtosVisiveis(config.produtos).forEach((produto, index) => {
+    const aba = document.createElement("button");
+    aba.type = "button";
+    aba.id = `tab-${produto.id}`;
+    aba.className = `product-tab product-${produto.id}`;
+    aba.setAttribute("role", "tab");
+    aba.setAttribute("aria-controls", `panel-${produto.id}`);
+    aba.textContent = produto.selo;
+    aba.addEventListener("click", () => selecionarAba(index));
+    aba.addEventListener("keydown", (event) => {
+      if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+      event.preventDefault();
+      selecionarAba(indiceDaAba(index, event.key, abas.length), true);
+    });
+    abas.push(aba);
+    listaAbas.appendChild(aba);
     const card = document.createElement("article");
-    card.className = "product-card";
+    card.className = `product-card product-${produto.id}`;
+    card.id = `panel-${produto.id}`;
+    card.setAttribute("role", "tabpanel");
+    card.setAttribute("aria-labelledby", aba.id);
+    card.tabIndex = 0;
+    paineis.push(card);
     const imagemArea = document.createElement("div");
     imagemArea.className = "product-image";
     const imagem = document.createElement("img");
     imagem.src = produto.foto;
     imagem.srcset = `${produto.fotoPequena} 400w, ${produto.foto} 800w`;
-    imagem.sizes = "(max-width: 639px) 78vw, (max-width: 919px) 35vw, 450px";
+    imagem.sizes = "(min-width: 920px) 360px, (min-width: 640px) 280px, 240px";
     imagem.alt = produto.alt;
     imagem.width = 800;
     imagem.height = 800;
@@ -119,8 +183,14 @@ function montarProdutos() {
     const titulo = document.createElement("h3");
     titulo.textContent = produto.nome;
     const descricao = document.createElement("p");
-    descricao.textContent = `${produto.descricao} ${produto.peso}`;
-    corpo.append(titulo, descricao);
+    descricao.textContent = produto.frase;
+    const selo = document.createElement("span");
+    selo.className = "product-tag";
+    selo.textContent = produto.selo;
+    const peso = document.createElement("p");
+    peso.className = "product-weight";
+    peso.textContent = produto.peso;
+    corpo.append(selo, titulo, descricao, peso);
     if (produto.avisos) {
       const avisos = document.createElement("p");
       avisos.className = "product-warnings";
@@ -148,6 +218,8 @@ function montarProdutos() {
     card.append(imagemArea, corpo);
     grade.appendChild(card);
   });
+  selecionarAba(0);
+  document.getElementById("products-shared").textContent = config.textos.produtos.igual;
 }
 
 function montarCalculadora() {
@@ -201,7 +273,7 @@ function renderizarPreparo() {
   document.getElementById("preparo-title").textContent = preparo.titulo;
   const lista = document.getElementById("preparo-steps");
 
-  preparo.passos.forEach((passo) => {
+  preparo.passos.forEach((passo, index) => {
     const card = document.createElement("article");
     card.className = "step";
     const numero = document.createElement("div");
@@ -212,7 +284,7 @@ function renderizarPreparo() {
     titulo.textContent = passo.titulo;
     const descricao = document.createElement("p");
     descricao.textContent = passo.descricao;
-    card.append(numero, titulo, descricao);
+    card.append(montarFoto(config.textos.preparo.passos[index]), numero, titulo, descricao);
     lista.appendChild(card);
   });
 
