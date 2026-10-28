@@ -29,7 +29,7 @@ Site de apresentação do **Cheiro das Águas** (Agropecuária Cheiro das Águas
 |---|---|---|
 | `main` | versão antiga de loja, com preços (tag `loja-v1`) | guardada, não usar |
 | `prototipo` | versão publicada no domínio (P1–P8) | **no ar** |
-| `visual` | protótipo com simulação de fotos reais (P11a) | **não publicar**; tem `noindex` e faixa de protótipo |
+| `visual` | protótipo com fotos ilustrativas da internet (P9, P10) | **não publicar**; tem `noindex` e faixa de protótipo |
 
 ## Tarefas
 
@@ -41,7 +41,7 @@ Site de apresentação do **Cheiro das Águas** (Agropecuária Cheiro das Águas
 | P9 protótipo visual | `p9-visual.md` | feita (commit `1abb48e`, 20 testes), aprovada; Daniel gostou |
 | P10 calculadora nova + formulário de degustação | `p9-visual.md` | feita (commit `36cb07f`), revisada pelo Claude em 28/10: W-01 a W-10 ok; texto de abertura da calculadora ajustado à mão (falava em "xícara de 30 g", conflitava com o seletor de copo) |
 | P10b calculadora com duas abas (revender o pacote / servir na xícara) | `p10b-calculadora.md` | escrita em 28/10, a executar no Codex |
-| P11a simulação com as fotos reais atuais | `p11a-fotos-reais.md` | feita em 28/10: fotos, medidas e textos alternativos atualizados; proporções ajustadas no CSS; 25 testes passam; navegador conferido a 360, 768 e 1280 px, sem transbordo horizontal nem erros ou avisos no console; falta avaliação da família no celular real |
+| P11a simulação com as fotos reais atuais | `p11a-fotos-reais.md` | escrita em 28/10; imagens prontas em `img/reais/`; a executar no Codex |
 | P11 fotos oficiais e versão oficial | a escrever | depende das fotos reais e dos valores confirmados |
 
 ## Fatos do negócio (confirmados pela família)
@@ -64,6 +64,7 @@ Premium, melhor, saudável ou benefício de saúde; conservante, aditivo ("sem a
 - **Calculadora:** decidido em 28/10: 3 colheres = 30 g para 100 ml (rótulo diz 35 g: alinhar no rótulo novo); os negócios revendem o pacote e servem na xícara de louça (reutilizada, sem custo de copo); preço padrão do pacote para empresas R$ 30 (com açúcar) e R$ 35 (sem açúcar), negociável e fora do site; uma padaria cliente revende por R$ 39 e R$ 59. Falta confirmar: tamanhos de xícara usados nos negócios (P10b usa 150/200/300 ml) Preço da xícara: segundo o Davi, varia de R$ 8 a R$ 24 conforme o estabelecimento; o campo fica vazio, com essa faixa como dica. Com 30 g/100 ml, a xícara de 200 ml custa R$ 7,20 de pó (pacote a R$ 30): ganho baixo para quem cobra perto de R$ 8, bom acima de uns R$ 12.
 - **Fotos reais:** 27 fotos recebidas em 28/10 (originais em `fotos-reais/`, fora do Git). Usadas na P11a: 1, 2, 4, 6, 11, 12, 13, 14, 15, 17, 19. Ainda faltam: produto no balcão ou na prateleira de uma padaria; a família preparando e entregando (mãe e pai, em Taparuba); cacau (só aparece na foto 2); pó e embalagem sem marca de outras empresas (as fotos 3, 6 e 18 mostram uma caneca de outra marca); o verso do rótulo com ingredientes; um cappuccino quente pronto na xícara de louça de padaria. Tirar na vertical, assunto no centro.
 - **Fotos reais (confirmado por Daniel em 28/10):** todas autorizadas pelas pessoas que aparecem; têm edição (cor, luz), mas nenhuma foi gerada por IA. As fotos com pessoas (7 a 10, 13, 16, 24, 27, 28) podem ser usadas, por exemplo numa futura seção "quem somos". Continua valendo: não usar as que mostram a caneca de outra marca (3, 18 e a parte direita da 6).
+- **Tamanho das imagens:** os testes contam 1 KB = 1.000 bytes. Imagens que o Claude grava na pasta do PC ganham um bloco C2PA (credenciais de conteúdo, ~5.800 bytes). Ao preparar imagens, deixar pelo menos 7.000 bytes de folga e conferir o tamanho final na pasta (`Get-ChildItem img/reais`).
 - **Rótulo** da embalagem desatualizado (cita achocolatado e café solúvel) e igual para os dois produtos: atualizar e diferenciar antes de vender.
 - Com o contador: "sem açúcar" ou "sem adição de açúcar"; nota fiscal.
 - **INPI:** verificar o risco do nome "Cheiro das Águas".
