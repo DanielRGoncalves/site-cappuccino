@@ -80,7 +80,7 @@ test("o arquivo JS antigo não é usado", async () => {
 });
 
 test("a apresentação tem seções em ordem, menu e links válidos antes do JS", () => {
-  const secoes = ['id="origem"', 'id="diferenca"', 'id="produtos"', 'id="porque"', 'id="padarias"', 'id="preparo"', 'id="como"', 'id="faq"', 'id="contato"'];
+  const secoes = ['id="origem"', 'id="diferenca"', 'id="produtos"', 'id="porque"', 'id="padarias"', 'id="preparo"', 'id="como"', 'id="degustacao"', 'id="faq"', 'id="contato"'];
   const posicoes = secoes.map((id) => html.indexOf(id));
   assert.ok(posicoes.every((posicao) => posicao >= 0));
   assert.deepEqual(posicoes, [...posicoes].sort((a, b) => a - b));
@@ -90,7 +90,7 @@ test("a apresentação tem seções em ordem, menu e links válidos antes do JS"
     ["diferenca", "produtos", "porque", "padarias", "como", "faq", "contato"]);
   assert.deepEqual(config.textos.menu,
     ["Diferenciais", "Produtos", "Por que vender", "A conta", "Como funciona", "Dúvidas", "Contato"]);
-  assert.match(html, /id="pedir-degustacao" href="#contato"/);
+  assert.match(html, /id="pedir-degustacao" href="#degustacao"/);
   assert.match(html, /id="floating-whatsapp" href="#contato"/);
 });
 

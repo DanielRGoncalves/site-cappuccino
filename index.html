@@ -81,7 +81,7 @@
             <h1 id="hero-title"></h1>
             <p id="hero-subtitle"></p>
             <div class="hero-cta">
-              <a class="btn btn-primary" id="pedir-degustacao" href="#contato"></a>
+              <a class="btn btn-primary" id="pedir-degustacao" href="#degustacao"></a>
               <a class="btn btn-secondary" id="ver-conta" href="#padarias"></a>
             </div>
           </div>
@@ -143,10 +143,16 @@
           </div>
 
           <div class="calculator-card">
+            <p id="calculator-example-notice" class="calculator-example" hidden></p>
             <div class="calculator-fields">
+              <fieldset class="cup-fieldset">
+                <legend id="calculator-cup-label"></legend>
+                <div class="cup-options" id="calculator-cups"></div>
+              </fieldset>
               <div>
-                <label for="calculator-product" id="calculator-product-label"></label>
-                <select id="calculator-product" class="calculator-input"></select>
+                <label for="calculator-package-price" id="calculator-package-price-label"></label>
+                <input id="calculator-package-price" class="calculator-input" type="text" inputmode="decimal" autocomplete="off" aria-describedby="calculator-package-hint" />
+                <p id="calculator-package-hint" class="field-hint"></p>
               </div>
               <div>
                 <label for="calculator-price" id="calculator-price-label"></label>
@@ -154,8 +160,10 @@
               </div>
             </div>
 
-            <div id="calculator-result" class="calculator-result" aria-live="polite" hidden>
-              <dl>
+            <div class="calculator-result" aria-live="polite" aria-atomic="true">
+              <dl><div><dt id="calculator-cups-label"></dt><dd id="calculator-cups-count"></dd></div></dl>
+              <p id="calculator-empty"></p>
+              <dl id="calculator-result" hidden>
                 <div><dt id="calculator-cost-label"></dt><dd id="calculator-cost"></dd></div>
                 <div><dt id="calculator-gain-label"></dt><dd id="calculator-gain"></dd></div>
                 <div><dt id="calculator-margin-label"></dt><dd id="calculator-margin"></dd></div>
@@ -186,6 +194,37 @@
         <div class="container">
           <div class="section-heading"><h2 id="como-title"></h2></div>
           <div class="process-grid" id="como-passos"></div>
+        </div>
+      </section>
+
+      <section class="section tasting-section" id="degustacao" aria-labelledby="degustacao-title" tabindex="-1">
+        <div class="container">
+          <div class="section-heading">
+            <h2 id="degustacao-title"></h2>
+            <p id="degustacao-description"></p>
+          </div>
+          <form id="degustacao-form" class="tasting-form" novalidate autocomplete="off">
+            <div>
+              <label for="degustacao-nome" id="degustacao-nome-label"></label>
+              <input id="degustacao-nome" name="nome" class="calculator-input" type="text" required aria-describedby="degustacao-nome-error" />
+              <p id="degustacao-nome-error" class="field-error" aria-live="polite"></p>
+            </div>
+            <div>
+              <label for="degustacao-tipo" id="degustacao-tipo-label"></label>
+              <select id="degustacao-tipo" name="tipo" class="calculator-input" required aria-describedby="degustacao-tipo-error"></select>
+              <p id="degustacao-tipo-error" class="field-error" aria-live="polite"></p>
+            </div>
+            <div>
+              <label for="degustacao-local" id="degustacao-local-label"></label>
+              <input id="degustacao-local" name="local" class="calculator-input" type="text" required aria-describedby="degustacao-local-error" />
+              <p id="degustacao-local-error" class="field-error" aria-live="polite"></p>
+            </div>
+            <div>
+              <label for="degustacao-quantidade" id="degustacao-quantidade-label"></label>
+              <input id="degustacao-quantidade" name="quantidade" class="calculator-input" type="number" min="0" step="1" />
+            </div>
+            <button id="degustacao-submit" class="btn btn-primary" type="submit"></button>
+          </form>
         </div>
       </section>
 

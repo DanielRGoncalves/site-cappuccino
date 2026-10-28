@@ -95,6 +95,7 @@ button {
 #padarias,
 #preparo,
 #como,
+#degustacao,
 #faq,
 #contato {
   scroll-margin-top: calc(var(--header-height) + 16px);
@@ -596,7 +597,9 @@ button {
   display: grid;
   gap: 18px;
 }
-.calculator-fields label {
+.calculator-fields label,
+.cup-fieldset legend,
+.tasting-form label {
   display: block;
   margin-bottom: 8px;
   color: var(--gold-light);
@@ -647,6 +650,73 @@ button {
   .calculator-fields {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
+
+.cup-fieldset {
+  min-width: 0;
+  border: 0;
+  grid-column: 1 / -1;
+}
+.cup-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.calculator-fields .cup-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 8px 12px;
+  margin: 0;
+  border: 1px solid var(--cacau);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+.cup-option:has(input:checked) {
+  background: var(--cacau);
+  color: var(--leite);
+}
+.cup-option input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--cacau);
+}
+.cup-option:has(input:focus-visible) {
+  outline: 2px solid var(--cacau);
+  outline-offset: 4px;
+}
+.calculator-example {
+  margin-bottom: 24px;
+  font-weight: 700;
+}
+.field-hint {
+  margin-top: 8px;
+  font-size: 14px;
+}
+.tasting-form {
+  display: grid;
+  gap: 20px;
+  max-width: 680px;
+}
+.tasting-form > div {
+  min-width: 0;
+}
+.tasting-form .btn {
+  justify-self: start;
+  padding-block: 12px;
+  cursor: pointer;
+}
+.field-error {
+  color: var(--leite);
+  font-size: 14px;
+  margin-top: 8px;
+}
+.field-error:empty {
+  margin-top: 0;
+}
+.tasting-form [aria-invalid="true"] {
+  border-color: var(--ouro);
 }
 
 /* =========================================================

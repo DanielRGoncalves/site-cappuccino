@@ -1,52 +1,54 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { config } from "../js/config.js";
-import {
-  calcularResultado,
-  custoPoPorXicara,
-  precoVendaCentavos,
-  produtosDaCalculadora,
-  xicarasPorPacote,
-} from "../js/calculadora.js";
+import { calcularResultado, coposPorPacote, precoVendaCentavos } from "../js/calculadora.js";
 
-test("a calculadora oferece só os dois produtos visíveis, com os custos de referência", () => {
-  const { pesoPacoteGramas, porcaoGramas } = config;
-  const produtos = produtosDaCalculadora(config.produtos);
-  assert.deepEqual(produtos.map((produto) => produto.id), ["com-acucar", "sem-acucar"]);
-  assert.equal(xicarasPorPacote(pesoPacoteGramas, porcaoGramas), 8);
-  assert.deepEqual(
-    produtos.map((produto) => custoPoPorXicara(produto.precoCentavos, pesoPacoteGramas, porcaoGramas)),
-    [360, 420],
-  );
-  assert.equal(config.textos.padarias.aviso, "A conta considera só o custo do cappuccino em pó. Copo, energia, perdas e outros custos não entram.");
-  assert.equal(xicarasPorPacote(250, 40), 6);
-  assert.equal(custoPoPorXicara(2300, 250, 30), 276);
+test("W-01: tamanhos do config rendem 8, 5 e 4 copos por pacote", () => {
+  assert.deepEqual(config.calculadora.copos, [
+    { ml: 100, gramas: 30 }, { ml: 150, gramas: 45 }, { ml: 200, gramas: 60 },
+  ]);
+  assert.deepEqual(config.calculadora.copos.map(({ gramas }) => coposPorPacote(config.pesoPacoteGramas, gramas)), [8, 5, 4]);
+  assert.equal(coposPorPacote(500, 30), 16);
+  assert.equal(config.calculadora.exemploPrecoCopoCentavos, 900);
+  assert.equal(config.calculadora.aConfirmar, true);
 });
 
-test("ganho, margem e ganho por pacote, inclusive ganho negativo", () => {
-  const parametros = [3000, 250, 30];
-  assert.deepEqual(calcularResultado("9,00", ...parametros), {
-    xicaras: 8,
+test("W-03: pacote de 30, copo de 100 ml e venda a 9", () => {
+  assert.deepEqual(calcularResultado("9,00", "30,00", 250, 30), {
+    copos: 8,
     custoCentavos: 360,
     ganhoCentavos: 540,
     margemPercentual: 60,
     ganhoPacoteCentavos: 4320,
   });
-  assert.equal(calcularResultado("9.5", ...parametros).ganhoCentavos, 590);
-  assert.deepEqual(calcularResultado("2", ...parametros), {
-    xicaras: 8,
-    custoCentavos: 360,
-    ganhoCentavos: -160,
-    margemPercentual: -80,
-    ganhoPacoteCentavos: -1280,
-  });
 });
 
-test("preço de venda inválido fica sem resultado", () => {
-  for (const entrada of ["", " ", "0", "0,00", "-5", "abc", "9,999", "1,2,3"]) {
-    assert.equal(precoVendaCentavos(entrada), null, entrada);
-    assert.equal(calcularResultado(entrada, 3000, 250, 30), null, entrada);
+test("tamanho e preço informado mudam a conta; ganho negativo é mantido", () => {
+  assert.equal(calcularResultado("9.50", "30.00", 250, 30).ganhoCentavos, 590);
+  assert.deepEqual(calcularResultado("2", "30", 250, 30), {
+    copos: 8, custoCentavos: 360, ganhoCentavos: -160,
+    margemPercentual: -80, ganhoPacoteCentavos: -1280,
+  });
+  assert.deepEqual(config.calculadora.copos.map(({ gramas }) => {
+    const { copos, custoCentavos, ganhoPacoteCentavos } = calcularResultado("9", "30", 250, gramas);
+    return [copos, custoCentavos, ganhoPacoteCentavos];
+  }), [[8, 360, 4320], [5, 540, 1800], [4, 720, 720]]);
+  assert.equal(calcularResultado("9", "23", 250, 30).custoCentavos, 276);
+});
+
+test("W-04: entradas inválidas em qualquer preço ficam sem resultado", () => {
+  for (const entrada of [undefined, null, "", " ", "0", "0,00", 0, -5, "-5", "abc", "9,999", "1,2,3", NaN, Infinity, "1e3", "999999999999999999"]) {
+    assert.equal(precoVendaCentavos(entrada), null, String(entrada));
+    assert.equal(calcularResultado(entrada, "30", 250, 30), null);
+    assert.equal(calcularResultado("9", entrada, 250, 30), null);
+  }
+  for (const entrada of [undefined, null, "", "texto", 0, -30, NaN, Infinity]) {
+    assert.equal(coposPorPacote(250, entrada), null);
+    assert.equal(coposPorPacote(entrada, 30), null);
+    assert.equal(calcularResultado("9", "30", 250, entrada), null);
+    assert.equal(calcularResultado("9", "30", entrada, 30), null);
   }
   assert.equal(precoVendaCentavos("9,5"), 950);
   assert.equal(precoVendaCentavos("9.5"), 950);
+  assert.equal(precoVendaCentavos(" 9,50 "), 950);
 });

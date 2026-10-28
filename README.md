@@ -14,6 +14,6 @@ Em `js/config.js`, mude `apresentacao.mostrarPrecos` de `false` para `true`. Par
 
 ## Mudar os preços da calculadora
 
-Em `js/config.js`, altere o `precoCentavos` de cada produto. Por exemplo, `3000` corresponde a R$ 30,00. A calculadora usa esse valor e a porção configurada em `porcaoGramas` para calcular o custo do pó por xícara.
+O visitante informa o valor combinado do pacote; a calculadora não usa os preços dos produtos. Em `js/config.js`, `calculadora.copos` define os tamanhos e as porções em gramas, e `calculadora.exemploPrecoCopoCentavos` define o exemplo do preço de venda (`900` = R$ 9,00). Mantenha `calculadora.aConfirmar: true` enquanto os valores forem exemplos; `false` oculta o aviso.
 
 Os textos dos diferenciais ficam em `js/config.js`, em `textos.diferenca`. Os ingredientes e avisos do cappuccino sem açúcar já estão preenchidos. Para editar cada produto, encontre seu `id` em `produtos` no mesmo arquivo e altere os campos `ingredientes` e `avisos`. Um campo vazio (`""`) oculta a respectiva linha no card.

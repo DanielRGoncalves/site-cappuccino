@@ -1,6 +1,6 @@
 import { config } from "./config.js";
-import { formatarReais, linkWhatsApp } from "./pedido.js";
-import { calcularResultado, produtosDaCalculadora } from "./calculadora.js";
+import { formatarReais, linkWhatsApp, validarDegustacao, montarMensagemDegustacao } from "./pedido.js";
+import { calcularResultado, coposPorPacote } from "./calculadora.js";
 import { montarPreparo } from "./preparo.js";
 import { produtosVisiveis, indiceDaAba } from "./produtos.js";
 
@@ -224,48 +224,112 @@ function montarProdutos() {
 
 function montarCalculadora() {
   const textos = config.textos.padarias;
-  document.getElementById("padarias-title").textContent = textos.titulo;
-  document.getElementById("padarias-description").textContent = textos.descricao;
-  document.getElementById("calculator-notice").textContent = textos.aviso;
-  document.getElementById("calculator-product-label").textContent = textos.produto;
-  document.getElementById("calculator-price-label").textContent = textos.precoVenda;
-  document.getElementById("calculator-cost-label").textContent = textos.custo;
-  document.getElementById("calculator-gain-label").textContent = textos.ganho;
-  document.getElementById("calculator-margin-label").textContent = textos.margem;
-  document.getElementById("calculator-package-gain-label").textContent = textos.ganhoPacote;
+  const rotulos = {
+    "padarias-title": textos.titulo,
+    "padarias-description": textos.descricao,
+    "calculator-notice": textos.aviso,
+    "calculator-example-notice": textos.avisoExemplo,
+    "calculator-cup-label": textos.tamanhoCopo,
+    "calculator-package-price-label": textos.precoPacote,
+    "calculator-package-hint": textos.dicaPacote,
+    "calculator-price-label": textos.precoVenda,
+    "calculator-cups-label": textos.copos,
+    "calculator-cost-label": textos.custo,
+    "calculator-gain-label": textos.ganho,
+    "calculator-margin-label": textos.margem,
+    "calculator-package-gain-label": textos.ganhoPacote,
+    "calculator-empty": textos.semResultado,
+  };
+  Object.entries(rotulos).forEach(([id, texto]) => {
+    document.getElementById(id).textContent = texto;
+  });
+  document.getElementById("calculator-example-notice").hidden = !config.calculadora.aConfirmar;
 
-  const produtoInput = document.getElementById("calculator-product");
+  const pacoteInput = document.getElementById("calculator-package-price");
   const precoInput = document.getElementById("calculator-price");
+  precoInput.value = (config.calculadora.exemploPrecoCopoCentavos / 100).toFixed(2).replace(".", ",");
   const resultadoEl = document.getElementById("calculator-result");
   const percentual = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 1 });
-
-  const produtos = produtosDaCalculadora(config.produtos);
-  produtos.forEach((produto) => {
-    const opcao = document.createElement("option");
-    opcao.value = produto.id;
-    opcao.textContent = produto.nome;
-    produtoInput.appendChild(opcao);
-  });
+  let copo = config.calculadora.copos[0];
 
   function atualizarResultado() {
-    const produto = produtos.find((item) => item.id === produtoInput.value);
-    const resultado = produto && calcularResultado(
-      precoInput.value,
-      produto.precoCentavos,
-      config.pesoPacoteGramas,
-      config.porcaoGramas,
-    );
+    document.getElementById("calculator-cups-count").textContent = coposPorPacote(config.pesoPacoteGramas, copo.gramas);
+    const resultado = calcularResultado(precoInput.value, pacoteInput.value, config.pesoPacoteGramas, copo.gramas);
     resultadoEl.hidden = !resultado;
-    if (!resultado) return;
-
-    document.getElementById("calculator-cost").textContent = formatarReais(resultado.custoCentavos);
-    document.getElementById("calculator-gain").textContent = formatarReais(resultado.ganhoCentavos);
-    document.getElementById("calculator-margin").textContent = `${percentual.format(resultado.margemPercentual)}%`;
-    document.getElementById("calculator-package-gain").textContent = formatarReais(resultado.ganhoPacoteCentavos);
+    document.getElementById("calculator-empty").hidden = Boolean(resultado);
+    document.getElementById("calculator-cost").textContent = resultado ? formatarReais(resultado.custoCentavos) : "";
+    document.getElementById("calculator-gain").textContent = resultado ? formatarReais(resultado.ganhoCentavos) : "";
+    document.getElementById("calculator-margin").textContent = resultado ? `${percentual.format(resultado.margemPercentual)}%` : "";
+    document.getElementById("calculator-package-gain").textContent = resultado ? formatarReais(resultado.ganhoPacoteCentavos) : "";
   }
 
+  const opcoes = document.getElementById("calculator-cups");
+  config.calculadora.copos.forEach((tamanho, index) => {
+    const rotulo = document.createElement("label");
+    rotulo.className = "cup-option";
+    const radio = document.createElement("input");
+    radio.type = "radio";
+    radio.name = "calculator-cup";
+    radio.value = tamanho.ml;
+    radio.checked = index === 0;
+    const texto = document.createElement("span");
+    texto.textContent = `${tamanho.ml} ml`;
+    radio.addEventListener("change", () => {
+      copo = tamanho;
+      atualizarResultado();
+    });
+    rotulo.append(radio, texto);
+    opcoes.appendChild(rotulo);
+  });
   precoInput.addEventListener("input", atualizarResultado);
-  produtoInput.addEventListener("change", atualizarResultado);
+  pacoteInput.addEventListener("input", atualizarResultado);
+  atualizarResultado();
+}
+
+function montarDegustacao() {
+  const textos = config.textos.degustacao;
+  document.getElementById("degustacao-title").textContent = textos.titulo;
+  document.getElementById("degustacao-description").textContent = textos.texto;
+  document.getElementById("degustacao-submit").textContent = textos.botao;
+  const campos = {};
+  ["nome", "tipo", "local", "quantidade"].forEach((nome) => {
+    campos[nome] = document.getElementById(`degustacao-${nome}`);
+    document.getElementById(`degustacao-${nome}-label`).textContent =
+      nome === "quantidade" ? `${textos[nome]} ${textos.opcional}` : textos[nome];
+  });
+  ["", ...textos.tipos].forEach((tipo) => {
+    const opcao = document.createElement("option");
+    opcao.value = tipo;
+    opcao.textContent = tipo || textos.selecionarTipo;
+    campos.tipo.appendChild(opcao);
+  });
+
+  const lerCliente = () => Object.fromEntries(Object.entries(campos).map(([nome, campo]) => [nome, campo.value]));
+  function mostrarErro(nome, mensagem = "") {
+    document.getElementById(`degustacao-${nome}-error`).textContent = mensagem;
+    campos[nome].setAttribute("aria-invalid", String(Boolean(mensagem)));
+  }
+  ["nome", "tipo", "local"].forEach((nome) => {
+    campos[nome].addEventListener(nome === "tipo" ? "change" : "input", () => {
+      if (campos[nome].getAttribute("aria-invalid") === "true") {
+        mostrarErro(nome, validarDegustacao(lerCliente(), textos)[nome]);
+      }
+    });
+  });
+  document.getElementById("degustacao-form").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const cliente = lerCliente();
+    const erros = validarDegustacao(cliente, textos);
+    ["nome", "tipo", "local"].forEach((nome) => mostrarErro(nome, erros[nome]));
+    const primeiroErro = Object.keys(erros)[0];
+    if (primeiroErro) {
+      campos[primeiroErro].focus();
+      return;
+    }
+    if (!campos.quantidade.reportValidity()) return;
+    const mensagem = montarMensagemDegustacao(cliente, textos.mensagem);
+    window.open(linkWhatsApp(config.whatsapp, mensagem), "_blank", "noopener,noreferrer");
+  });
 }
 
 function renderizarPreparo() {
@@ -297,10 +361,7 @@ montarApresentacao();
 montarProdutos();
 montarCalculadora();
 renderizarPreparo();
-document.getElementById("pedir-degustacao").href = linkWhatsApp(
-  config.whatsapp,
-  config.textos.whatsapp.degustacao,
-);
+montarDegustacao();
 const linkGeral = linkWhatsApp(config.whatsapp, config.textos.whatsapp.geral);
 document.getElementById("contact-whatsapp").href = linkGeral;
 document.getElementById("floating-whatsapp").href = linkGeral;

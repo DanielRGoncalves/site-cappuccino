@@ -1,13 +1,7 @@
-export function produtosDaCalculadora(produtos) {
-  return produtos.filter((produto) => produto.exibir);
-}
-
-export function xicarasPorPacote(pesoPacoteGramas, porcaoGramas) {
-  return Math.floor(pesoPacoteGramas / porcaoGramas);
-}
-
-export function custoPoPorXicara(precoPacoteCentavos, pesoPacoteGramas, porcaoGramas) {
-  return (precoPacoteCentavos * porcaoGramas) / pesoPacoteGramas;
+export function coposPorPacote(pesoPacoteGramas, porcaoGramas) {
+  if (![pesoPacoteGramas, porcaoGramas].every((valor) => Number.isFinite(valor) && valor > 0)) return null;
+  const copos = Math.floor(pesoPacoteGramas / porcaoGramas);
+  return Number.isSafeInteger(copos) ? copos : null;
 }
 
 export function precoVendaCentavos(valor) {
@@ -17,19 +11,20 @@ export function precoVendaCentavos(valor) {
   return Number.isSafeInteger(centavos) && centavos > 0 ? centavos : null;
 }
 
-export function calcularResultado(precoVenda, precoPacoteCentavos, pesoPacoteGramas, porcaoGramas) {
+export function calcularResultado(precoVenda, precoPacote, pesoPacoteGramas, porcaoGramas) {
   const vendaCentavos = precoVendaCentavos(precoVenda);
-  if (vendaCentavos === null) return null;
+  const pacoteCentavos = precoVendaCentavos(precoPacote);
+  const copos = coposPorPacote(pesoPacoteGramas, porcaoGramas);
+  if (vendaCentavos === null || pacoteCentavos === null || copos === null) return null;
 
-  const xicaras = xicarasPorPacote(pesoPacoteGramas, porcaoGramas);
-  const custoCentavos = custoPoPorXicara(precoPacoteCentavos, pesoPacoteGramas, porcaoGramas);
+  const custoCentavos = (pacoteCentavos * porcaoGramas) / pesoPacoteGramas;
   const ganhoCentavos = vendaCentavos - custoCentavos;
-
-  return {
-    xicaras,
+  const resultado = {
+    copos,
     custoCentavos,
     ganhoCentavos,
     margemPercentual: (ganhoCentavos / vendaCentavos) * 100,
-    ganhoPacoteCentavos: ganhoCentavos * xicaras,
+    ganhoPacoteCentavos: ganhoCentavos * copos,
   };
+  return Object.values(resultado).every(Number.isFinite) ? resultado : null;
 }
