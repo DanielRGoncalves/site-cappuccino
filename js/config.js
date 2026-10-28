@@ -150,7 +150,7 @@ export const config = {
     padarias: {
       titulo: "Quanto rende no seu negócio",
       descricao:
-        "Cada xícara leva 30 g. Um pacote de 250 g rende cerca de 8 xícaras. Digite por quanto você vende a xícara e veja a conta.",
+        "Escolha o tamanho do copo, digite quanto você paga no pacote e por quanto vende o copo, e veja a conta.",
       aviso:
         "A conta considera só o custo do cappuccino em pó. Copo, energia, perdas e outros custos não entram.",
       tamanhoCopo: "Tamanho do copo",

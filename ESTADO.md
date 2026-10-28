@@ -2,7 +2,7 @@
 
 > Arquivo de contexto para qualquer chat novo (Claude ou Codex). Resume onde o projeto está, o que já foi decidido e o que falta. **Não é uma tarefa**: as tarefas ficam nos arquivos `p*.md`. Atualizar ao fim de cada tarefa.
 >
-> Última atualização: 28/10/2026 (P10 em execução no Codex).
+> Última atualização: 28/10/2026 (P10 feita e revisada; próxima: P11, que depende das fotos e dos valores).
 
 ## O que é
 
@@ -39,7 +39,8 @@ Site de apresentação do **Cheiro das Águas** (Agropecuária Cheiro das Águas
 | P7 qualidade e diferenciais | `p7-qualidade.md` | feita e publicada |
 | P8 textos para "o seu negócio" | `p8-negocio.md` | feita e publicada |
 | P9 protótipo visual | `p9-visual.md` | feita (commit `1abb48e`, 20 testes), aprovada; Daniel gostou |
-| P10 calculadora nova + formulário de degustação | `p9-visual.md` | **em execução no Codex (28/10)** |
+| P10 calculadora nova + formulário de degustação | `p9-visual.md` | feita (commit `36cb07f`), revisada pelo Claude em 28/10: W-01 a W-10 ok; texto de abertura da calculadora ajustado à mão (falava em "xícara de 30 g", conflitava com o seletor de copo) |
+| P10b calculadora com duas abas (revender o pacote / servir na xícara) | `p10b-calculadora.md` | escrita em 28/10, a executar no Codex |
 | P11 fotos oficiais e versão oficial | a escrever | depende das fotos reais e dos valores confirmados |
 
 ## Fatos do negócio (confirmados pela família)
@@ -59,7 +60,7 @@ Premium, melhor, saudável ou benefício de saúde; conservante, aditivo ("sem a
 
 ## A confirmar (bloqueia a calculadora e a versão oficial)
 
-- **Calculadora:** gramas por xícara (o site usa 30 g; o rótulo diz porção de 35 g), água por xícara, xícaras por pacote na prática (o site diz "cerca de 8"), tamanhos de xícara mais comuns nos negócios (P10 usa 100/150/200 ml com 30/45/60 g, marcados `aConfirmar: true`), preço típico da xícara na região (exemplo R$ 9,00).
+- **Calculadora:** decidido em 28/10: 3 colheres = 30 g para 100 ml (rótulo diz 35 g: alinhar no rótulo novo); os negócios revendem o pacote e servem na xícara de louça (reutilizada, sem custo de copo); preço padrão do pacote para empresas R$ 30 (com açúcar) e R$ 35 (sem açúcar), negociável e fora do site; uma padaria cliente revende por R$ 39 e R$ 59. Falta confirmar: tamanhos de xícara usados nos negócios (P10b usa 150/200/300 ml) Preço da xícara: segundo o Davi, varia de R$ 8 a R$ 24 conforme o estabelecimento; o campo fica vazio, com essa faixa como dica. Com 30 g/100 ml, a xícara de 200 ml custa R$ 7,20 de pó (pacote a R$ 30): ganho baixo para quem cobra perto de R$ 8, bom acima de uns R$ 12.
 - **Fotos reais:** mãos preparando, pó na xícara, xícara pronta, produto no balcão (mais as que substituem as ilustrativas). Tirar na vertical, assunto no centro.
 - **Rótulo** da embalagem desatualizado (cita achocolatado e café solúvel) e igual para os dois produtos: atualizar e diferenciar antes de vender.
 - Com o contador: "sem açúcar" ou "sem adição de açúcar"; nota fiscal.
