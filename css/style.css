@@ -284,7 +284,8 @@ button {
   position: relative;
   order: -1;
   width: min(100%, 280px);
-  height: min(420px, 60svh);
+  height: auto;
+  aspect-ratio: 2 / 3;
   justify-self: center;
   border-radius: 50% 50% 12px 12px / 34% 34% 12px 12px;
   overflow: hidden;
@@ -319,7 +320,7 @@ button {
 .origin-photo img {
   width: 100%;
   height: auto;
-  aspect-ratio: 2 / 3;
+  aspect-ratio: 3 / 4;
   object-fit: cover;
   border-radius: var(--radius-sm);
 }
@@ -514,7 +515,7 @@ button {
 .difference-card > img,
 .difference-card > .photo-placeholder {
   width: 100%;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 9 / 16;
   object-fit: cover;
   height: auto;
   margin-bottom: 24px;
@@ -877,7 +878,7 @@ footer {
   }
   .hero-photo {
     width: 380px;
-    height: min(560px, 60svh);
+    height: auto;
   }
   .product-card {
     grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
@@ -942,7 +943,7 @@ footer {
   .hero-photo {
     order: 0;
     width: min(100%, 440px);
-    height: 600px;
+    height: auto;
   }
   .hero h1 {
     font-size: 52px;
@@ -984,7 +985,7 @@ footer {
 .step > .photo-placeholder {
   width: 100%;
   max-width: 480px;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 2 / 3;
   height: auto;
   object-fit: cover;
   margin-bottom: 24px;

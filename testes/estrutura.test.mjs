@@ -13,29 +13,32 @@ test("protótipo tem noindex fora das metas sincronizadas e conteúdo visual no 
   assert.ok(html.indexOf('name="robots"') > html.indexOf("<!-- /SINCRONIZAR -->"));
   assert.equal(config.apresentacao.prototipo, true);
   assert.equal(config.apresentacao.avisoPrototipo,
-    "Protótipo: as fotos são ilustrativas e serão trocadas por fotos reais.");
+    "Protótipo: algumas fotos ainda serão trocadas por outras do nosso dia a dia.");
   assert.equal(config.textos.origem.titulo, "Feito à mão em Taparuba, Minas Gerais");
   assert.equal(config.textos.origem.texto,
     "Cada pacote é preparado pela família, em casa, com café Conilon e cacau 100%.");
   assert.equal(config.textos.produtos.titulo, "Qual escolher?");
   assert.equal(config.textos.produtos.igual, "Nos dois: café Conilon, cacau 100% e o mesmo preparo.");
   assert.deepEqual(config.textos.diferenca.cartoes.map((c) => c.foto), [
-    "img/ilustrativas/cafe-720.webp", "img/ilustrativas/cacau-720.webp", "", "",
+    "img/reais/cafe-720.webp", "img/reais/cacau-720.webp", "img/reais/mao-720.webp", "img/reais/aroma-720.webp",
   ]);
   assert.deepEqual(config.textos.preparo.passos.map((p) => p.foto), [
-    "", "img/ilustrativas/preparo-2-480.webp", "",
+    "img/reais/preparo-1-480.webp", "img/reais/preparo-2-480.webp", "img/reais/preparo-3-480.webp",
   ]);
   assert.doesNotMatch(html + main,
     /Foto a definir|Cada pacote é preparado pela família|Nos dois: café Conilon/);
 });
 
-test("fotos ilustrativas WebP respeitam os limites da P9", async () => {
+test("fotos reais WebP respeitam os limites", async () => {
   for (const [arquivo, limite] of [
     ["hero-720.webp", 120000], ["hero-480.webp", 120000],
     ["origem-720.webp", 100000], ["cafe-720.webp", 100000],
-    ["cacau-720.webp", 100000], ["preparo-2-480.webp", 70000],
+    ["cacau-720.webp", 100000], ["mao-720.webp", 100000], ["aroma-720.webp", 100000],
+    ["preparo-1-480.webp", 70000], ["preparo-2-480.webp", 70000], ["preparo-3-480.webp", 70000],
+    ["produto-acucar-800.webp", 100000], ["produto-sem-800.webp", 100000],
+    ["produto-acucar-400.webp", 60000], ["produto-sem-400.webp", 60000],
   ]) {
-    const url = new URL(`img/ilustrativas/${arquivo}`, root);
+    const url = new URL(`img/reais/${arquivo}`, root);
     assert.ok((await stat(url)).size <= limite, arquivo);
     const bytes = await readFile(url);
     assert.equal(bytes.toString("ascii", 0, 4), "RIFF");

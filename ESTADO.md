@@ -29,7 +29,7 @@ Site de apresentação do **Cheiro das Águas** (Agropecuária Cheiro das Águas
 |---|---|---|
 | `main` | versão antiga de loja, com preços (tag `loja-v1`) | guardada, não usar |
 | `prototipo` | versão publicada no domínio (P1–P8) | **no ar** |
-| `visual` | protótipo com fotos ilustrativas da internet (P9, P10) | **não publicar**; tem `noindex` e faixa de protótipo |
+| `visual` | protótipo com simulação de fotos reais (P11a) | **não publicar**; tem `noindex` e faixa de protótipo |
 
 ## Tarefas
 
@@ -41,7 +41,7 @@ Site de apresentação do **Cheiro das Águas** (Agropecuária Cheiro das Águas
 | P9 protótipo visual | `p9-visual.md` | feita (commit `1abb48e`, 20 testes), aprovada; Daniel gostou |
 | P10 calculadora nova + formulário de degustação | `p9-visual.md` | feita (commit `36cb07f`), revisada pelo Claude em 28/10: W-01 a W-10 ok; texto de abertura da calculadora ajustado à mão (falava em "xícara de 30 g", conflitava com o seletor de copo) |
 | P10b calculadora com duas abas (revender o pacote / servir na xícara) | `p10b-calculadora.md` | escrita em 28/10, a executar no Codex |
-| P11a simulação com as fotos reais atuais | `p11a-fotos-reais.md` | escrita em 28/10; imagens prontas em `img/reais/`; a executar no Codex |
+| P11a simulação com as fotos reais atuais | `p11a-fotos-reais.md` | feita em 28/10: fotos, medidas e textos alternativos atualizados; proporções ajustadas no CSS; 25 testes passam; navegador conferido a 360, 768 e 1280 px, sem transbordo horizontal nem erros ou avisos no console; falta avaliação da família no celular real |
 | P11 fotos oficiais e versão oficial | a escrever | depende das fotos reais e dos valores confirmados |
 
 ## Fatos do negócio (confirmados pela família)
