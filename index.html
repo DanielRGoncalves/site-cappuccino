@@ -25,10 +25,13 @@
     <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png" />
     <!-- /SINCRONIZAR -->
 
+    <!-- Remover ao publicar a versão oficial -->
+    <meta name="robots" content="noindex" />
     <link rel="stylesheet" href="css/style.css" />
   </head>
 
   <body>
+    <div class="prototype-banner" id="prototype-banner" hidden></div>
     <header class="site-header" aria-label="Cabeçalho principal">
       <div class="container header-inner">
         <a
@@ -73,14 +76,25 @@
 
     <main id="inicio">
       <section class="hero" aria-labelledby="hero-title">
-        <div class="container">
+        <div class="container hero-layout">
           <div class="hero-content">
             <h1 id="hero-title"></h1>
             <p id="hero-subtitle"></p>
             <div class="hero-cta">
-              <a class="btn btn-primary" id="pedir-degustacao" href="#contato"></a>
+              <a class="btn btn-primary" id="pedir-degustacao" href="#degustacao"></a>
               <a class="btn btn-secondary" id="ver-conta" href="#padarias"></a>
             </div>
+          </div>
+          <div class="hero-photo" id="hero-photo"></div>
+        </div>
+      </section>
+
+      <section class="section origin-section" id="origem" aria-labelledby="origem-title">
+        <div class="container origin-layout">
+          <div class="origin-photo" id="origem-photo"></div>
+          <div class="section-heading">
+            <h2 id="origem-title"></h2>
+            <p id="origem-text"></p>
           </div>
         </div>
       </section>
@@ -104,7 +118,9 @@
             <p id="products-intro"></p>
           </div>
 
-          <div class="products-grid"></div>
+          <div class="product-tabs" id="product-tabs" role="tablist" aria-labelledby="products-title"></div>
+          <div class="products-grid" id="product-panels"></div>
+          <p class="products-shared" id="products-shared"></p>
         </div>
       </section>
 
@@ -127,25 +143,62 @@
           </div>
 
           <div class="calculator-card">
-            <div class="calculator-fields">
-              <div>
-                <label for="calculator-product" id="calculator-product-label"></label>
-                <select id="calculator-product" class="calculator-input"></select>
+            <div class="product-tabs calculator-tabs" role="tablist" aria-labelledby="padarias-title">
+              <button type="button" class="product-tab" id="calculator-tab-resale" role="tab" aria-controls="calculator-panel-resale" aria-selected="true"></button>
+              <button type="button" class="product-tab" id="calculator-tab-cup" role="tab" aria-controls="calculator-panel-cup" aria-selected="false" tabindex="-1"></button>
+            </div>
+
+            <div class="calculator-panel" id="calculator-panel-resale" role="tabpanel" aria-labelledby="calculator-tab-resale" tabindex="0">
+              <div class="calculator-fields">
+                <div>
+                  <label for="calculator-package-price" id="calculator-package-price-label"></label>
+                  <input id="calculator-package-price" class="calculator-input" type="text" inputmode="decimal" autocomplete="off" aria-describedby="calculator-package-hint" />
+                  <p id="calculator-package-hint" class="field-hint"></p>
+                </div>
+                <div>
+                  <label for="calculator-resale-price" id="calculator-resale-price-label"></label>
+                  <input id="calculator-resale-price" class="calculator-input" type="text" inputmode="decimal" autocomplete="off" aria-describedby="calculator-resale-hint" />
+                  <p id="calculator-resale-hint" class="field-hint"></p>
+                </div>
               </div>
-              <div>
-                <label for="calculator-price" id="calculator-price-label"></label>
-                <input id="calculator-price" class="calculator-input" type="text" inputmode="decimal" autocomplete="off" />
+              <div class="calculator-result" aria-live="polite" aria-atomic="true">
+                <p id="calculator-resale-empty"></p>
+                <dl id="calculator-resale-result" hidden>
+                  <div><dt id="calculator-resale-gain-label"></dt><dd id="calculator-resale-gain"></dd></div>
+                  <div><dt id="calculator-resale-margin-label"></dt><dd id="calculator-resale-margin"></dd></div>
+                </dl>
               </div>
             </div>
 
-            <div id="calculator-result" class="calculator-result" aria-live="polite" hidden>
-              <dl>
-                <div><dt id="calculator-cost-label"></dt><dd id="calculator-cost"></dd></div>
-                <div><dt id="calculator-gain-label"></dt><dd id="calculator-gain"></dd></div>
-                <div><dt id="calculator-margin-label"></dt><dd id="calculator-margin"></dd></div>
-                <div><dt id="calculator-package-gain-label"></dt><dd id="calculator-package-gain"></dd></div>
-              </dl>
-              <p id="calculator-notice"></p>
+            <div class="calculator-panel" id="calculator-panel-cup" role="tabpanel" aria-labelledby="calculator-tab-cup" tabindex="0" hidden>
+              <p id="calculator-example-notice" class="calculator-example" hidden></p>
+              <div class="calculator-fields">
+                <div>
+                  <label for="calculator-kg-price" id="calculator-kg-price-label"></label>
+                  <input id="calculator-kg-price" class="calculator-input" type="text" inputmode="decimal" autocomplete="off" aria-describedby="calculator-kg-hint" />
+                  <p id="calculator-kg-hint" class="field-hint"></p>
+                </div>
+                <fieldset class="cup-fieldset">
+                  <legend id="calculator-cup-label"></legend>
+                  <div class="cup-options" id="calculator-cups"></div>
+                </fieldset>
+                <div>
+                  <label for="calculator-price" id="calculator-price-label"></label>
+                  <input id="calculator-price" class="calculator-input" type="text" inputmode="decimal" autocomplete="off" aria-describedby="calculator-price-hint" />
+                  <p id="calculator-price-hint" class="field-hint"></p>
+                </div>
+              </div>
+              <div class="calculator-result" aria-live="polite" aria-atomic="true">
+                <dl><div><dt id="calculator-cups-label"></dt><dd id="calculator-cups-count"></dd></div></dl>
+                <p id="calculator-empty"></p>
+                <dl id="calculator-result" hidden>
+                  <div><dt id="calculator-cost-label"></dt><dd id="calculator-cost"></dd></div>
+                  <div><dt id="calculator-gain-label"></dt><dd id="calculator-gain"></dd></div>
+                  <div><dt id="calculator-margin-label"></dt><dd id="calculator-margin"></dd></div>
+                  <div><dt id="calculator-package-gain-label"></dt><dd id="calculator-package-gain"></dd></div>
+                </dl>
+                <p id="calculator-notice"></p>
+              </div>
             </div>
           </div>
         </div>
@@ -170,6 +223,37 @@
         <div class="container">
           <div class="section-heading"><h2 id="como-title"></h2></div>
           <div class="process-grid" id="como-passos"></div>
+        </div>
+      </section>
+
+      <section class="section tasting-section" id="degustacao" aria-labelledby="degustacao-title" tabindex="-1">
+        <div class="container">
+          <div class="section-heading">
+            <h2 id="degustacao-title"></h2>
+            <p id="degustacao-description"></p>
+          </div>
+          <form id="degustacao-form" class="tasting-form" novalidate autocomplete="off">
+            <div>
+              <label for="degustacao-nome" id="degustacao-nome-label"></label>
+              <input id="degustacao-nome" name="nome" class="calculator-input" type="text" required aria-describedby="degustacao-nome-error" />
+              <p id="degustacao-nome-error" class="field-error" aria-live="polite"></p>
+            </div>
+            <div>
+              <label for="degustacao-tipo" id="degustacao-tipo-label"></label>
+              <select id="degustacao-tipo" name="tipo" class="calculator-input" required aria-describedby="degustacao-tipo-error"></select>
+              <p id="degustacao-tipo-error" class="field-error" aria-live="polite"></p>
+            </div>
+            <div>
+              <label for="degustacao-local" id="degustacao-local-label"></label>
+              <input id="degustacao-local" name="local" class="calculator-input" type="text" required aria-describedby="degustacao-local-error" />
+              <p id="degustacao-local-error" class="field-error" aria-live="polite"></p>
+            </div>
+            <div>
+              <label for="degustacao-quantidade" id="degustacao-quantidade-label"></label>
+              <input id="degustacao-quantidade" name="quantidade" class="calculator-input" type="number" min="0" step="1" />
+            </div>
+            <button id="degustacao-submit" class="btn btn-primary" type="submit"></button>
+          </form>
         </div>
       </section>
 

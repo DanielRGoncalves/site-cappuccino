@@ -1,10 +1,36 @@
 import { config } from "./config.js";
-import { formatarReais, linkWhatsApp } from "./pedido.js";
-import { calcularResultado, produtosDaCalculadora } from "./calculadora.js";
+import { formatarReais, linkWhatsApp, validarDegustacao, montarMensagemDegustacao } from "./pedido.js";
+import { calcularResultado, calcularRevenda, coposPorPacote } from "./calculadora.js";
 import { montarPreparo } from "./preparo.js";
+import { produtosVisiveis, indiceDaAba } from "./produtos.js";
+
+function montarFoto(dados, primeiraTela = false) {
+  if (!dados.foto) {
+    const quadro = document.createElement("div");
+    quadro.className = "photo-placeholder";
+    quadro.textContent = config.apresentacao.fotoPendente;
+    return quadro;
+  }
+  const imagem = document.createElement("img");
+  imagem.src = dados.foto;
+  imagem.alt = dados.alt;
+  imagem.width = dados.largura;
+  imagem.height = dados.altura;
+  if (!primeiraTela) imagem.loading = "lazy";
+  return imagem;
+}
 
 function montarIdentidade() {
   const textos = config.textos;
+  const faixa = document.getElementById("prototype-banner");
+  faixa.textContent = config.apresentacao.avisoPrototipo;
+  faixa.hidden = !config.apresentacao.prototipo;
+  const hero = config.apresentacao.hero;
+  const fotoHero = montarFoto(hero, true);
+  fotoHero.srcset = `${hero.fotoPequena} 480w, ${hero.foto} 720w`;
+  fotoHero.sizes = "(min-width: 920px) 440px, (min-width: 640px) 380px, 280px";
+  fotoHero.fetchPriority = "high";
+  document.getElementById("hero-photo").appendChild(fotoHero);
   const logoWrap = document.querySelector(".logo-wrap");
   logoWrap.setAttribute("aria-label", `${config.marca} - início`);
   const logo = logoWrap.querySelector("img");
@@ -49,6 +75,10 @@ function montarIdentidade() {
 }
 
 function montarApresentacao() {
+  const origem = config.textos.origem;
+  document.getElementById("origem-title").textContent = origem.titulo;
+  document.getElementById("origem-text").textContent = origem.texto;
+  document.getElementById("origem-photo").appendChild(montarFoto(origem));
   const diferenca = config.textos.diferenca;
   document.getElementById("diferenca-title").textContent = diferenca.titulo;
   const cartoes = document.getElementById("diferenca-cards");
@@ -59,7 +89,7 @@ function montarApresentacao() {
     titulo.textContent = item.titulo;
     const descricao = document.createElement("p");
     descricao.textContent = item.texto;
-    card.append(titulo, descricao);
+    card.append(montarFoto(item), titulo, descricao);
     cartoes.appendChild(card);
   });
   document.getElementById("diferenca-destaque").textContent = diferenca.destaque;
@@ -98,17 +128,57 @@ function montarApresentacao() {
   });
 }
 
+function configurarAbas(abas, paineis) {
+  function selecionarAba(index, focar = false) {
+    abas.forEach((aba, posicao) => {
+      const selecionada = posicao === index;
+      aba.setAttribute("aria-selected", String(selecionada));
+      aba.tabIndex = selecionada ? 0 : -1;
+      paineis[posicao].hidden = !selecionada;
+    });
+    if (focar) abas[index].focus();
+  }
+
+  abas.forEach((aba, index) => {
+    aba.addEventListener("click", () => selecionarAba(index));
+    aba.addEventListener("keydown", (event) => {
+      if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+      event.preventDefault();
+      selecionarAba(indiceDaAba(index, event.key, abas.length), true);
+    });
+  });
+  selecionarAba(0);
+}
+
 function montarProdutos() {
   const grade = document.querySelector(".products-grid");
-  config.produtos.filter((produto) => produto.exibir).forEach((produto) => {
+  const listaAbas = document.getElementById("product-tabs");
+  const abas = [];
+  const paineis = [];
+
+  produtosVisiveis(config.produtos).forEach((produto) => {
+    const aba = document.createElement("button");
+    aba.type = "button";
+    aba.id = `tab-${produto.id}`;
+    aba.className = `product-tab product-${produto.id}`;
+    aba.setAttribute("role", "tab");
+    aba.setAttribute("aria-controls", `panel-${produto.id}`);
+    aba.textContent = produto.selo;
+    abas.push(aba);
+    listaAbas.appendChild(aba);
     const card = document.createElement("article");
-    card.className = "product-card";
+    card.className = `product-card product-${produto.id}`;
+    card.id = `panel-${produto.id}`;
+    card.setAttribute("role", "tabpanel");
+    card.setAttribute("aria-labelledby", aba.id);
+    card.tabIndex = 0;
+    paineis.push(card);
     const imagemArea = document.createElement("div");
     imagemArea.className = "product-image";
     const imagem = document.createElement("img");
     imagem.src = produto.foto;
     imagem.srcset = `${produto.fotoPequena} 400w, ${produto.foto} 800w`;
-    imagem.sizes = "(max-width: 639px) 78vw, (max-width: 919px) 35vw, 450px";
+    imagem.sizes = "(min-width: 920px) 360px, (min-width: 640px) 280px, 240px";
     imagem.alt = produto.alt;
     imagem.width = 800;
     imagem.height = 800;
@@ -119,8 +189,14 @@ function montarProdutos() {
     const titulo = document.createElement("h3");
     titulo.textContent = produto.nome;
     const descricao = document.createElement("p");
-    descricao.textContent = `${produto.descricao} ${produto.peso}`;
-    corpo.append(titulo, descricao);
+    descricao.textContent = produto.frase;
+    const selo = document.createElement("span");
+    selo.className = "product-tag";
+    selo.textContent = produto.selo;
+    const peso = document.createElement("p");
+    peso.className = "product-weight";
+    peso.textContent = produto.peso;
+    corpo.append(selo, titulo, descricao, peso);
     if (produto.avisos) {
       const avisos = document.createElement("p");
       avisos.className = "product-warnings";
@@ -148,52 +224,141 @@ function montarProdutos() {
     card.append(imagemArea, corpo);
     grade.appendChild(card);
   });
+  configurarAbas(abas, paineis);
+  document.getElementById("products-shared").textContent = config.textos.produtos.igual;
 }
 
 function montarCalculadora() {
   const textos = config.textos.padarias;
-  document.getElementById("padarias-title").textContent = textos.titulo;
-  document.getElementById("padarias-description").textContent = textos.descricao;
-  document.getElementById("calculator-notice").textContent = textos.aviso;
-  document.getElementById("calculator-product-label").textContent = textos.produto;
-  document.getElementById("calculator-price-label").textContent = textos.precoVenda;
-  document.getElementById("calculator-cost-label").textContent = textos.custo;
-  document.getElementById("calculator-gain-label").textContent = textos.ganho;
-  document.getElementById("calculator-margin-label").textContent = textos.margem;
-  document.getElementById("calculator-package-gain-label").textContent = textos.ganhoPacote;
+  const rotulos = {
+    "padarias-title": textos.titulo,
+    "padarias-description": textos.descricao,
+    "calculator-notice": textos.aviso,
+    "calculator-example-notice": textos.avisoExemplo,
+    "calculator-cup-label": textos.tamanhoXicara,
+    "calculator-package-price-label": textos.precoPacote,
+    "calculator-package-hint": textos.dicaPacote,
+    "calculator-kg-price-label": textos.precoKg,
+    "calculator-kg-hint": textos.dicaKg,
+    "calculator-tab-resale": textos.abaRevenda,
+    "calculator-tab-cup": textos.abaXicara,
+    "calculator-resale-price-label": textos.precoVendaPacote,
+    "calculator-resale-hint": config.calculadora.revenda.exemploPrecoVenda,
+    "calculator-resale-gain-label": textos.ganhoRevenda,
+    "calculator-resale-margin-label": textos.margem,
+    "calculator-resale-empty": textos.semResultadoRevenda,
+    "calculator-price-label": textos.precoVenda,
+    "calculator-price-hint": textos.dicaPrecoXicara,
+    "calculator-cups-label": textos.copos,
+    "calculator-cost-label": textos.custo,
+    "calculator-gain-label": textos.ganho,
+    "calculator-margin-label": textos.margem,
+    "calculator-package-gain-label": textos.ganhoPacote,
+    "calculator-empty": textos.semResultado,
+  };
+  Object.entries(rotulos).forEach(([id, texto]) => {
+    document.getElementById(id).textContent = texto;
+  });
+  document.getElementById("calculator-example-notice").hidden = !config.calculadora.xicara.aConfirmar;
+  configurarAbas(
+    [document.getElementById("calculator-tab-resale"), document.getElementById("calculator-tab-cup")],
+    [document.getElementById("calculator-panel-resale"), document.getElementById("calculator-panel-cup")],
+  );
 
-  const produtoInput = document.getElementById("calculator-product");
+  const pacoteInput = document.getElementById("calculator-package-price");
+  const kgInput = document.getElementById("calculator-kg-price");
   const precoInput = document.getElementById("calculator-price");
+  const revendaInput = document.getElementById("calculator-resale-price");
   const resultadoEl = document.getElementById("calculator-result");
   const percentual = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 1 });
-
-  const produtos = produtosDaCalculadora(config.produtos);
-  produtos.forEach((produto) => {
-    const opcao = document.createElement("option");
-    opcao.value = produto.id;
-    opcao.textContent = produto.nome;
-    produtoInput.appendChild(opcao);
-  });
+  let xicara = config.calculadora.xicara.tamanhos.find(({ ml }) => ml === config.calculadora.xicara.tamanhoInicialMl);
 
   function atualizarResultado() {
-    const produto = produtos.find((item) => item.id === produtoInput.value);
-    const resultado = produto && calcularResultado(
-      precoInput.value,
-      produto.precoCentavos,
-      config.pesoPacoteGramas,
-      config.porcaoGramas,
-    );
-    resultadoEl.hidden = !resultado;
-    if (!resultado) return;
+    const revenda = calcularRevenda(revendaInput.value, pacoteInput.value);
+    document.getElementById("calculator-resale-result").hidden = !revenda;
+    document.getElementById("calculator-resale-empty").hidden = Boolean(revenda);
+    document.getElementById("calculator-resale-gain").textContent = revenda ? formatarReais(revenda.ganhoCentavos) : "";
+    document.getElementById("calculator-resale-margin").textContent = revenda ? `${percentual.format(revenda.margemPercentual)}%` : "";
 
-    document.getElementById("calculator-cost").textContent = formatarReais(resultado.custoCentavos);
-    document.getElementById("calculator-gain").textContent = formatarReais(resultado.ganhoCentavos);
-    document.getElementById("calculator-margin").textContent = `${percentual.format(resultado.margemPercentual)}%`;
-    document.getElementById("calculator-package-gain").textContent = formatarReais(resultado.ganhoPacoteCentavos);
+    document.getElementById("calculator-cups-count").textContent = coposPorPacote(config.calculadora.xicara.pesoGramas, xicara.gramas);
+    const resultado = calcularResultado(precoInput.value, kgInput.value, config.calculadora.xicara.pesoGramas, xicara.gramas);
+    resultadoEl.hidden = !resultado;
+    document.getElementById("calculator-empty").hidden = Boolean(resultado);
+    document.getElementById("calculator-cost").textContent = resultado ? formatarReais(resultado.custoCentavos) : "";
+    document.getElementById("calculator-gain").textContent = resultado ? formatarReais(resultado.ganhoCentavos) : "";
+    document.getElementById("calculator-margin").textContent = resultado ? `${percentual.format(resultado.margemPercentual)}%` : "";
+    document.getElementById("calculator-package-gain").textContent = resultado ? formatarReais(resultado.ganhoPacoteCentavos) : "";
   }
 
+  const opcoes = document.getElementById("calculator-cups");
+  config.calculadora.xicara.tamanhos.forEach((tamanho) => {
+    const rotulo = document.createElement("label");
+    rotulo.className = "cup-option";
+    const radio = document.createElement("input");
+    radio.type = "radio";
+    radio.name = "calculator-cup";
+    radio.value = tamanho.ml;
+    radio.checked = tamanho.ml === config.calculadora.xicara.tamanhoInicialMl;
+    const texto = document.createElement("span");
+    texto.textContent = `${tamanho.ml} ml`;
+    radio.addEventListener("change", () => {
+      xicara = tamanho;
+      atualizarResultado();
+    });
+    rotulo.append(radio, texto);
+    opcoes.appendChild(rotulo);
+  });
   precoInput.addEventListener("input", atualizarResultado);
-  produtoInput.addEventListener("change", atualizarResultado);
+  revendaInput.addEventListener("input", atualizarResultado);
+  pacoteInput.addEventListener("input", atualizarResultado);
+  kgInput.addEventListener("input", atualizarResultado);
+  atualizarResultado();
+}
+
+function montarDegustacao() {
+  const textos = config.textos.degustacao;
+  document.getElementById("degustacao-title").textContent = textos.titulo;
+  document.getElementById("degustacao-description").textContent = textos.texto;
+  document.getElementById("degustacao-submit").textContent = textos.botao;
+  const campos = {};
+  ["nome", "tipo", "local", "quantidade"].forEach((nome) => {
+    campos[nome] = document.getElementById(`degustacao-${nome}`);
+    document.getElementById(`degustacao-${nome}-label`).textContent =
+      nome === "quantidade" ? `${textos[nome]} ${textos.opcional}` : textos[nome];
+  });
+  ["", ...textos.tipos].forEach((tipo) => {
+    const opcao = document.createElement("option");
+    opcao.value = tipo;
+    opcao.textContent = tipo || textos.selecionarTipo;
+    campos.tipo.appendChild(opcao);
+  });
+
+  const lerCliente = () => Object.fromEntries(Object.entries(campos).map(([nome, campo]) => [nome, campo.value]));
+  function mostrarErro(nome, mensagem = "") {
+    document.getElementById(`degustacao-${nome}-error`).textContent = mensagem;
+    campos[nome].setAttribute("aria-invalid", String(Boolean(mensagem)));
+  }
+  ["nome", "tipo", "local"].forEach((nome) => {
+    campos[nome].addEventListener(nome === "tipo" ? "change" : "input", () => {
+      if (campos[nome].getAttribute("aria-invalid") === "true") {
+        mostrarErro(nome, validarDegustacao(lerCliente(), textos)[nome]);
+      }
+    });
+  });
+  document.getElementById("degustacao-form").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const cliente = lerCliente();
+    const erros = validarDegustacao(cliente, textos);
+    ["nome", "tipo", "local"].forEach((nome) => mostrarErro(nome, erros[nome]));
+    const primeiroErro = Object.keys(erros)[0];
+    if (primeiroErro) {
+      campos[primeiroErro].focus();
+      return;
+    }
+    if (!campos.quantidade.reportValidity()) return;
+    const mensagem = montarMensagemDegustacao(cliente, textos.mensagem);
+    window.open(linkWhatsApp(config.whatsapp, mensagem), "_blank", "noopener,noreferrer");
+  });
 }
 
 function renderizarPreparo() {
@@ -201,7 +366,7 @@ function renderizarPreparo() {
   document.getElementById("preparo-title").textContent = preparo.titulo;
   const lista = document.getElementById("preparo-steps");
 
-  preparo.passos.forEach((passo) => {
+  preparo.passos.forEach((passo, index) => {
     const card = document.createElement("article");
     card.className = "step";
     const numero = document.createElement("div");
@@ -212,7 +377,7 @@ function renderizarPreparo() {
     titulo.textContent = passo.titulo;
     const descricao = document.createElement("p");
     descricao.textContent = passo.descricao;
-    card.append(numero, titulo, descricao);
+    card.append(montarFoto(config.textos.preparo.passos[index]), numero, titulo, descricao);
     lista.appendChild(card);
   });
 
@@ -225,10 +390,7 @@ montarApresentacao();
 montarProdutos();
 montarCalculadora();
 renderizarPreparo();
-document.getElementById("pedir-degustacao").href = linkWhatsApp(
-  config.whatsapp,
-  config.textos.whatsapp.degustacao,
-);
+montarDegustacao();
 const linkGeral = linkWhatsApp(config.whatsapp, config.textos.whatsapp.geral);
 document.getElementById("contact-whatsapp").href = linkGeral;
 document.getElementById("floating-whatsapp").href = linkGeral;
