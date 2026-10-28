@@ -2,7 +2,7 @@
 
 > Arquivo de contexto para qualquer chat novo (Claude ou Codex). Resume onde o projeto está, o que já foi decidido e o que falta. **Não é uma tarefa**: as tarefas ficam nos arquivos `p*.md`. Atualizar ao fim de cada tarefa.
 >
-> Última atualização: 28/10/2026 (P10 feita e revisada; próxima: P11, que depende das fotos e dos valores).
+> Última atualização: 28/10/2026 (P10b, P10c e P11a feitas e revisadas; falta testar no celular e juntar as fotos que faltam para a P11).
 
 ## O que é
 
@@ -29,7 +29,7 @@ Site de apresentação do **Cheiro das Águas** (Agropecuária Cheiro das Águas
 |---|---|---|
 | `main` | versão antiga de loja, com preços (tag `loja-v1`) | guardada, não usar |
 | `prototipo` | versão publicada no domínio (P1–P8) | **no ar** |
-| `visual` | protótipo com fotos ilustrativas da internet (P9, P10) | **não publicar**; tem `noindex` e faixa de protótipo |
+| `visual` | protótipo com as fotos reais atuais (P9 a P11a) | **não publicar**; tem `noindex` e faixa de protótipo |
 
 ## Tarefas
 
@@ -40,13 +40,14 @@ Site de apresentação do **Cheiro das Águas** (Agropecuária Cheiro das Águas
 | P8 textos para "o seu negócio" | `p8-negocio.md` | feita e publicada |
 | P9 protótipo visual | `p9-visual.md` | feita (commit `1abb48e`, 20 testes), aprovada; Daniel gostou |
 | P10 calculadora nova + formulário de degustação | `p9-visual.md` | feita (commit `36cb07f`), revisada pelo Claude em 28/10: W-01 a W-10 ok; texto de abertura da calculadora ajustado à mão (falava em "xícara de 30 g", conflitava com o seletor de copo) |
-| P10b calculadora com duas abas (revender o pacote / servir na xícara) | `p10b-calculadora.md` | escrita em 28/10, a executar no Codex |
-| P11a simulação com as fotos reais atuais | `p11a-fotos-reais.md` | escrita em 28/10; imagens prontas em `img/reais/`; a executar no Codex |
+| P10b calculadora com duas abas (revender o pacote / servir na xícara) | `p10b-calculadora.md` | feita, revisada pelo Claude em 28/10: X-01 a X-11 ok |
+| P10c aba Xícara calculada por kg; "diet" na calculadora | `p10c-calculadora-kg.md` | feita (commit `61ff298`), revisada pelo Claude em 28/10: K-01 a K-11 ok, 26 testes; falta testar toque no celular |
+| P11a simulação com as fotos reais atuais | `p11a-fotos-reais.md` | feita (commit `8d4e948`), revisada pelo Claude em 28/10: 25 testes, sem erro no console; imagens em `img/reais/` |
 | P11 fotos oficiais e versão oficial | a escrever | depende das fotos reais e dos valores confirmados |
 
 ## Fatos do negócio (confirmados pela família)
 
-- Produtos exibidos: **com açúcar** e **sem açúcar**; descafeinado existe no config com `exibir: false`. Só há pacote de **250 g**. A embalagem é a mesma para os dois.
+- Produtos exibidos: **com açúcar** e **sem açúcar**; descafeinado existe no config com `exibir: false`. No varejo, só há pacote de **250 g** (a embalagem é a mesma para os dois). Negócios que **servem na xícara** compram **por kg**, num pacote de 1 kg separado (embalagem ainda não definida). Preço do kg em 28/10: **R$ 84 tradicional** e **R$ 108 diet** (negociável, fora do site). O sem açúcar tem aprovação para ser chamado de **diet**: hoje só a calculadora usa "diet"; a aba dos produtos troca "Sem açúcar" por "diet" quando chegar a embalagem nova.
 - Ingredientes com açúcar: "Leite em pó integral, bicarbonato de sódio, canela em pó, cacau 100%, açúcar refinado e café Conilon." Sem açúcar: os mesmos, sem o açúcar refinado.
 - Avisos: "Contém leite e derivados. Não contém glúten." Conservação: "Local seco, ventilado e protegido da luz solar." Validade: 365 dias.
 - Café Conilon; cacau 100%, não achocolatado; feito à mão, em casa, sem processo industrial.
