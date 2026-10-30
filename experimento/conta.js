@@ -45,10 +45,11 @@ export function montarConta(revenda, reduzido) {
 
   const compra = campo("compra", revenda ? rotulos.precoPacote : rotulos.precoKg, dicaCompra.id);
   const venda = campo("venda", revenda ? rotulos.precoVendaPacote : rotulos.precoVenda, dicaVenda.id);
+  venda.grupo.append(",");
   sentenca.append(`${frase.compra} `, compra.grupo, " ");
   let tamanho;
   if (revenda) {
-    sentenca.append(`${frase.pacote} `, venda.grupo, ",");
+    sentenca.append(`${frase.pacote} `, venda.grupo);
   } else {
     tamanho = campo("tamanho", rotulos.tamanhoXicara, dicaCompra.id, true);
     for (const { ml } of config.calculadora.xicara.tamanhos) {
@@ -57,13 +58,18 @@ export function montarConta(revenda, reduzido) {
       opcao.selected = ml === config.calculadora.xicara.tamanhoInicialMl;
       tamanho.entrada.append(opcao);
     }
-    sentenca.append(`${frase.xicara} `, tamanho.grupo, ` ${frase.venda} `, venda.grupo, ",");
+    sentenca.append(`${frase.xicara} `, tamanho.grupo, ` ${frase.venda} `, venda.grupo);
   }
 
-  const resultado = criar("p", "conta-resultado");
-  resultado.setAttribute("aria-live", "polite");
-  resultado.setAttribute("aria-atomic", "true");
+  const resultado = criar("span", "conta-resultado");
+  resultado.setAttribute("aria-hidden", "true");
+  const anuncio = criar("span", "sr-only");
+  anuncio.setAttribute("aria-live", "polite");
+  anuncio.setAttribute("aria-atomic", "true");
+  const pendente = criar("p", "conta-pendente");
   const ganho = criar("strong", "conta-ganho");
+  resultado.append(`${frase.ganho} `, ganho, ` ${revenda ? frase.porPacote : frase.porXicara}`);
+  sentenca.append(" ", resultado);
   const detalhes = criar("dl", "conta-detalhes");
   function detalhe(chave) {
     const grupo = criar("div");
@@ -84,28 +90,29 @@ export function montarConta(revenda, reduzido) {
       ? calcularRevenda(venda.entrada.value, compra.entrada.value)
       : calcularResultado(venda.entrada.value, compra.entrada.value, config.calculadora.xicara.pesoGramas, xicara.gramas);
     if (copos) copos.valor.textContent = coposPorPacote(config.calculadora.xicara.pesoGramas, xicara.gramas);
-    const anterior = resultado.textContent;
-    if (conta) {
-      ganho.textContent = formatarReais(conta.ganhoCentavos);
-      resultado.replaceChildren(`${frase.ganho} `, ganho, ` ${revenda ? frase.porPacote : frase.porXicara}`);
-      resultado.setAttribute("aria-label", `${rotulos[revenda ? "ganhoRevenda" : "ganho"]}: ${resultado.textContent}`);
-    } else {
-      resultado.textContent = revenda ? rotulos.semResultadoRevenda : rotulos.semResultado;
-      resultado.removeAttribute("aria-label");
-    }
-    resultado.classList.toggle("sem-resultado", !conta);
-    for (const item of [custo, margem, porKg].filter(Boolean)) item.grupo.hidden = !conta;
-    if (conta) {
-      margem.valor.textContent = `${percentual.format(conta.margemPercentual)}%`;
-      if (custo) custo.valor.textContent = formatarReais(conta.custoCentavos);
-      if (porKg) porKg.valor.textContent = formatarReais(conta.ganhoPacoteCentavos);
-    }
+    const anterior = ganho.textContent;
+    ganho.textContent = conta ? formatarReais(conta.ganhoCentavos) : frase.vazio;
+    const semResultado = revenda ? rotulos.semResultadoRevenda : rotulos.semResultado;
+    pendente.textContent = semResultado;
+    pendente.style.visibility = conta ? "hidden" : "visible";
+    anuncio.textContent = conta ? resultado.textContent : semResultado;
+    margem.valor.textContent = conta ? `${percentual.format(conta.margemPercentual)}%` : "—";
+    if (custo) custo.valor.textContent = conta ? formatarReais(conta.custoCentavos) : "—";
+    if (porKg) porKg.valor.textContent = conta ? formatarReais(conta.ganhoPacoteCentavos) : "—";
     ganho.getAnimations().forEach((animacao) => animacao.cancel());
-    if (conta && anterior !== resultado.textContent && !reduzido.matches) {
+    if (conta && anterior !== ganho.textContent && !reduzido.matches) {
       ganho.animate([{ opacity: .45 }, { opacity: 1 }], { duration: 180 });
     }
   }
-  bloco.append(titulo, sentenca, resultado, dicas, detalhes);
+  bloco.append(titulo, sentenca, anuncio, pendente, dicas, detalhes);
+  // As dicas ocupam a mesma linha reservada; só a do campo em foco aparece.
+  bloco.addEventListener("focusin", (evento) => {
+    const id = evento.target.getAttribute("aria-describedby");
+    for (const dica of dicas.children) dica.classList.toggle("ativa", dica.id === id);
+  });
+  bloco.addEventListener("focusout", () => {
+    for (const dica of dicas.children) dica.classList.remove("ativa");
+  });
   if (!revenda) {
     if (config.calculadora.xicara.aConfirmar) bloco.append(criar("p", "conta-aviso", rotulos.avisoExemplo));
     bloco.append(criar("p", "conta-aviso", rotulos.aviso));

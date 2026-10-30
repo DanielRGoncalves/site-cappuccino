@@ -158,16 +158,51 @@ vender.append(tituloVender, abas, ...paineis, botoesVenda);
 selecionarAba(0);
 
 const contato = $("contato");
-const tituloContato = elemento("h2", "", config.textos.contato.titulo);
+const molduraContato = elemento("div", "arco contato-foto");
+const fotoContato = elemento("img");
+fotoContato.src = "img/contato-600.webp";
+fotoContato.srcset = "img/contato-600.webp 600w, img/contato-1200.webp 1200w";
+fotoContato.sizes = "(max-width: 919px) min(88vw, 430px), 37vw";
+fotoContato.width = 600;
+fotoContato.height = 800;
+fotoContato.loading = "lazy";
+fotoContato.decoding = "async";
+fotoContato.alt = textos.contato.alt;
+molduraContato.append(fotoContato);
+const conteudoContato = elemento("div", "contato-conteudo");
+const tituloContato = elemento("h2", "", textos.contato.titulo);
 tituloContato.id = "titulo-contato";
 tituloContato.tabIndex = -1;
+function iconeContato(camera = false) {
+  const ns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(ns, "svg");
+  for (const [nome, valor] of Object.entries({ width: 24, height: 24, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", "stroke-width": 1.5, "stroke-linecap": "round", "stroke-linejoin": "round", "aria-hidden": "true", focusable: "false" })) svg.setAttribute(nome, valor);
+  const path = document.createElementNS(ns, "path");
+  path.setAttribute("d", camera
+    ? "M4 6.5h3l1.5-3h7l1.5 3h3a1.5 1.5 0 0 1 1.5 1.5v11a1.5 1.5 0 0 1-1.5 1.5H4A1.5 1.5 0 0 1 2.5 19V8A1.5 1.5 0 0 1 4 6.5Z M16 13.5a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"
+    : "M5 3.5h14A2.5 2.5 0 0 1 21.5 6v9a2.5 2.5 0 0 1-2.5 2.5H9l-5.5 4v-5A2.5 2.5 0 0 1 2.5 15V6A2.5 2.5 0 0 1 5 3.5Z");
+  svg.append(path);
+  return svg;
+}
 const linksContato = elemento("div", "contato-links");
-linksContato.append(
-  link(config.textos.contato.whatsapp, whatsapp(config.textos.whatsapp.geral)),
-  link(config.instagram.usuario, config.instagram.url),
+const conversa = link(textos.contato.botao, linkDegustacao, "botao");
+conversa.prepend(iconeContato());
+const instagram = link(config.instagram.usuario, config.instagram.url);
+instagram.prepend(iconeContato(true));
+linksContato.append(conversa, instagram);
+const notasContato = elemento("div", "contato-notas");
+for (const pergunta of ["Como é a entrega?", "Como posso pagar?"]) {
+  const item = config.textos.faq.itens.find((item) => item.pergunta === pergunta);
+  if (item?.resposta) notasContato.append(elemento("p", "", pergunta === "Como é a entrega?" ? item.resposta.replace("pela família ", "") : item.resposta));
+}
+notasContato.append(
+  elemento("p", "", config.dadosLegais.razaoSocial),
+  elemento("p", "", `${config.textos.contato.cnpj} ${config.dadosLegais.cnpj}`),
+  elemento("p", "", config.dadosLegais.endereco),
   link(textos.voltar, "../index.html"),
 );
-contato.append(tituloContato, linksContato, elemento("p", "", config.dadosLegais.razaoSocial));
+conteudoContato.append(tituloContato, elemento("p", "", textos.contato.texto), linksContato, notasContato);
+contato.append(molduraContato, conteudoContato);
 
 const camadaMenu = $("menu-camada");
 const botaoMenu = $("menu-botao");

@@ -12,7 +12,14 @@ export const textos = {
   apoio: "Artesanal e gourmet, feito à mão com café Conilon e cacau 100%.",
   verFormas: "Ver as duas formas de vender",
   voltar: "Voltar ao site atual",
+  contato: {
+    titulo: "Vamos marcar uma degustação?",
+    texto: "A gente leva o cappuccino e a água quente, e você prova na hora. Sem custo.",
+    botao: "Conversar no WhatsApp",
+    alt: "Mulher sorrindo atrás de dois pacotes de cappuccino Cheiro das Águas sobre a mesa",
+  },
   conta: {
+    vazio: "R$ —",
     titulo: "Faça a conta",
     compra: "Se eu pago R$",
     xicara: "no kg e vendo a xícara de",
