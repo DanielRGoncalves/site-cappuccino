@@ -7,7 +7,7 @@ export const config = {
     imagem: "img/og.jpg",
     imagemAlt: "Pacote de cappuccino e logo Cheiro das Águas sobre fundo preto",
   },
-  whatsapp: "5527998480547",
+  whatsapp: "5533999096791",
   instagram: {
     url: "https://instagram.com/cheirodasaguasgourmet",
     usuario: "@cheirodasaguasgourmet",

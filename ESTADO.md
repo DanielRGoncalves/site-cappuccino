@@ -53,7 +53,7 @@ Site de apresentação do **Cheiro das Águas** (Agropecuária Cheiro das Águas
 - Café Conilon; cacau 100%, não achocolatado; feito à mão, em casa, sem processo industrial.
 - Entrega pela família na Grande Vitória, sem taxa, de um dia para o outro. Pagamento: Pix, cartão na maquininha na entrega ou dinheiro.
 - **Degustação gratuita** antes da primeira venda: a família leva uma pequena quantidade do cappuccino e a água quente, e a pessoa experimenta na hora.
-- WhatsApp 5527998480547; Instagram @cheirodasaguasgourmet.
+- WhatsApp 5533999096791; Instagram @cheirodasaguasgourmet.
 - **Sem preços no site** (`apresentacao.mostrarPrecos: false`).
 
 ## Proibido escrever (vale em tudo)

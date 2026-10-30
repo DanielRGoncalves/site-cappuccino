@@ -12,7 +12,7 @@ Servidor local para testar: `python -m http.server 8000` na raiz do projeto, dep
 |---|---|---|
 | C-01 | Não há `<style>` nem `<script>` com código dentro do `index.html`. O CSS fica em `css/style.css` e o JS em `js/*.js` (ES modules). | Procurar `<style` no `index.html`: 0 resultados. Procurar `<script>` sem `src`: 0 resultados. |
 | C-02 | O arquivo antigo `js/script.js` não existe mais e nenhum arquivo o referencia. | `git ls-files js/script.js` não mostra nada; procurar `script.js` no projeto: 0 resultados. |
-| C-03 | Marca, domínio, Instagram, WhatsApp, preços, produtos e fotos ficam **só** em `js/config.js`. | Procurar `Cheiro das Águas`, `5527998480547`, `cheirodasaguas` e `30,00`/`30.0`/`35,00`/`35.0` (e os valores antigos `22,00`/`22.0`) fora de `js/config.js`. Só pode haver ocorrências dentro do bloco do `<head>` marcado `SINCRONIZAR COM js/config.js`, no `README.md`, em `testes/` e nos `.md` de documentação. |
+| C-03 | Marca, domínio, Instagram, WhatsApp, preços, produtos e fotos ficam **só** em `js/config.js`. | Procurar `Cheiro das Águas`, `5533999096791`, `cheirodasaguas` e `30,00`/`30.0`/`35,00`/`35.0` (e os valores antigos `22,00`/`22.0`) fora de `js/config.js`. Só pode haver ocorrências dentro do bloco do `<head>` marcado `SINCRONIZAR COM js/config.js`, no `README.md`, em `testes/` e nos `.md` de documentação. |
 | C-04 | Trocar um valor no config muda o site inteiro. | Teste manual: mudar o preço do "com açúcar" para 23 no config e recarregar. O card, a sacola, o total e a mensagem do WhatsApp mostram R$ 23,00. Depois desfazer. |
 | C-05 | Trocar a foto de um produto é mudar um caminho no config. | O `README.md` explica isso em até 5 passos. Teste: apontar um produto para `img/logo.webp`; só aquele card muda. |
 | C-06 | Os testes automáticos passam. | `node --test testes/` termina sem falhas. |
@@ -34,7 +34,7 @@ Servidor local para testar: `python -m http.server 8000` na raiz do projeto, dep
 
 | ID | Critério | Como verificar |
 |---|---|---|
-| C-20 | Existe um botão flutuante de WhatsApp em todas as rolagens, fora da sacola. Ele abre `https://wa.me/5527998480547?text=` com a mensagem padrão do brief (padaria), codificada. | Inspecionar o `href`; num celular real, tocar: abre a conversa com o número certo e o texto preenchido. |
+| C-20 | Existe um botão flutuante de WhatsApp em todas as rolagens, fora da sacola. Ele abre `https://wa.me/5533999096791?text=` com a mensagem padrão do brief (padaria), codificada. | Inspecionar o `href`; num celular real, tocar: abre a conversa com o número certo e o texto preenchido. |
 | C-21 | O botão flutuante tem área de toque ≥ 48×48 px e `aria-label`, e não cobre o botão "Finalizar pedido" nem os controles da sacola (fica oculto com a sacola ou o checkout abertos). | DevTools a 360 px, abrir a sacola. |
 | C-22 | O checkout pede: nome (obrigatório), padaria (obrigatório), cidade ou bairro (obrigatório) e forma de pagamento (lista do config: PIX, Cartão na entrega (maquininha), Dinheiro + "Combinar pelo WhatsApp"). Não tem campo de endereço completo. | Visual e validação: enviar vazio mostra os erros. |
 | C-23 | A mensagem do pedido contém: os itens com quantidade e subtotal, o total, o nome, a padaria, a cidade ou bairro, o pagamento e as linhas finais "Valores de referência, a confirmar." e "Entrega sem taxa na Grande Vitória, horário a combinar." Os valores batem com a sacola. | Teste automático da função que monta a mensagem, mais um teste manual com 2 produtos diferentes. |
@@ -102,7 +102,7 @@ Feito por Daniel, com os pais nos itens marcados (👪), **antes de divulgar o l
 - [ ] **H-06** 👪 Nenhum texto promete algo que eles não fazem (entrega, sabor "o melhor", benefícios de saúde).
 - [ ] **H-07** 👪 Os dados legais no rodapé (razão social, CNPJ, endereço) estão atualizados.
 - [ ] **H-08** 👪 Os textos do hero e da seção "da casa" são verdadeiros para eles (ex.: "nascentes", "roça").
-- [ ] **H-09** Pedido de teste do **celular real**: monte uma sacola com 2 produtos, envie e confira se a mensagem chega certa no WhatsApp do número 5527998480547.
+- [ ] **H-09** Pedido de teste do **celular real**: monte uma sacola com 2 produtos, envie e confira se a mensagem chega certa no WhatsApp do número 5533999096791.
 - [ ] **H-10** O botão flutuante abre o WhatsApp num Android **e**, se possível, num iPhone.
 - [ ] **H-11** A prévia do link no WhatsApp aparece com imagem e título (C-55).
 - [ ] **H-12** O link do Instagram abre o perfil certo.

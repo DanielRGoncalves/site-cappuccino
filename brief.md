@@ -38,7 +38,7 @@ Medida de sucesso (fora do código): conversas de padarias no WhatsApp citando o
 | Pedido mínimo | Nenhum informado. O site **não cita** pedido mínimo |
 | Preço | **Provisório:** a tabela abaixo (a mesma de antes). Ainda não há preço específico para padarias (pendência P-01) |
 | Pagamento | **PIX** (o mais usado), **cartão na maquininha, na entrega**, dinheiro, mais "Combinar pelo WhatsApp". **Não há pagamento por cartão no site** |
-| WhatsApp | 5527998480547 |
+| WhatsApp | 5533999096791 |
 | Instagram | https://instagram.com/cheirodasaguasgourmet (@cheirodasaguasgourmet) |
 | Domínio | Nenhum por enquanto. Publicar no GitHub Pages: `https://danielrgoncalves.github.io/site-cappuccino/` |
 | Validade | 365 dias |
