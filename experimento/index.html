@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title></title>
+  <link rel="icon" href="../img/logo.webp" type="image/webp">
+  <link rel="preload" href="fontes/fraunces-latin-full-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="experimento.css">
+  <script type="module" src="experimento.js"></script>
+</head>
+<body>
+  <!-- Fallback estático autorizado por Daniel: sem duplicar conteúdo do config. -->
+  <noscript>
+    <div class="sem-js">
+      <p>Este experimento precisa de JavaScript.</p>
+      <a href="../index.html">Voltar ao site atual</a>
+    </div>
+  </noscript>
+  <div id="pagina" hidden>
+    <div class="aviso" id="aviso"></div>
+    <header class="cabecalho" id="cabecalho"></header>
+    <main>
+      <div class="capitulos" id="capitulos">
+        <div class="palco" id="palco">
+          <section class="cena hero" id="inicio" aria-labelledby="titulo-hero"></section>
+          <div class="arco arco-viajante" id="arco" aria-hidden="true"></div>
+          <section class="cena origem" id="origem" aria-labelledby="titulo-origem"></section>
+        </div>
+      </div>
+      <section class="vender" id="vender" aria-labelledby="titulo-vender"></section>
+    </main>
+    <footer id="contato" class="contato" aria-labelledby="titulo-contato"></footer>
+  </div>
+  <div class="menu-camada" id="menu-camada" hidden>
+    <div class="menu-painel" id="menu-painel" inert aria-hidden="true"></div>
+    <button class="menu-botao" id="menu-botao" type="button" aria-expanded="false" aria-controls="menu-painel"></button>
+  </div>
+</body>
+</html>
