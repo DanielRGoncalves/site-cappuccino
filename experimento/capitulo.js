@@ -11,3 +11,22 @@ export function faixa(p, inicio, fim) {
   if (![p, inicio, fim].every(valido) || fim <= inicio) return 0;
   return limitar((p - inicio) / (fim - inicio));
 }
+
+// Mantém o percurso e o recorte da X1, desenhando a foto já no tamanho final.
+export function escalaDoArco(mover, largura, altura, larguraFinal, alturaFinal) {
+  if (![mover, largura, altura, larguraFinal, alturaFinal].every(valido)
+    || Math.min(largura, altura, larguraFinal, alturaFinal) <= 0) return null;
+  const p = limitar(mover);
+  const finalX = larguraFinal / largura;
+  const finalY = alturaFinal / altura;
+  const finalFoto = Math.max(finalX, finalY);
+  const antigoX = 1 + (finalX - 1) * p;
+  const antigoY = 1 + (finalY - 1) * p;
+  const sx = antigoX / finalX;
+  const sy = antigoY / finalY;
+  const foto = Math.max(antigoX, antigoY) / finalFoto;
+  return {
+    sx, sy, fotoSx: foto / sx, fotoSy: foto / sy,
+    larguraFoto: largura * finalFoto, alturaFoto: altura * finalFoto,
+  };
+}

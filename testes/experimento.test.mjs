@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { progressoDoCapitulo, faixa } from "../experimento/capitulo.js";
+import { progressoDoCapitulo, faixa, escalaDoArco } from "../experimento/capitulo.js";
 
 test("progresso: início, meio e fim do percurso do wrapper", () => {
   assert.equal(progressoDoCapitulo(0, 2200, 1000), 0);
@@ -43,4 +43,38 @@ test("faixa rejeita entradas inválidas e intervalos vazios ou invertidos", () =
   }
   assert.equal(faixa(.5, .5, .5), 0);
   assert.equal(faixa(.5, 1, 0), 0);
+});
+
+test("Y-08: arco e recorte percorrem as mesmas dimensões da X1, sem ampliar no fim", () => {
+  const perto = (real, esperado) => assert.ok(Math.abs(real - esperado) < 1e-8, `${real} != ${esperado}`);
+  for (const [largura, altura, finalL, finalA] of [[208.8, 184, 316.8, 360], [440, 549, 588.8, 684], [440, 658.8, 883.2, 820.8]]) {
+    for (const p of [0, .25, .5, .75, 1]) {
+      const mover = faixa(p, 0, .7);
+      const atual = escalaDoArco(mover, largura, altura, finalL, finalA);
+      const x1 = 1 + (finalL / largura - 1) * mover;
+      const y1 = 1 + (finalA / altura - 1) * mover;
+      perto(finalL * atual.sx, largura * x1);
+      perto(finalA * atual.sy, altura * y1);
+      perto(atual.larguraFoto * atual.fotoSx * atual.sx, largura * Math.max(x1, y1));
+      perto(atual.alturaFoto * atual.fotoSy * atual.sy, altura * Math.max(x1, y1));
+      assert.ok(atual.sx <= 1 && atual.sy <= 1);
+    }
+    const fim = escalaDoArco(1, largura, altura, finalL, finalA);
+    assert.equal(fim.sx, 1);
+    assert.equal(fim.sy, 1);
+    assert.equal(fim.fotoSx, 1);
+    assert.equal(fim.fotoSy, 1);
+  }
+});
+
+test("escala do arco limita o progresso e rejeita dimensões inválidas", () => {
+  const dimensoes = [440, 549, 588.8, 684];
+  assert.deepEqual(escalaDoArco(-1, ...dimensoes), escalaDoArco(0, ...dimensoes));
+  assert.deepEqual(escalaDoArco(2, ...dimensoes), escalaDoArco(1, ...dimensoes));
+  for (const invalido of [undefined, null, "", NaN, Infinity, -Infinity, {}]) {
+    assert.equal(escalaDoArco(invalido, ...dimensoes), null);
+    assert.equal(escalaDoArco(.5, invalido, 549, 588.8, 684), null);
+  }
+  assert.equal(escalaDoArco(.5, 0, 549, 588.8, 684), null);
+  assert.equal(escalaDoArco(.5, 440, -1, 588.8, 684), null);
 });

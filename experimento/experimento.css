@@ -170,8 +170,12 @@ img { display: block; max-width: 100%; object-fit: cover; }
 }
 .arco-viajante img {
   position: absolute;
-  inset: 0;
-  transform: scale(var(--foto-sx), var(--foto-sy));
+  left: 50%;
+  top: 50%;
+  max-width: none;
+  width: var(--foto-largura);
+  height: var(--foto-altura);
+  transform: translate(-50%, -50%) scale(var(--foto-sx), var(--foto-sy));
 }
 .arco-viajante .foto-origem { opacity: var(--troca); }
 .arco-viajante .foto-hero { opacity: calc(1 - var(--troca)); }
@@ -193,6 +197,7 @@ img { display: block; max-width: 100%; object-fit: cover; }
 }
 .abas button[aria-selected="true"] { border-bottom-color: var(--ouro); }
 .aba-painel { display: grid; grid-template-columns: 1fr .7fr; gap: 8vw; align-items: center; min-height: 430px; }
+.aba-painel { row-gap: 0; }
 .aba-painel h3 { font-size: clamp(1.8rem, 3vw, 2.6rem); max-width: 25ch; }
 .aba-painel p { font-size: 1.2rem; max-width: 35ch; }
 .aba-painel ul { padding-left: 20px; max-width: 46ch; }
@@ -202,6 +207,36 @@ img { display: block; max-width: 100%; object-fit: cover; }
 .aba-painel.entrou { animation: entrar-aba 280ms ease-out both; }
 @keyframes entrar-aba { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 .vender > .botoes { margin-top: 45px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.conta { grid-column: 1 / -1; min-width: 0; margin-top: 48px; padding-top: 48px; border-top: 1px solid var(--ouro); scroll-margin-top: 85px; }
+.conta .conta-titulo { font-size: 1.2rem; margin-bottom: 24px; }
+.conta .conta-frase { font-family: Fraunces, Georgia, serif; font-size: clamp(1.4rem, 2.6vw, 2.1rem); line-height: 1.5; max-width: none; margin: 0; }
+.conta-campo { display: inline-block; max-width: 100%; vertical-align: baseline; }
+.conta input, .conta select {
+  width: 6ch;
+  max-width: 100%;
+  min-height: 44px;
+  padding: 0 2px;
+  border: 0;
+  border-bottom: 2px solid var(--ouro);
+  border-radius: 0;
+  background: transparent;
+  color: var(--leite);
+  font: inherit;
+  line-height: 1.5;
+  touch-action: manipulation;
+}
+.conta select { width: 8.5ch; color-scheme: dark; }
+.conta option { color: var(--leite); background: var(--torra-2); }
+.conta input:focus, .conta select:focus { border-bottom-width: 4px; outline: 3px solid var(--ouro); outline-offset: 5px; }
+.conta .conta-resultado { max-width: none; margin: 10px 0 24px; font-family: Fraunces, Georgia, serif; font-size: clamp(1.4rem, 2.6vw, 2.1rem); line-height: 1.5; }
+.conta-ganho { display: inline-block; color: var(--ouro); font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 450; }
+.conta .sem-resultado { font-family: system-ui, sans-serif; font-size: 1rem; }
+.conta .conta-dicas p, .conta .conta-aviso { max-width: 78ch; margin: 8px 0; font-size: .88rem; }
+.conta-detalhes { display: flex; flex-wrap: wrap; gap: 16px 32px; margin: 24px 0; font-size: .88rem; }
+.conta-detalhes dt { display: inline; }
+.conta-detalhes dd { display: inline; margin-left: .5em; font-weight: 650; }
+.conta-detalhes > div { max-width: 100%; }
 .contato { padding: 64px 6vw 40px; background: var(--leite); color: var(--cacau); scroll-margin-top: 70px; }
 .contato h2 { font-size: clamp(2.5rem, 4vw, 4rem); }
 .contato-links { display: flex; flex-wrap: wrap; gap: 12px 32px; margin: 25px 0 38px; }
@@ -275,7 +310,7 @@ img { display: block; max-width: 100%; object-fit: cover; }
   .com-movimento .origem .conteudo { top: calc(105px + 45svh); left: 6vw; right: 6vw; }
   .origem h2 { font-size: clamp(2rem, 6.5vw, 3.5rem); max-width: 20ch; }
   .origem p { margin-top: 20px; max-width: 45ch; }
-  .aba-painel { gap: 5vw; grid-template-columns: 1fr .7fr; }
+  .aba-painel { gap: 0 5vw; grid-template-columns: 1fr .7fr; }
   .aba-painel .arco { height: 330px; }
 }
 
@@ -290,8 +325,8 @@ img { display: block; max-width: 100%; object-fit: cover; }
   .vender { padding-top: 70px; }
   .abas { gap: 12px; margin: 32px 0; flex-wrap: nowrap; }
   .abas button { flex: 1; text-align: left; font-size: 1.45rem; }
-  .aba-painel { display: flex; flex-direction: column-reverse; gap: 32px; align-items: stretch; }
-  .aba-painel .arco { width: 72%; height: 300px; align-self: center; }
+  .aba-painel { grid-template-columns: minmax(0, 1fr); gap: 0; align-items: stretch; }
+  .aba-painel .arco { grid-row: 1; width: 72%; height: 300px; justify-self: center; margin-bottom: 32px; }
   .aba-painel p { font-size: 1.05rem; }
   .vender > .botoes { align-items: stretch; flex-direction: column; }
   .menu-painel { padding: 105px 7vw 32px; }

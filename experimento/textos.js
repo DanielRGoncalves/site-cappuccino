@@ -12,6 +12,16 @@ export const textos = {
   apoio: "Artesanal e gourmet, feito à mão com café Conilon e cacau 100%.",
   verFormas: "Ver as duas formas de vender",
   voltar: "Voltar ao site atual",
+  conta: {
+    titulo: "Faça a conta",
+    compra: "Se eu pago R$",
+    xicara: "no kg e vendo a xícara de",
+    venda: "por R$",
+    ganho: "ganho",
+    porXicara: "por xícara.",
+    pacote: "no pacote de 250 g e vendo por R$",
+    porPacote: "por pacote.",
+  },
   vender: {
     titulo: "Duas formas de vender",
     abas: [

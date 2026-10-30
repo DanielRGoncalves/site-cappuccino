@@ -1,7 +1,8 @@
 import { config } from "../js/config.js";
 import { indiceDaAba } from "../js/produtos.js";
-import { progressoDoCapitulo, faixa } from "./capitulo.js";
+import { progressoDoCapitulo, faixa, escalaDoArco } from "./capitulo.js";
 import { textos } from "./textos.js";
+import { montarConta } from "./conta.js";
 
 const $ = (id) => document.getElementById(id);
 const reduzido = matchMedia("(prefers-reduced-motion: reduce)");
@@ -43,6 +44,12 @@ function imagem(dados, classe = "", primeira = false) {
   no.width = dados.largura;
   no.height = dados.altura;
   no.alt = dados.alt;
+  if (dados.foto === config.textos.origem.foto) {
+    no.srcset = `../${dados.foto} 720w, img/origem-1440.webp 1440w`;
+    no.sizes = classe === "foto-origem"
+      ? "(max-width: 919px) 88vw, 46vw"
+      : "(max-width: 919px) min(88vw, 430px), min(440px, 36vw)";
+  }
   if (!primeira) no.loading = "lazy";
   no.decoding = "async";
   return no;
@@ -64,6 +71,7 @@ $("cabecalho").append(marca);
 
 const tituloHero = elemento("h1", "", config.textos.hero.titulo);
 tituloHero.id = "titulo-hero";
+tituloHero.tabIndex = -1;
 const conteudoHero = elemento("div", "conteudo");
 const botoesHero = elemento("div", "botoes");
 botoesHero.append(degustacao(), link(textos.verFormas, "#vender", "botao secundario"));
@@ -124,7 +132,7 @@ textos.vender.abas.forEach((dados, i) => {
   conteudo.append(elemento("h3", "", dados.frase), lista);
   const moldura = elemento("div", "arco");
   moldura.append(imagem(fotosVenda[i]));
-  painel.append(conteudo, moldura);
+  painel.append(conteudo, moldura, montarConta(i === 1, reduzido));
   botao.addEventListener("click", () => selecionarAba(i));
   botao.addEventListener("keydown", (evento) => {
     if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(evento.key)) return;
@@ -136,7 +144,16 @@ textos.vender.abas.forEach((dados, i) => {
   paineis.push(painel);
 });
 const botoesVenda = elemento("div", "botoes");
-botoesVenda.append(link(config.textos.hero.conta, "../index.html#padarias", "botao secundario"), degustacao());
+const botaoConta = elemento("button", "botao secundario", config.textos.hero.conta);
+botaoConta.type = "button";
+botaoConta.setAttribute("aria-label", config.textos.hero.conta);
+botaoConta.dataset.rotulo = config.textos.hero.conta;
+botaoConta.addEventListener("click", () => {
+  const conta = paineis[abaAtual].querySelector(".conta");
+  conta.scrollIntoView({ behavior: reduzido.matches ? "instant" : "smooth", block: "start" });
+  conta.querySelector("input").focus({ preventScroll: true });
+});
+botoesVenda.append(botaoConta, degustacao());
 vender.append(tituloVender, abas, ...paineis, botoesVenda);
 selecionarAba(0);
 
@@ -255,8 +272,11 @@ function medirArco() {
     larguraFinal: celular ? w * .88 : w * .46,
     alturaFinal: celular ? h * .45 : h * .76,
   };
-  palco.style.setProperty("--arco-largura", `${largura}px`);
-  palco.style.setProperty("--arco-altura", `${altura}px`);
+  palco.style.setProperty("--arco-largura", `${geometria.larguraFinal}px`);
+  palco.style.setProperty("--arco-altura", `${geometria.alturaFinal}px`);
+  const foto = escalaDoArco(1, largura, altura, geometria.larguraFinal, geometria.alturaFinal);
+  palco.style.setProperty("--foto-largura", `${foto.larguraFoto}px`);
+  palco.style.setProperty("--foto-altura", `${foto.alturaFoto}px`);
 }
 function atualizarScroll() {
   quadro = 0;
@@ -266,9 +286,7 @@ function atualizarScroll() {
   const mover = faixa(p, 0, .7);
   const g = geometria;
   const misturar = (a, b) => a + (b - a) * mover;
-  const sx = misturar(1, g.larguraFinal / g.largura);
-  const sy = misturar(1, g.alturaFinal / g.altura);
-  const escalaFoto = Math.max(sx, sy);
+  const escala = escalaDoArco(mover, g.largura, g.altura, g.larguraFinal, g.alturaFinal);
   const variaveis = {
     "--p": p,
     // O fundo fica escuro até o hero apagar; a origem espera o fundo claro.
@@ -278,11 +296,11 @@ function atualizarScroll() {
     "--troca": faixa(p, .4, .6),
     "--arco-x": `${misturar(g.x0, g.x1)}px`,
     "--arco-y": `${misturar(g.y0, g.y1)}px`,
-    "--arco-sx": sx,
-    "--arco-sy": sy,
-    // Compensa a deformação da moldura: a foto cresce com proporção preservada.
-    "--foto-sx": escalaFoto / sx,
-    "--foto-sy": escalaFoto / sy,
+    "--arco-sx": escala.sx,
+    "--arco-sy": escala.sy,
+    // A moldura nasce no tamanho final; a foto mantém a proporção ao encolher.
+    "--foto-sx": escala.fotoSx,
+    "--foto-sy": escala.fotoSy,
   };
   for (const [chave, valor] of Object.entries(variaveis)) palco.style.setProperty(chave, valor);
   hero.inert = p >= .35;
