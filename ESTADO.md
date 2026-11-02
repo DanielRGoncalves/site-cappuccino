@@ -2,7 +2,7 @@
 
 > Arquivo de contexto para qualquer chat novo (Claude ou Codex). Resume onde o projeto está, o que já foi decidido e o que falta. **Não é uma tarefa**: as tarefas ficam nos arquivos `p*.md`. Atualizar ao fim de cada tarefa.
 >
-> Última atualização: 02/11/2026 (experimento visual X1, X2 e X3 feitos e commitados na branch `experimento-capitulos`; **avaliação de Daniel pendente**; depois dela vem a X4. Número do WhatsApp trocado e publicado em 30/10).
+> Última atualização: 02/11/2026 (experimento visual X1, X2 e X3 feitos e commitados na branch `experimento-capitulos`; **avaliação feita em 02/11: direção aprovada**; próximas tarefas X3b (ajustes da avaliação) e X4 (resto do conteúdo), já escritas. Número do WhatsApp trocado e publicado em 30/10).
 
 ## O que é
 
@@ -51,8 +51,9 @@ Nota: na `prototipo`, `ESTADO.md`, `brief.md` e `criterios.md` foram apagados (l
 | X1 experimento de capítulos: menu, hero, transição de rolagem, "Duas formas de vender" | `x1-experimento-capitulos.md` | feita e commitada; correções de título (linhas travadas), botões pílula e convite do menu aprovadas |
 | X2 calculadora em frase dentro das abas; foto da origem nítida (1440 px) | `x2-calculadora-frase.md` | feita e commitada |
 | X3 sistema de texto, calculadora em folha clara, contato com foto e ícones | `x3-texto-conta-contato.md` | feita (33 testes, JS 29.222 bytes) e commitada |
-| **Avaliação de Daniel do experimento** | — | **pendente**: notas de 1 a 5 (personalidade, fluidez, clareza, desempenho, mobile), o que mais e menos gostou, teste no celular real |
-| X4 resto do conteúdo como capítulos | a escrever | **espera a avaliação** e duas decisões (ver "Experimento visual") |
+| Avaliação do experimento | — | feita em 02/11 (ver "Experimento visual"): direção aprovada |
+| X3b ajustes da avaliação (estilo Entrada, textos pequenos, tempo da origem, Menu no celular, vírgula, botão redundante, largura máxima) | `x3b-ajustes-avaliacao.md` | escrita em 02/11; a executar |
+| X4 resto do conteúdo como capítulos | `x4-capitulos-conteudo.md` | escrita em 02/11; começa depois da X3b aprovada; teto de JS sobe para 40.000 bytes |
 
 ## Fatos do negócio (confirmados pela família)
 
