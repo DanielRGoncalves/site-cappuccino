@@ -18,6 +18,10 @@ export const textos = {
   apoio: "Artesanal e gourmet, feito à mão com café Conilon e cacau 100%.",
   verFormas: "Ver as duas formas de vender",
   voltar: "Voltar ao site atual",
+  taparuba: "Taparuba, MG",
+  pausar: "Pausar animações",
+  retomar: "Retomar animações",
+  faixa: config.textos.menu[0],
   produtos: { conteudo: "O que vai dentro", rendimento: "Rendimento", validade: "Validade", conservacao: "Conservação" },
   contato: {
     entrega: "Entrega",

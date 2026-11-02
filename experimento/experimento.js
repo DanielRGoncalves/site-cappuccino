@@ -1,5 +1,4 @@
 import { config } from "../js/config.js";
-import { indiceDaAba } from "../js/produtos.js";
 import { progressoDoCapitulo, faixa, escalaDoArco } from "./capitulo.js";
 import { textos } from "./textos.js";
 import { montarConta } from "./conta.js";
@@ -103,14 +102,25 @@ function abrirCapitulo(id, titulo, entrada) {
 }
 
 const motivos = config.textos.porque.motivos;
-const produtos = abrirCapitulo("produtos", config.textos.produtos.titulo, config.textos.produtos.igual);
+const produtos = $("produtos");
+const topoProdutos = elemento("div", "produtos-topo");
+const tituloProdutos = elemento("div", "produtos-titulo");
+const cabecalhoProdutos = elemento("h2", "", config.textos.produtos.titulo);
+cabecalhoProdutos.id = "titulo-produtos";
+cabecalhoProdutos.tabIndex = -1;
+tituloProdutos.append(cabecalhoProdutos, elemento("p", "entrada", config.textos.produtos.igual));
+const trilhoXicara = elemento("div", "xicara-trilho");
+trilhoXicara.append($("xicara"));
+topoProdutos.append(tituloProdutos, trilhoXicara);
+const corpoProdutos = elemento("div", "produtos-corpo");
 const pacotes = elemento("div", "produtos-grade");
 config.produtos.filter((produto) => produto.exibir).forEach((produto) => {
   const item = elemento("article", "produto");
-  const moldura = elemento("div", "arco produto-foto");
-  moldura.append(imagem({ ...produto, largura: 800, altura: 800 }));
+  const moldura = elemento("div", "produto-foto");
+  moldura.append(imagem({ ...produto, largura: 800, altura: 800 }),
+    elemento("span", "produto-selo nota", produto.selo), elemento("span", "produto-peso nota", produto.peso));
   item.append(moldura, elemento("h3", "frase", produto.selo),
-    elemento("p", "", produto.frase), elemento("p", "nota", produto.peso));
+    elemento("p", "", produto.frase));
   if (produto.ingredientes || produto.avisos) {
     const detalhes = elemento("details", "produto-ingredientes");
     detalhes.append(elemento("summary", "", config.textos.produtos.ingredientesTitulo));
@@ -120,7 +130,7 @@ config.produtos.filter((produto) => produto.exibir).forEach((produto) => {
   }
   pacotes.append(item);
 });
-produtos.append(pacotes);
+corpoProdutos.append(pacotes);
 const dentro = elemento("div", "produtos-dentro");
 dentro.append(elemento("h3", "frase", textos.produtos.conteudo),
   elemento("p", "entrada", config.textos.diferenca.destaque));
@@ -132,14 +142,37 @@ config.textos.diferenca.cartoes.forEach((cartao) => {
   ingredientes.append(item);
 });
 dentro.append(ingredientes);
-produtos.append(dentro);
+corpoProdutos.append(dentro);
 const faixaProdutos = elemento("div", "produtos-notas");
 for (const [chave, texto] of [["rendimento", motivos[1]], ["validade", motivos[3]], ["conservacao", config.textos.conservacao]]) {
   const item = elemento("div");
   item.append(elemento("h3", "nota", textos.produtos[chave]), elemento("p", "", texto));
   faixaProdutos.append(item);
 }
-produtos.append(faixaProdutos);
+corpoProdutos.append(faixaProdutos);
+produtos.replaceChildren(topoProdutos, $("espuma"), corpoProdutos);
+
+const faixaSecao = $("faixa");
+faixaSecao.setAttribute("aria-label", textos.faixa);
+const janelaFaixa = elemento("div", "faixa-janela");
+const trilhoFaixa = elemento("div", "faixa-trilho");
+const textoFaixa = [...config.textos.diferenca.cartoes.slice(0, 3).map((item) => item.titulo.split(",")[0]), textos.taparuba].join(" · ");
+for (let i = 0; i < 4; i++) {
+  const grupo = elemento("span", "faixa-grupo", textoFaixa);
+  if (i) grupo.setAttribute("aria-hidden", "true");
+  trilhoFaixa.append(grupo);
+}
+janelaFaixa.append(trilhoFaixa);
+const pausar = elemento("button", "faixa-pausar", textos.pausar);
+pausar.type = "button";
+pausar.setAttribute("aria-pressed", "false");
+pausar.addEventListener("click", () => {
+  const pausado = pausar.getAttribute("aria-pressed") !== "true";
+  document.documentElement.classList.toggle("pausado", pausado);
+  pausar.setAttribute("aria-pressed", String(pausado));
+  pausar.textContent = pausado ? textos.retomar : textos.pausar;
+});
+faixaSecao.append(janelaFaixa, pausar);
 
 const preparo = abrirCapitulo("preparo", config.textos.preparo.titulo, motivos[2]);
 const passosPreparo = elemento("ol", "preparo-passos");
@@ -178,61 +211,37 @@ const vender = $("vender");
 const tituloVender = elemento("h2", "", textos.vender.titulo);
 tituloVender.id = "titulo-vender";
 tituloVender.tabIndex = -1;
-const abas = elemento("div", "abas");
-abas.setAttribute("role", "tablist");
-abas.setAttribute("aria-labelledby", tituloVender.id);
 const fotosVenda = [
   config.textos.diferenca.cartoes.find((cartao) => cartao.foto.endsWith("/aroma-720.webp")),
   { ...config.produtos.find((produto) => produto.id === "sem-acucar"), largura: 800, altura: 800 },
 ];
-const paineis = [];
-const botoesAbas = [];
-let abaAtual = 0;
-
-function selecionarAba(indice, focar = false) {
-  abaAtual = indice;
-  botoesAbas.forEach((botao, i) => {
-    const ativo = i === indice;
-    botao.setAttribute("aria-selected", String(ativo));
-    botao.tabIndex = ativo ? 0 : -1;
-    paineis[i].hidden = !ativo;
-    paineis[i].classList.toggle("entrou", ativo && !reduzido.matches);
-  });
-  if (focar) botoesAbas[indice].focus();
-}
-
+const cartoesVenda = elemento("div", "vender-cartoes");
 textos.vender.abas.forEach((dados, i) => {
-  const botao = elemento("button", "", dados.titulo);
-  botao.type = "button";
-  botao.id = `aba-${i}`;
-  botao.setAttribute("role", "tab");
-  botao.setAttribute("aria-controls", `painel-${i}`);
-  const painel = elemento("div", "aba-painel");
-  painel.id = `painel-${i}`;
-  painel.setAttribute("role", "tabpanel");
-  painel.setAttribute("aria-labelledby", botao.id);
-  painel.tabIndex = 0;
-  const conteudo = elemento("div", "aba-texto");
+  const cartao = elemento("article", "venda-cartao");
+  const titulo = elemento("h3", "", dados.titulo);
+  titulo.id = `titulo-venda-${i}`;
+  cartao.setAttribute("aria-labelledby", titulo.id);
+  const conteudo = elemento("div", "venda-texto");
+  const numero = elemento("span", "nota", `${i + 1} / 2`);
+  numero.setAttribute("aria-hidden", "true");
   const lista = elemento("ul");
   dados.lista.forEach((texto) => lista.append(elemento("li", "", texto)));
-  conteudo.append(elemento("h3", "", dados.frase), lista);
   const moldura = elemento("div", "arco");
   moldura.append(imagem(fotosVenda[i]));
-  painel.append(conteudo, moldura, montarConta(i === 1, reduzido));
-  botao.addEventListener("click", () => selecionarAba(i));
-  botao.addEventListener("keydown", (evento) => {
-    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(evento.key)) return;
-    evento.preventDefault();
-    selecionarAba(indiceDaAba(abaAtual, evento.key, botoesAbas.length), true);
-  });
-  abas.append(botao);
-  botoesAbas.push(botao);
-  paineis.push(painel);
+  conteudo.append(numero, titulo, elemento("p", "frase", dados.frase), lista, moldura);
+  cartao.append(conteudo, montarConta(i === 1, reduzido));
+  cartoesVenda.append(cartao);
 });
 const botoesVenda = elemento("div", "botoes");
 botoesVenda.append(degustacao());
-vender.append(tituloVender, elemento("p", "entrada", motivos[0]), abas, ...paineis, botoesVenda);
-selecionarAba(0);
+vender.append(tituloVender, elemento("p", "entrada", motivos[0]), cartoesVenda, botoesVenda);
+
+function medirCartoes() {
+  [...cartoesVenda.children].forEach((cartao, i) => {
+    const topo = Math.min(72 + i * 24, window.innerHeight - cartao.getBoundingClientRect().height - 16);
+    cartao.style.setProperty("--cartao-topo", `${topo}px`);
+  });
+}
 
 const contato = $("contato");
 const molduraContato = elemento("div", "arco contato-foto");
@@ -450,6 +459,7 @@ window.addEventListener("scroll", () => {
   pedirQuadro();
 }, { passive: true });
 window.addEventListener("resize", () => {
+  medirCartoes();
   if (!reduzido.matches) { medirArco(); pedirQuadro(); }
   clearTimeout(resizeLetras);
   resizeLetras = setTimeout(configurarLetras, 180);
@@ -570,5 +580,6 @@ ponteiroFino.addEventListener("change", configurarLetras);
 pagina.hidden = false;
 camadaMenu.hidden = false;
 modoDeMovimento();
-document.fonts.ready.then(() => { fontesProntas = true; configurarLetras(); });
+medirCartoes();
+document.fonts.ready.then(() => { fontesProntas = true; configurarLetras(); medirCartoes(); });
 if (location.hash) navegar(location.hash, false);

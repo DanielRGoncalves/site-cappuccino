@@ -35,7 +35,7 @@ test("A-08: depois da conta fica só o convite à degustação", () => {
   const js = ler("experimento.js");
   assert.doesNotMatch(js, /botaoConta|config\.textos\.hero\.conta/);
   assert.match(js, /botoesVenda\.append\(degustacao\(\)\)/);
-  assert.match(js, /vender\.append\(tituloVender, elemento\("p", "entrada", motivos\[0\]\), abas, \.\.\.paineis, botoesVenda\)/);
+  assert.match(js, /vender\.append\(tituloVender, elemento\("p", "entrada", motivos\[0\]\), cartoesVenda, botoesVenda\)/);
 });
 
 test("A-06: origem termina de entrar com 40% de tela de leitura parada", () => {
@@ -63,9 +63,11 @@ class No {
     this.atributos = {};
     this.texto = String(texto);
     this.className = "";
-    this.style = { setProperty() {} };
+    this.style = { setProperty(nome, valor) { this[nome] = valor; } };
     this.dataset = {};
-    this.classList = { toggle() {}, remove() {} };
+    const classes = new Set();
+    this.classList = { toggle(nome, ativo) { if (ativo) classes.add(nome); else classes.delete(nome); }, remove(nome) { classes.delete(nome); }, contains(nome) { return classes.has(nome); } };
+    this.eventos = {};
   }
   set textContent(texto) { this.texto = String(texto); this.children = []; }
   get textContent() { return this.texto + this.children.map((no) => no.textContent).join(""); }
@@ -77,8 +79,9 @@ class No {
   append(...nos) { this.children.push(...nos.map((no) => typeof no === "string" ? new No("#text", no) : no)); }
   prepend(...nos) { this.children.unshift(...nos); }
   replaceChildren(...nos) { this.children = []; this.texto = ""; this.append(...nos); }
-  addEventListener() {}
+  addEventListener(tipo, callback) { this.eventos[tipo] = callback; }
   getAnimations() { return []; }
+  getBoundingClientRect() { return { height: 700 }; }
 }
 const descendentes = (no) => [no, ...no.children.flatMap(descendentes)];
 const porTag = (no, tag) => descendentes(no).filter((item) => item.tagName === tag);
@@ -94,12 +97,13 @@ async function montarPagina() {
       documentElement: new No("html"), fonts: { ready: Promise.resolve() }, addEventListener() {},
     },
     matchMedia: (consulta) => ({ matches: consulta.includes("reduced-motion"), addEventListener() {} }),
-    window: { scrollY: 0, addEventListener() {} }, location: { hash: "" }, cancelAnimationFrame() {},
+    window: { scrollY: 0, innerHeight: 900, addEventListener() {} }, location: { hash: "" }, cancelAnimationFrame() {},
   };
   const originais = Object.fromEntries(Object.keys(ambiente).map((nome) => [nome, Object.getOwnPropertyDescriptor(globalThis, nome)]));
   try {
     for (const [nome, valor] of Object.entries(ambiente)) Object.defineProperty(globalThis, nome, { configurable: true, writable: true, value: valor });
     await import("../experimento/experimento.js");
+    nos.set("raiz", ambiente.document.documentElement);
     return nos;
   } finally {
     for (const [nome, descritor] of Object.entries(originais)) {
@@ -110,15 +114,20 @@ async function montarPagina() {
 }
 const paginaMontada = montarPagina();
 
-test("B-02: capítulos na ordem aprovada, fundos claros e escuros", async () => {
+test("C-02/B-02: faixa entre produtos e vender; topo claro, espuma e corpo café", async () => {
   const html = ler("index.html");
   const ids = [...html.matchAll(/<(?:section|footer)[^>]*\bid="([^"]+)"/g)].map(([, id]) => id);
-  assert.deepEqual(ids, ["inicio", "origem", "produtos", "vender", "preparo", "como", "duvidas", "contato"]);
+  assert.deepEqual(ids, ["inicio", "origem", "produtos", "faixa", "vender", "preparo", "como", "duvidas", "contato"]);
   const pagina = await paginaMontada;
   for (const id of ["produtos", "preparo", "como", "duvidas"]) {
     assert.equal(porTag(pagina.get(id), "h2")[0].id, `titulo-${id}`);
   }
-  for (const id of ["produtos", "preparo", "duvidas"]) assert.match(html, new RegExp(`class="capitulo claro [^"]+" id="${id}"`));
+  for (const id of ["preparo", "duvidas"]) assert.match(html, new RegExp(`class="capitulo claro [^"]+" id="${id}"`));
+  assert.deepEqual(pagina.get("produtos").children.map((no) => no.className), ["produtos-topo", "", "produtos-corpo"]);
+  assert.equal(porClasse(pagina.get("produtos"), "xicara-trilho")[0].children[0], pagina.get("xicara"));
+  assert.match(html, /class="xicara"[^>]*aria-hidden="true"[^>]*focusable="false"/);
+  assert.match(html, /class="espuma"[^>]*preserveAspectRatio="none"[^>]*aria-hidden="true"/);
+  assert.match(ler("experimento.css"), /\.produtos-corpo \{[^}]*background: var\(--cacau\); color: var\(--leite\)/);
   assert.match(ler("experimento.css"), /\.claro \{ background: var\(--leite\); color: var\(--cacau\); \}/);
   assert.match(ler("experimento.css"), /\.como \{ background: var\(--torra-2\); \}/);
 });
@@ -153,6 +162,11 @@ test("B-05/B-06/B-07: produtos, listas e dúvidas usam todo o conteúdo do confi
     for (const chave of ["selo", "frase", "peso", "ingredientes", "avisos"]) assert.ok(itens[i].textContent.includes(produto[chave]));
     assert.equal(porTag(itens[i], "summary")[0].textContent, config.textos.produtos.ingredientesTitulo);
     assert.equal(porTag(itens[i], "img")[0].srcset, `../${produto.fotoPequena} 400w, ../${produto.foto} 800w`);
+    assert.equal(porTag(itens[i], "img")[0].alt, produto.alt);
+    assert.equal(porClasse(itens[i], "produto-selo")[0].textContent, produto.selo);
+    assert.equal(porClasse(itens[i], "produto-peso")[0].textContent, produto.peso);
+    assert.equal(porClasse(itens[i], "arco").length, 0);
+    assert.equal(itens[i].textContent.split(produto.peso).length - 1, 1);
   });
   assert.doesNotMatch(produtos.textContent, /diet/i);
   assert.equal(porClasse(produtos, "ingredientes-grade")[0].children.length, 4);
@@ -167,6 +181,61 @@ test("B-05/B-06/B-07: produtos, listas e dúvidas usam todo o conteúdo do confi
     assert.equal(porTag(item, "summary")[0].textContent, config.textos.faq.itens[i].pergunta);
     assert.equal(porTag(item, "p")[0].textContent, config.textos.faq.itens[i].resposta);
   });
+});
+
+test("C-07: faixa do config + Taparuba, quatro cópias e só uma acessível", async () => {
+  const pagina = await paginaMontada;
+  assert.equal(textos.taparuba, "Taparuba, MG");
+  const grupos = porClasse(pagina.get("faixa"), "faixa-grupo");
+  assert.equal(grupos.length, 4);
+  const esperado = [config.textos.diferenca.cartoes[0].titulo, config.textos.diferenca.cartoes[1].titulo,
+    config.textos.diferenca.cartoes[2].titulo.split(",")[0], textos.taparuba].join(" · ");
+  assert.equal(esperado, "Café Conilon · Cacau 100% · Feito à mão · Taparuba, MG");
+  grupos.forEach((grupo, i) => {
+    assert.equal(grupo.textContent, esperado);
+    assert.equal(grupo.getAttribute("aria-hidden"), i ? "true" : null);
+  });
+});
+
+test("C-08: botão alterna textos, aria-pressed e a classe pausado", async () => {
+  const pagina = await paginaMontada;
+  const botao = porTag(pagina.get("faixa"), "button")[0];
+  assert.equal(botao.type, "button");
+  assert.equal(botao.textContent, textos.pausar);
+  assert.equal(botao.getAttribute("aria-pressed"), "false");
+  const anterior = Object.getOwnPropertyDescriptor(globalThis, "document");
+  Object.defineProperty(globalThis, "document", { configurable: true, value: { documentElement: pagina.get("raiz") } });
+  try {
+    for (const pausado of [true, false]) {
+      botao.eventos.click();
+      assert.equal(botao.textContent, pausado ? textos.retomar : textos.pausar);
+      assert.equal(botao.getAttribute("aria-pressed"), String(pausado));
+      assert.equal(pagina.get("raiz").classList.contains("pausado"), pausado);
+    }
+  } finally {
+    if (anterior) Object.defineProperty(globalThis, "document", anterior);
+    else delete globalThis.document;
+  }
+});
+
+test("C-10: dois artigos nomeados com as contas inteiras, sem abas", async () => {
+  const pagina = await paginaMontada;
+  const cartoes = porClasse(pagina.get("vender"), "venda-cartao");
+  assert.equal(cartoes.length, 2);
+  cartoes.forEach((cartao, i) => {
+    assert.equal(cartao.tagName, "article");
+    const titulo = porTag(cartao, "h3")[0];
+    assert.equal(titulo.textContent, textos.vender.abas[i].titulo);
+    assert.equal(cartao.getAttribute("aria-labelledby"), titulo.id);
+    const conta = porClasse(cartao, "conta")[0];
+    assert.equal(conta.id, i ? "conta-revenda" : "conta-xicara");
+    assert.ok(descendentes(conta).some((no) => no.getAttribute("aria-live") === "polite"));
+    porTag(conta, "input").forEach((campo) => assert.equal(campo.value, ""));
+    assert.equal(cartao.style["--cartao-topo"], `${72 + i * 24}px`);
+  });
+  assert.ok(!descendentes(pagina.get("vender")).some((no) => /^(tab|tablist|tabpanel)$/.test(no.getAttribute("role"))));
+  assert.doesNotMatch(ler("experimento.js"), /indiceDaAba|selecionarAba/);
+  assert.doesNotMatch(ler("experimento.css"), /\.abas\b|\.aba-painel\b/);
 });
 
 test("B-08/B-09: menu com oito links válidos e degustação direta com mensagem do config", async () => {

@@ -2,7 +2,7 @@
 
 > Arquivo de contexto para qualquer chat novo (Claude ou Codex). Resume onde o projeto está, o que já foi decidido e o que falta. **Não é uma tarefa**: as tarefas ficam nos arquivos `p*.md`. Atualizar ao fim de cada tarefa.
 >
-> Última atualização: 02/11/2026 (experimento visual X1 a X4 feitos e commitados na branch `experimento-capitulos`; avaliação de 02/11: direção aprovada, mas Daniel **não gostou da organização das seções**; próxima tarefa X5 (personalidade dos capítulos, inspirada na Graza), a ser pesquisada e escrita. Número do WhatsApp trocado e publicado em 30/10).
+> Última atualização: 02/11/2026 (experimento visual X1 a X4 feitos e commitados na branch `experimento-capitulos`; Daniel não gostou da organização das seções; o diretor pesquisou a Graza, fez um protótipo e Daniel **aprovou o desenho da X5** (xícara que enche, borda de espuma, faixa correndo, cartões empilhados); **X5 escrita em `x5-capitulos-personalidade.md`, aguardando o Codex**. Número do WhatsApp trocado e publicado em 30/10).
 
 ## O que é
 
@@ -54,8 +54,9 @@ Nota: na `prototipo`, `ESTADO.md`, `brief.md` e `criterios.md` foram apagados (l
 | Avaliação do experimento | — | feita em 02/11 (ver "Experimento visual"): direção aprovada |
 | X3b ajustes da avaliação (estilo Entrada, textos pequenos, tempo da origem, Menu no celular, vírgula, botão redundante, largura máxima) | `x3b-ajustes-avaliacao.md` | feita e commitada; teve duas correções (aviso da calculadora; folha de 880 px sem "Faça a conta" visível) |
 | X4 resto do conteúdo como capítulos | `x4-capitulos-conteudo.md` | feita e commitada (44 testes, JS 33.718 bytes, teto 40.000); teve uma correção de acabamento (notas em faixa, destaque em Entrada, dica do preparo) |
-| X5 personalidade dos capítulos (trecho origem → produtos → duas formas de vender), inspirada na Graza | `x5-capitulos-personalidade.md` | **a pesquisar e escrever** (chat novo no Claude, Opus alto); depois Codex Sol alto |
-| X6 revisão no celular real e desempenho no 4G | a escrever | depois da X5 |
+| X5 personalidade dos capítulos (trecho origem → produtos → faixa → duas formas de vender): xícara que enche com a rolagem, borda de espuma, faixa correndo com "Pausar animações", cartões empilhados com a calculadora | `x5-capitulos-personalidade.md` | **escrita em 02/11**, desenho aprovado por Daniel com protótipo; executar no Codex (chat novo "site-capuccino X5", GPT-6.1 Sol, esforço alto); não fazer commit |
+| X6 personalidade do resto (como preparar, como funciona, dúvidas, contato) na mesma linguagem | a escrever | depois da aprovação da X5 |
+| X7 revisão no celular real e desempenho no 4G | a escrever | depois da X6 |
 
 ## Fatos do negócio (confirmados pela família)
 
@@ -104,9 +105,11 @@ Objetivo (pedido de Daniel em 30/10): descobrir, navegando, uma direção visual
 
 **Depois da X4 (02/11), Daniel não gostou da organização:** seções mal separadas, todas com o mesmo formato, só a primeira passagem (hero → origem) tem transição, e a calculadora parece uma caixa quadrada deslocada no meio. Referência principal: **Graza** (https://www.graza.co/): cada seção com formato e cor próprios, bordas curvas e fios tracejados entre seções, uma gota que cai com a rolagem, cartões que se empilham, faixa de texto correndo. Outras que ele gostou: Max Chocolatier e a página do AirPods Pro (seção fixada). Pesado não: público no celular, 4G.
 **Decisões de Daniel (sim às três):** (1) **gota de café** caindo com a rolagem (da xícara da origem, virando borda de espuma no capítulo de produtos); (2) **"Duas formas de vender" vira dois cartões empilhados**, cada um com a calculadora inteira, de ponta a ponta, **sem abas e sem a caixa no meio**; (3) **faixa correndo** "Café Conilon · Cacau 100% · Feito à mão · Taparuba, MG" (textos do config). Também proposto e não vetado: bordas de espuma e fios tracejados dourados, cor própria por capítulo (usar a folha/verde), botão "Pausar animações".
+**Pesquisa e protótipo (02/11):** a Graza usa GSAP (gota presa com "pin"), faixa em CSS puro (`@keyframes`, 20 s), fios em `border: dashed` e botão "Pause animations"; hoje ela **não** tem cartões empilhados nem borda curva (os cartões só deslizam). Peso medido: ~94 MB (87 MB de vídeo), 2,2 MB de JS. AirPods Pro: bloco alto (2,5 telas) com tela `sticky` dentro, como o nosso palco. Max Chocolatier: quase sem efeitos, personalidade nas fotos grandes. Suporte: `animation-timeline` no Chrome 115+ e Safari/iOS 26+; Firefox estável ainda não. Celular no Brasil (out/2026, StatCounter): Chrome 76,6%, Safari 19,7%. Protótipo do diretor (descartável, fora do projeto): JS 35.138 bytes, 60 fps com CPU 4×/6× mais lenta, nenhum campo coberto ao navegar por Tab.
+**Desenho aprovado por Daniel (02/11):** gota trocada por **xícara que enche de café com a rolagem** (espuma sobe, escorre e sai vapor) e pousa na **borda de espuma**; produtos com topo claro e corpo **cor de café** (`--cacau`), pacotes em cartões de foto com etiquetas; **faixa dourada** entre produtos e vender ("Café Conilon · Cacau 100% · Feito à mão · Taparuba, MG", com "Taparuba, MG" novo no `textos.js`); "Duas formas de vender" com **topo em arco** e dois cartões (claro e **verde folha** com texto escuro) com a calculadora dentro, empilhados só no desktop; xícara e faixa também no celular. Teto de JS continua 40.000.
 **Regras da X5:** sem bibliotecas nem build; preferir CSS (sticky, scroll-driven animations com fallback, SVG); reduced-motion sem movimento; no celular os cartões ficam um embaixo do outro; JS ≤ 45.000 bytes (propor e justificar se precisar subir o teto); começar só pelo trecho origem → produtos → duas formas de vender; se Daniel aprovar, o resto vira a X6.
 
-Depois da X5: X6 = revisão no celular real e desempenho no 4G; em seguida a família vê e decide se o experimento vira o site novo.
+Depois da X5: X6 = o resto dos capítulos na mesma linguagem; X7 = revisão no celular real e desempenho no 4G; em seguida a família vê e decide se o experimento vira o site novo.
 
 ## Ideias em espera
 
