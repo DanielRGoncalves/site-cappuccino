@@ -2,7 +2,7 @@
 
 > Arquivo de contexto para qualquer chat novo (Claude ou Codex). Resume onde o projeto está, o que já foi decidido e o que falta. **Não é uma tarefa**: as tarefas ficam nos arquivos `p*.md`. Atualizar ao fim de cada tarefa.
 >
-> Última atualização: 02/11/2026 (experimento visual X1, X2 e X3 feitos e commitados na branch `experimento-capitulos`; **avaliação feita em 02/11: direção aprovada**; próximas tarefas X3b (ajustes da avaliação) e X4 (resto do conteúdo), já escritas. Número do WhatsApp trocado e publicado em 30/10).
+> Última atualização: 02/11/2026 (experimento visual X1 a X4 feitos e commitados na branch `experimento-capitulos`; avaliação de 02/11: direção aprovada, mas Daniel **não gostou da organização das seções**; próxima tarefa X5 (personalidade dos capítulos, inspirada na Graza), a ser pesquisada e escrita. Número do WhatsApp trocado e publicado em 30/10).
 
 ## O que é
 
@@ -52,8 +52,10 @@ Nota: na `prototipo`, `ESTADO.md`, `brief.md` e `criterios.md` foram apagados (l
 | X2 calculadora em frase dentro das abas; foto da origem nítida (1440 px) | `x2-calculadora-frase.md` | feita e commitada |
 | X3 sistema de texto, calculadora em folha clara, contato com foto e ícones | `x3-texto-conta-contato.md` | feita (33 testes, JS 29.222 bytes) e commitada |
 | Avaliação do experimento | — | feita em 02/11 (ver "Experimento visual"): direção aprovada |
-| X3b ajustes da avaliação (estilo Entrada, textos pequenos, tempo da origem, Menu no celular, vírgula, botão redundante, largura máxima) | `x3b-ajustes-avaliacao.md` | escrita em 02/11; a executar |
-| X4 resto do conteúdo como capítulos | `x4-capitulos-conteudo.md` | escrita em 02/11; começa depois da X3b aprovada; teto de JS sobe para 40.000 bytes |
+| X3b ajustes da avaliação (estilo Entrada, textos pequenos, tempo da origem, Menu no celular, vírgula, botão redundante, largura máxima) | `x3b-ajustes-avaliacao.md` | feita e commitada; teve duas correções (aviso da calculadora; folha de 880 px sem "Faça a conta" visível) |
+| X4 resto do conteúdo como capítulos | `x4-capitulos-conteudo.md` | feita e commitada (44 testes, JS 33.718 bytes, teto 40.000); teve uma correção de acabamento (notas em faixa, destaque em Entrada, dica do preparo) |
+| X5 personalidade dos capítulos (trecho origem → produtos → duas formas de vender), inspirada na Graza | `x5-capitulos-personalidade.md` | **a pesquisar e escrever** (chat novo no Claude, Opus alto); depois Codex Sol alto |
+| X6 revisão no celular real e desempenho no 4G | a escrever | depois da X5 |
 
 ## Fatos do negócio (confirmados pela família)
 
@@ -87,18 +89,24 @@ Objetivo (pedido de Daniel em 30/10): descobrir, navegando, uma direção visual
 
 - **Isolamento:** tudo em `experimento/` (HTML, CSS, JS, `textos.js`, `fontes/`, `img/`) + `testes/experimento.test.mjs`. Nenhum arquivo do site atual é alterado. Textos e dados vêm de `js/config.js` por importação (nunca copiados); só os textos novos ficam em `experimento/textos.js`. Sem JS, só aparece um aviso `<noscript>` e o link para o site atual (decisão de Daniel).
 - **Direção:** cores atuais (torra, leite, ouro, cacau, folha); fonte de títulos **Fraunces** local (OFL, em `experimento/fontes/`); o elemento marcante é o **arco** com fio dourado, que muda de lugar, tamanho e foto na rolagem do hero para a origem (palco `sticky`, rolagem nativa, sem travar). Menu em tela cheia; botões em pílula; efeito de peso nas letras do título só com mouse.
-- **Sistema de texto (X3):** 5 estilos para tudo: Abertura (só o h1), Capítulo, Frase, Texto (17 px) e Nota (14 px). **Voz:** a marca fala como "nós", frases curtas, sem caixa alta nem exclamação; só a calculadora fala como "eu".
+- **Sistema de texto (X3, X3b):** 6 estilos para tudo: Abertura (só o h1), Capítulo, Entrada (Fraunces ~18–24 px, a frase logo abaixo de um título grande), Frase, Texto (17 px) e Nota (14 px). **Voz:** a marca fala como "nós", frases curtas, sem caixa alta nem exclamação; só a calculadora fala como "eu".
 - **Calculadora:** em frase ("Se eu pago R$ … ganho R$ — por xícara."), dentro das abas "Servir na xícara" e "Revender o pacote", numa folha clara; reaproveita `js/calculadora.js`; campos vazios; dicas uma por vez.
 - **Contato:** foto 10 (moça sorrindo com dois pacotes) no arco; título "Vamos marcar uma degustação?"; WhatsApp e Instagram com ícones genéricos (balão e câmera, **não** os logos oficiais); notas de entrega e pagamento vindas do FAQ do config. **Não dizer "família" junto dessa foto**, porque nenhuma foto com pessoas mostra os pais; se a moça for da família, Daniel avisa e ajustamos. Na nota de entrega, o trecho "pela família" é removido por código.
-- **Teto de JS do experimento:** 30.000 bytes (subiu de 20.000 com a calculadora).
+- **Teto de JS do experimento:** 40.000 bytes (20.000 na X1, 30.000 com a calculadora, 40.000 na X4).
+- **Calculadora (X3b):** folha de até 880 px, sem o texto visível "Faça a conta" (só nome acessível), rótulos dos resultados em Texto, aviso "Preencha os dois valores…" colado embaixo do número, "por R$ + campo + vírgula" sempre juntos.
+- **Menu no celular:** o botão some ao rolar para baixo e volta ao rolar para cima (só até 540 px).
 - **Aviso ignorável no console:** "[Intervention] Images loaded lazily…" é do próprio Edge.
 - **Fotos 24, 27 e 28** (bebida gelada): não usar até a família confirmar esse jeito de servir.
 
-**Próximo passo, depois da avaliação: X4.** Trazer o resto do conteúdo como capítulos, nesta ordem proposta: início → origem → produtos (com e sem açúcar, ingredientes, avisos) → duas formas de vender + conta → como preparar → como funciona → dúvidas → contato. Duas decisões de Daniel pendentes:
-1. Volta o **formulário de degustação** (abre o WhatsApp com tudo preenchido) ou fica só o botão direto?
-2. **"Por que vender"** (5 frases soltas): espalhar cada frase onde faz sentido (validade nos produtos, entrega em "como funciona") em vez de uma seção própria? (recomendação do Claude)
+**Avaliação de 02/11:** Daniel achou ok, exceto os textos pequenos abaixo dos títulos (resolvido na X3b com o estilo Entrada). Notas do Claude: personalidade 4, fluidez 3, clareza 3,5, desempenho 4 (provisória, falta 4G), mobile 3,5.
 
-Depois da X4: X5 = revisão no celular real e desempenho no 4G; em seguida a família vê e decide se o experimento vira o site novo.
+**Decisões de Daniel em 02/11:** (1) sem formulário de degustação: só o botão direto (abre o WhatsApp com a mensagem pronta); (2) "Por que vender" espalhado pelos capítulos, sem seção própria.
+
+**Depois da X4 (02/11), Daniel não gostou da organização:** seções mal separadas, todas com o mesmo formato, só a primeira passagem (hero → origem) tem transição, e a calculadora parece uma caixa quadrada deslocada no meio. Referência principal: **Graza** (https://www.graza.co/): cada seção com formato e cor próprios, bordas curvas e fios tracejados entre seções, uma gota que cai com a rolagem, cartões que se empilham, faixa de texto correndo. Outras que ele gostou: Max Chocolatier e a página do AirPods Pro (seção fixada). Pesado não: público no celular, 4G.
+**Decisões de Daniel (sim às três):** (1) **gota de café** caindo com a rolagem (da xícara da origem, virando borda de espuma no capítulo de produtos); (2) **"Duas formas de vender" vira dois cartões empilhados**, cada um com a calculadora inteira, de ponta a ponta, **sem abas e sem a caixa no meio**; (3) **faixa correndo** "Café Conilon · Cacau 100% · Feito à mão · Taparuba, MG" (textos do config). Também proposto e não vetado: bordas de espuma e fios tracejados dourados, cor própria por capítulo (usar a folha/verde), botão "Pausar animações".
+**Regras da X5:** sem bibliotecas nem build; preferir CSS (sticky, scroll-driven animations com fallback, SVG); reduced-motion sem movimento; no celular os cartões ficam um embaixo do outro; JS ≤ 45.000 bytes (propor e justificar se precisar subir o teto); começar só pelo trecho origem → produtos → duas formas de vender; se Daniel aprovar, o resto vira a X6.
+
+Depois da X5: X6 = revisão no celular real e desempenho no 4G; em seguida a família vê e decide se o experimento vira o site novo.
 
 ## Ideias em espera
 
