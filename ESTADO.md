@@ -2,7 +2,7 @@
 
 > Arquivo de contexto para qualquer chat novo (Claude ou Codex). Resume onde o projeto está, o que já foi decidido e o que falta. **Não é uma tarefa**: as tarefas ficam nos arquivos `p*.md`. Atualizar ao fim de cada tarefa.
 >
-> Última atualização: 28/10/2026 (P10b, P10c e P11a feitas e revisadas; falta testar no celular e juntar as fotos que faltam para a P11).
+> Última atualização: 02/11/2026 (experimento visual X1, X2 e X3 feitos e commitados na branch `experimento-capitulos`; **avaliação de Daniel pendente**; depois dela vem a X4. Número do WhatsApp trocado e publicado em 30/10).
 
 ## O que é
 
@@ -11,8 +11,8 @@ Site de apresentação do **Cheiro das Águas** (Agropecuária Cheiro das Águas
 ## Como trabalhamos
 
 - **Claude** = diretor/revisor: planeja, escreve as tarefas (`p*.md`) com critérios, revisa lendo os arquivos. Não roda git nem testes e não faz push.
-- **Codex (GPT-6 Luna)** = executor: edita, roda `node --test testes/`, faz commit local. Um chat novo por tarefa. Luna esforço baixo = textos; médio = lógica/imagens; alto = estrutura + layout + testes. **Sol** só se o mesmo critério falhar duas vezes.
-- **Daniel** confere no **Live Server do VS Code** (VS Code aberto dentro de `site-cappuccino`, endereço `127.0.0.1:5500/index.html`), testa no celular e faz o push.
+- **Codex** = executor: edita, roda `node --test testes/`. Um chat novo por tarefa, com nome "site-capuccino" + código (ex.: "site-capuccino X3"); correções pequenas no mesmo chat. Modelos (desde 29/10): **GPT-6.1 Sol, esforço médio** = padrão para tarefas com lógica, layout ou imagens; **GPT-6.1 Terra, esforço médio** = tarefas pequenas e bem especificadas; **Sol alto** só se o mesmo critério falhar duas vezes. No experimento, o Codex **não faz commit**: Daniel testa e faz o commit depois da aprovação.
+- **Daniel** confere no **Live Server do VS Code** (VS Code aberto dentro de `site-cappuccino`), testa no celular e faz o push. Site atual: `127.0.0.1:5500/index.html`; experimento: `127.0.0.1:5500/experimento/index.html`. **Atenção:** se a porta 5500 abrir o projeto "controle de gastos" (servidor antigo ligado em segundo plano), fechar todas as janelas do VS Code e reabrir só esta pasta; o Live Server pode subir em outra porta (ex.: 5501). Abrir com botão direito no `index.html` > "Open with Live Server".
 - Git Bash: `cd /e/cheiro-das-aguas/site-cappuccino`; um comando por linha; `git add` por nome de arquivo (nunca `git add .`); depois de cada tarefa: `git status`, `git log --oneline -3`, `node --test testes/`.
 - Prompt padrão para o Codex: "Leia AGENTS.md, p7-qualidade.md, p8-negocio.md e p9-visual.md. Execute somente a tarefa **PX** descrita em … e termine com o relatório final do AGENTS.md. O … prevalece sobre os outros documentos onde houver contradição."
 
@@ -29,7 +29,10 @@ Site de apresentação do **Cheiro das Águas** (Agropecuária Cheiro das Águas
 |---|---|---|
 | `main` | versão antiga de loja, com preços (tag `loja-v1`) | guardada, não usar |
 | `prototipo` | versão publicada no domínio (P1–P8) | **no ar** |
-| `visual` | protótipo com as fotos reais atuais (P9 a P11a) | **não publicar**; tem `noindex` e faixa de protótipo |
+| `visual` | protótipo com as fotos reais atuais (P9 a P11a) + troca do WhatsApp | **não publicar**; tem `noindex` e faixa de protótipo |
+| `experimento-capitulos` | criada a partir da `visual`; experimento visual X1–X3 na pasta `experimento/` | **não publicar**; tem `noindex` e faixa "Experimento visual" |
+
+Nota: na `prototipo`, `ESTADO.md`, `brief.md` e `criterios.md` foram apagados (limpeza antiga). Ao levar commits da `visual` para a `prototipo` com `cherry-pick`, o conflito nesses três se resolve com `git rm -f` neles e `git cherry-pick --continue`.
 
 ## Tarefas
 
@@ -44,6 +47,12 @@ Site de apresentação do **Cheiro das Águas** (Agropecuária Cheiro das Águas
 | P10c aba Xícara calculada por kg; "diet" na calculadora | `p10c-calculadora-kg.md` | feita (commit `61ff298`), revisada pelo Claude em 28/10: K-01 a K-11 ok, 26 testes; falta testar toque no celular |
 | P11a simulação com as fotos reais atuais | `p11a-fotos-reais.md` | feita (commit `8d4e948`), revisada pelo Claude em 28/10: 25 testes, sem erro no console; imagens em `img/reais/` |
 | P11 fotos oficiais e versão oficial | a escrever | depende das fotos reais e dos valores confirmados |
+| Troca do WhatsApp para 5533999096791 | (sem arquivo) | feita em 30/10 na `visual` e levada para a `prototipo` (publicada) |
+| X1 experimento de capítulos: menu, hero, transição de rolagem, "Duas formas de vender" | `x1-experimento-capitulos.md` | feita e commitada; correções de título (linhas travadas), botões pílula e convite do menu aprovadas |
+| X2 calculadora em frase dentro das abas; foto da origem nítida (1440 px) | `x2-calculadora-frase.md` | feita e commitada |
+| X3 sistema de texto, calculadora em folha clara, contato com foto e ícones | `x3-texto-conta-contato.md` | feita (33 testes, JS 29.222 bytes) e commitada |
+| **Avaliação de Daniel do experimento** | — | **pendente**: notas de 1 a 5 (personalidade, fluidez, clareza, desempenho, mobile), o que mais e menos gostou, teste no celular real |
+| X4 resto do conteúdo como capítulos | a escrever | **espera a avaliação** e duas decisões (ver "Experimento visual") |
 
 ## Fatos do negócio (confirmados pela família)
 
@@ -63,13 +72,32 @@ Premium, melhor, saudável ou benefício de saúde; conservante, aditivo ("sem a
 ## A confirmar (bloqueia a calculadora e a versão oficial)
 
 - **Calculadora:** decidido em 28/10: 3 colheres = 30 g para 100 ml (rótulo diz 35 g: alinhar no rótulo novo); os negócios revendem o pacote e servem na xícara de louça (reutilizada, sem custo de copo); preço padrão do pacote para empresas R$ 30 (com açúcar) e R$ 35 (sem açúcar), negociável e fora do site; uma padaria cliente revende por R$ 39 e R$ 59. Falta confirmar: tamanhos de xícara usados nos negócios (P10b usa 150/200/300 ml) Preço da xícara: segundo o Davi, varia de R$ 8 a R$ 24 conforme o estabelecimento; o campo fica vazio, com essa faixa como dica. Com 30 g/100 ml, a xícara de 200 ml custa R$ 7,20 de pó (pacote a R$ 30): ganho baixo para quem cobra perto de R$ 8, bom acima de uns R$ 12.
-- **Fotos reais:** 27 fotos recebidas em 28/10 (originais em `fotos-reais/`, fora do Git). Usadas na P11a: 1, 2, 4, 6, 11, 12, 13, 14, 15, 17, 19. Ainda faltam: produto no balcão ou na prateleira de uma padaria; a família preparando e entregando (mãe e pai, em Taparuba); cacau (só aparece na foto 2); pó e embalagem sem marca de outras empresas (as fotos 3, 6 e 18 mostram uma caneca de outra marca); o verso do rótulo com ingredientes; um cappuccino quente pronto na xícara de louça de padaria. Tirar na vertical, assunto no centro.
+- **Fotos reais:** 27 fotos recebidas em 28/10 (originais em `fotos-reais/`, fora do Git). Usadas na P11a: 1, 2, 4, 6, 11, 12, 13, 14, 15, 17, 19. Ainda faltam: produto no balcão ou na prateleira de uma padaria; a família preparando e entregando (mãe e pai, em Taparuba); cacau (só aparece na foto 2); pó e embalagem sem marca de outras empresas (as fotos 3, 6 e 18 mostram uma caneca de outra marca); o verso do rótulo com ingredientes; um cappuccino quente pronto na xícara de louça de padaria. Tirar na vertical, assunto no centro. **Pedido enviado ao Davi em 30/10** (lista: pais preparando em casa; entrega; pacote no balcão de padaria; cappuccino quente na xícara de louça com o pacote; cacau e café em grãos de perto; verso do pacote; casa e roça em Taparuba). Aguardando.
 - **Fotos reais (confirmado por Daniel em 28/10):** todas autorizadas pelas pessoas que aparecem; têm edição (cor, luz), mas nenhuma foi gerada por IA. As fotos com pessoas (7 a 10, 13, 16, 24, 27, 28) podem ser usadas, por exemplo numa futura seção "quem somos". Continua valendo: não usar as que mostram a caneca de outra marca (3, 18 e a parte direita da 6).
 - **Tamanho das imagens:** os testes contam 1 KB = 1.000 bytes. Imagens que o Claude grava na pasta do PC ganham um bloco C2PA (credenciais de conteúdo, ~5.800 bytes). Ao preparar imagens, deixar pelo menos 7.000 bytes de folga e conferir o tamanho final na pasta (`Get-ChildItem img/reais`).
 - **Rótulo** da embalagem desatualizado (cita achocolatado e café solúvel) e igual para os dois produtos: atualizar e diferenciar antes de vender.
 - Com o contador: "sem açúcar" ou "sem adição de açúcar"; nota fiscal.
 - **INPI:** verificar o risco do nome "Cheiro das Águas".
 - Com a família: prazo de entrega, pedido mínimo, condições para empresas.
+
+## Experimento visual (branch `experimento-capitulos`)
+
+Objetivo (pedido de Daniel em 30/10): descobrir, navegando, uma direção visual mais imersiva do que o site atual, sem mexer no site oficial. **Nada aqui é identidade aprovada** até a avaliação de Daniel.
+
+- **Isolamento:** tudo em `experimento/` (HTML, CSS, JS, `textos.js`, `fontes/`, `img/`) + `testes/experimento.test.mjs`. Nenhum arquivo do site atual é alterado. Textos e dados vêm de `js/config.js` por importação (nunca copiados); só os textos novos ficam em `experimento/textos.js`. Sem JS, só aparece um aviso `<noscript>` e o link para o site atual (decisão de Daniel).
+- **Direção:** cores atuais (torra, leite, ouro, cacau, folha); fonte de títulos **Fraunces** local (OFL, em `experimento/fontes/`); o elemento marcante é o **arco** com fio dourado, que muda de lugar, tamanho e foto na rolagem do hero para a origem (palco `sticky`, rolagem nativa, sem travar). Menu em tela cheia; botões em pílula; efeito de peso nas letras do título só com mouse.
+- **Sistema de texto (X3):** 5 estilos para tudo: Abertura (só o h1), Capítulo, Frase, Texto (17 px) e Nota (14 px). **Voz:** a marca fala como "nós", frases curtas, sem caixa alta nem exclamação; só a calculadora fala como "eu".
+- **Calculadora:** em frase ("Se eu pago R$ … ganho R$ — por xícara."), dentro das abas "Servir na xícara" e "Revender o pacote", numa folha clara; reaproveita `js/calculadora.js`; campos vazios; dicas uma por vez.
+- **Contato:** foto 10 (moça sorrindo com dois pacotes) no arco; título "Vamos marcar uma degustação?"; WhatsApp e Instagram com ícones genéricos (balão e câmera, **não** os logos oficiais); notas de entrega e pagamento vindas do FAQ do config. **Não dizer "família" junto dessa foto**, porque nenhuma foto com pessoas mostra os pais; se a moça for da família, Daniel avisa e ajustamos. Na nota de entrega, o trecho "pela família" é removido por código.
+- **Teto de JS do experimento:** 30.000 bytes (subiu de 20.000 com a calculadora).
+- **Aviso ignorável no console:** "[Intervention] Images loaded lazily…" é do próprio Edge.
+- **Fotos 24, 27 e 28** (bebida gelada): não usar até a família confirmar esse jeito de servir.
+
+**Próximo passo, depois da avaliação: X4.** Trazer o resto do conteúdo como capítulos, nesta ordem proposta: início → origem → produtos (com e sem açúcar, ingredientes, avisos) → duas formas de vender + conta → como preparar → como funciona → dúvidas → contato. Duas decisões de Daniel pendentes:
+1. Volta o **formulário de degustação** (abre o WhatsApp com tudo preenchido) ou fica só o botão direto?
+2. **"Por que vender"** (5 frases soltas): espalhar cada frase onde faz sentido (validade nos produtos, entrega em "como funciona") em vez de uma seção própria? (recomendação do Claude)
+
+Depois da X4: X5 = revisão no celular real e desempenho no 4G; em seguida a família vê e decide se o experimento vira o site novo.
 
 ## Ideias em espera
 
