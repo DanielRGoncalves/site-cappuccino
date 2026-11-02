@@ -1,3 +1,5 @@
+import { config } from "../js/config.js";
+
 export const textos = {
   aviso: "Experimento visual. Este não é o site oficial.",
   menu: "Menu",
@@ -5,13 +7,18 @@ export const textos = {
   navegacao: "Navegação do experimento",
   links: [
     { texto: "Origem", href: "#origem" },
+    { texto: config.textos.menu[1], href: "#produtos" },
     { texto: "Duas formas de vender", href: "#vender" },
-    { texto: "Contato", href: "#contato" },
+    { texto: config.textos.preparo.titulo, href: "#preparo" },
+    { texto: config.textos.como.titulo, href: "#como" },
+    { texto: config.textos.faq.titulo, href: "#duvidas" },
+    { texto: config.textos.contato.titulo, href: "#contato" },
     { texto: "Site atual", href: "../index.html" },
   ],
   apoio: "Artesanal e gourmet, feito à mão com café Conilon e cacau 100%.",
   verFormas: "Ver as duas formas de vender",
   voltar: "Voltar ao site atual",
+  produtos: { conteudo: "O que vai dentro", rendimento: "Rendimento", validade: "Validade", conservacao: "Conservação" },
   contato: {
     entrega: "Entrega",
     pagamento: "Pagamento",
@@ -35,20 +42,20 @@ export const textos = {
     titulo: "Duas formas de vender",
     abas: [
       {
-        titulo: "Servir na xícara",
+        titulo: config.textos.padarias.abaXicara,
         frase: "Vendemos por kg para quem prepara e serve na xícara.",
         lista: [
-          "Preparo em 3 passos, só com água quente.",
+          config.textos.porque.motivos[2],
           "30 g para cada 100 ml de água fervente.",
         ],
       },
       {
-        titulo: "Revender o pacote",
+        titulo: config.textos.padarias.abaRevenda,
         frase: "Pacote de 250 g, com açúcar ou sem açúcar.",
         lista: [
-          "Rende cerca de 8 xícaras por pacote.",
-          "Validade de 365 dias.",
-          "Entrega sem taxa na Grande Vitória, de um dia para o outro.",
+          config.textos.porque.motivos[1],
+          config.textos.porque.motivos[3],
+          config.textos.porque.motivos[4],
         ],
       },
     ],

@@ -186,6 +186,50 @@ img { display: block; max-width: 100%; object-fit: cover; }
 .palavra { display: inline-block; white-space: nowrap; }
 .letra { font-variation-settings: "wght" 400, "opsz" 72; }
 
+.capitulo { padding: 100px max(6vw, calc((100% - 1280px) / 2)); scroll-margin-top: 90px; }
+.claro { background: var(--leite); color: var(--cacau); }
+.claro :focus-visible { outline-color: var(--cacau); }
+.capitulo > h2 { max-width: 18ch; letter-spacing: -.035em; }
+.frase { font: var(--frase); margin: 0; }
+.nota { font: var(--nota); }
+.produtos-notas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--ouro); }
+.produtos-notas h3 { color: var(--cacau); }
+.produtos-notas p { margin: 8px 0 0; }
+.preparo-dica { font: var(--texto); margin: 48px 0 0; padding-left: 16px; border-left: 2px solid var(--ouro); }
+.foto-retangular { height: auto; border-radius: 4px; }
+.produtos { border-top: 1px solid var(--ouro); }
+.produtos-grade { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6vw; margin-top: 48px; }
+.produto { min-width: 0; }
+.produto-foto { width: min(100%, 360px); aspect-ratio: 1; margin: 0 auto 32px; }
+.produto > p { max-width: 38ch; }
+.produto-ingredientes { border-top: 1px solid color-mix(in srgb, var(--cacau) 20%, transparent); }
+.produto-ingredientes summary { min-height: 48px; padding: 12px 0; cursor: pointer; }
+.produto-ingredientes p { margin: 8px 0 16px; }
+.produtos-dentro { margin-top: 80px; }
+.produtos-dentro > p { margin: 24px 0 40px; }
+.ingredientes-grade { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; }
+.ingredientes-grade article { min-width: 0; }
+.ingredientes-grade img { width: min(100%, 160px); aspect-ratio: 9 / 16; margin-bottom: 24px; }
+.ingredientes-grade h4 { overflow-wrap: anywhere; }
+.preparo-passos, .como-passos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; list-style: none; margin: 48px 0 0; padding: 0; }
+.passo-numero { display: block; font: var(--capitulo); margin-bottom: 24px; }
+.preparo-passos img { width: min(100%, 260px); aspect-ratio: 2 / 3; margin-bottom: 24px; }
+.preparo-passos p { margin: 16px 0 0; }
+.como { background: var(--torra-2); }
+.como-passos { position: relative; gap: 48px; margin-bottom: 48px; }
+.como-passos::before { content: ""; position: absolute; top: 36px; left: 0; right: 0; height: 1px; background: var(--ouro); }
+.como-passos li { position: relative; }
+.como-passos .passo-numero { position: relative; width: fit-content; padding-right: 20px; background: var(--torra-2); color: var(--ouro); }
+.duvidas-lista { margin-top: 48px; }
+.duvidas details { border-bottom: 1px solid color-mix(in srgb, var(--cacau) 20%, transparent); }
+.duvidas details:first-child { border-top: 1px solid color-mix(in srgb, var(--cacau) 20%, transparent); }
+.duvidas summary { position: relative; list-style: none; min-height: 56px; padding: 24px 44px 24px 0; cursor: pointer; }
+.duvidas summary::-webkit-details-marker { display: none; }
+.duvidas summary::before, .duvidas summary::after { content: ""; position: absolute; right: 8px; top: 50%; width: 20px; height: 2px; background: currentColor; }
+.duvidas summary::before { transform: rotate(90deg); }
+.duvidas details[open] summary::before { display: none; }
+.duvidas details p { margin: 0 0 24px; }
+
 .vender { background: var(--torra-2); padding: 100px max(6vw, calc((100% - 1280px) / 2)) 90px; scroll-margin-top: 90px; }
 .vender > h2 {  max-width: 13ch; letter-spacing: -.035em; }
 .abas { display: flex; gap: 32px; flex-wrap: wrap; margin: 48px 0; border-bottom: 1px solid var(--ouro); }
@@ -271,8 +315,10 @@ img { display: block; max-width: 100%; object-fit: cover; }
 .conta .conta-dicas p { grid-area: 1 / 1; visibility: hidden; font: var(--nota); max-width: none; margin: 0; }
 .conta .conta-dicas .ativa { visibility: visible; }
 .conta-detalhes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; padding-top: 24px; margin: 0; border-top: 1px solid color-mix(in srgb, var(--cacau) 20%, transparent); }
+.conta-detalhes { row-gap: 8px; }
+.conta-detalhes > div { display: grid; grid-row: span 2; grid-template-rows: subgrid; }
 .conta-detalhes dt { font: var(--texto); }
-.conta-detalhes dd { font: var(--frase); margin: 8px 0 0; overflow-wrap: anywhere; }
+.conta-detalhes dd { font: var(--frase); margin: 0; overflow-wrap: anywhere; }
 .conta .conta-aviso { font: var(--nota); max-width: none; margin: 24px 0 0; padding-top: 20px; border-top: 1px solid color-mix(in srgb, var(--cacau) 20%, transparent); }
 .contato { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1fr); align-items: center; gap: 8vw; padding: 100px max(6vw, calc((100% - 1280px) / 2)); background: var(--torra); color: var(--leite); scroll-margin-top: 70px; }
 .contato { row-gap: 32px; }
@@ -337,6 +383,8 @@ img { display: block; max-width: 100%; object-fit: cover; }
 
 
 @media (max-width: 919px) {
+  .ingredientes-grade { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .preparo-passos, .como-passos { gap: 24px; }
   .conta-detalhes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .contato { grid-template-columns: minmax(0, 1fr); gap: 40px; }
   .contato-foto { width: min(100%, 33.75svh, 430px); justify-self: center; }
@@ -358,6 +406,16 @@ img { display: block; max-width: 100%; object-fit: cover; }
 }
 
 @media (max-width: 540px) {
+  .produtos-notas { grid-template-columns: minmax(0, 1fr); }
+  .capitulo { padding-top: 70px; padding-bottom: 70px; }
+  .produtos-grade, .preparo-passos, .como-passos { grid-template-columns: minmax(0, 1fr); gap: 48px; }
+  .produto-foto { width: 88%; }
+  .ingredientes-grade { gap: 32px 24px; }
+  .preparo-passos img { width: 60%; }
+  .como-passos { padding-left: 24px; }
+  .como-passos::before { top: 0; bottom: 0; left: 0; width: 1px; height: auto; }
+  .como-passos .passo-numero { padding: 0; }
+  .como-passos p { margin-bottom: 0; }
   .conta-resultado { grid-template-columns: minmax(0, 1fr) max-content; }
   .conta-prefixo { grid-column: 1 / -1; }
   .conta-ganho { width: 5ch; }

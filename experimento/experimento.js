@@ -44,6 +44,10 @@ function imagem(dados, classe = "", primeira = false) {
   no.width = dados.largura;
   no.height = dados.altura;
   no.alt = dados.alt;
+  if (dados.fotoPequena && dados.foto.startsWith("img/reais/produto-")) {
+    no.srcset = `../${dados.fotoPequena} 400w, ../${dados.foto} 800w`;
+    no.sizes = "(max-width: 540px) 78vw, (max-width: 919px) 40vw, 360px";
+  }
   if (dados.foto === config.textos.origem.foto) {
     no.srcset = `../${dados.foto} 720w, img/origem-1440.webp 1440w`;
     no.sizes = classe === "foto-origem"
@@ -87,6 +91,88 @@ origem.append(fotoEstatica(config.textos.origem), conteudoOrigem);
 arco.append(imagem(config.apresentacao.hero, "foto-hero", true), imagem(config.textos.origem, "foto-origem"));
 // O arco viajante duplica as fotos estáticas, mas é só decorativo para leitores de tela.
 for (const foto of arco.children) foto.alt = "";
+
+function abrirCapitulo(id, titulo, entrada) {
+  const secao = $(id);
+  const cabecalho = elemento("h2", "", titulo);
+  cabecalho.id = `titulo-${id}`;
+  cabecalho.tabIndex = -1;
+  secao.append(cabecalho);
+  if (entrada) secao.append(elemento("p", "entrada", entrada));
+  return secao;
+}
+
+const motivos = config.textos.porque.motivos;
+const produtos = abrirCapitulo("produtos", config.textos.produtos.titulo, config.textos.produtos.igual);
+const pacotes = elemento("div", "produtos-grade");
+config.produtos.filter((produto) => produto.exibir).forEach((produto) => {
+  const item = elemento("article", "produto");
+  const moldura = elemento("div", "arco produto-foto");
+  moldura.append(imagem({ ...produto, largura: 800, altura: 800 }));
+  item.append(moldura, elemento("h3", "frase", produto.selo),
+    elemento("p", "", produto.frase), elemento("p", "nota", produto.peso));
+  if (produto.ingredientes || produto.avisos) {
+    const detalhes = elemento("details", "produto-ingredientes");
+    detalhes.append(elemento("summary", "", config.textos.produtos.ingredientesTitulo));
+    if (produto.ingredientes) detalhes.append(elemento("p", "nota", produto.ingredientes));
+    if (produto.avisos) detalhes.append(elemento("p", "nota", produto.avisos));
+    item.append(detalhes);
+  }
+  pacotes.append(item);
+});
+produtos.append(pacotes);
+const dentro = elemento("div", "produtos-dentro");
+dentro.append(elemento("h3", "frase", textos.produtos.conteudo),
+  elemento("p", "entrada", config.textos.diferenca.destaque));
+const ingredientes = elemento("div", "ingredientes-grade");
+config.textos.diferenca.cartoes.forEach((cartao) => {
+  const item = elemento("article");
+  item.append(imagem(cartao, "foto-retangular"), elemento("h4", "frase", cartao.titulo),
+    elemento("p", "", cartao.texto));
+  ingredientes.append(item);
+});
+dentro.append(ingredientes);
+produtos.append(dentro);
+const faixaProdutos = elemento("div", "produtos-notas");
+for (const [chave, texto] of [["rendimento", motivos[1]], ["validade", motivos[3]], ["conservacao", config.textos.conservacao]]) {
+  const item = elemento("div");
+  item.append(elemento("h3", "nota", textos.produtos[chave]), elemento("p", "", texto));
+  faixaProdutos.append(item);
+}
+produtos.append(faixaProdutos);
+
+const preparo = abrirCapitulo("preparo", config.textos.preparo.titulo, motivos[2]);
+const passosPreparo = elemento("ol", "preparo-passos");
+config.textos.preparo.passos.forEach((passo, i) => {
+  const item = elemento("li");
+  const numero = elemento("span", "passo-numero", i + 1);
+  numero.setAttribute("aria-hidden", "true");
+  item.append(numero, imagem(passo, "foto-retangular"), elemento("h3", "frase", passo.titulo),
+    elemento("p", "", passo.descricao));
+  passosPreparo.append(item);
+});
+preparo.append(passosPreparo);
+preparo.append(elemento("p", "preparo-dica", config.textos.preparo.dica));
+
+const como = abrirCapitulo("como", config.textos.como.titulo, motivos[4]);
+const passosComo = elemento("ol", "como-passos");
+config.textos.como.passos.forEach((passo, i) => {
+  const item = elemento("li");
+  const numero = elemento("span", "passo-numero", i + 1);
+  numero.setAttribute("aria-hidden", "true");
+  item.append(numero, elemento("p", "", passo.replace(/^\d+\.\s*/, "")));
+  passosComo.append(item);
+});
+como.append(passosComo, degustacao());
+
+const duvidas = abrirCapitulo("duvidas", config.textos.faq.titulo);
+const perguntas = elemento("div", "duvidas-lista");
+config.textos.faq.itens.forEach(({ pergunta, resposta }) => {
+  const item = elemento("details");
+  item.append(elemento("summary", "frase", pergunta), elemento("p", "", resposta));
+  perguntas.append(item);
+});
+duvidas.append(perguntas);
 
 const vender = $("vender");
 const tituloVender = elemento("h2", "", textos.vender.titulo);
@@ -145,7 +231,7 @@ textos.vender.abas.forEach((dados, i) => {
 });
 const botoesVenda = elemento("div", "botoes");
 botoesVenda.append(degustacao());
-vender.append(tituloVender, abas, ...paineis, botoesVenda);
+vender.append(tituloVender, elemento("p", "entrada", motivos[0]), abas, ...paineis, botoesVenda);
 selecionarAba(0);
 
 const contato = $("contato");
