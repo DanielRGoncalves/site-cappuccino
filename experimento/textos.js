@@ -13,6 +13,8 @@ export const textos = {
   verFormas: "Ver as duas formas de vender",
   voltar: "Voltar ao site atual",
   contato: {
+    entrega: "Entrega",
+    pagamento: "Pagamento",
     titulo: "Vamos marcar uma degustação?",
     texto: "A gente leva o cappuccino e a água quente, e você prova na hora. Sem custo.",
     botao: "Conversar no WhatsApp",

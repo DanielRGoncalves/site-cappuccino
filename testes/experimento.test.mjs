@@ -1,6 +1,58 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { progressoDoCapitulo, faixa, escalaDoArco } from "../experimento/capitulo.js";
+import { readFileSync, readdirSync, statSync } from "node:fs";
+import { textos } from "../experimento/textos.js";
+
+const ler = (nome) => readFileSync(new URL(`../experimento/${nome}`, import.meta.url), "utf8");
+
+test("A-02: seis estilos compartilhados e Entrada nos três apoios", () => {
+  const css = ler("experimento.css");
+  for (const estilo of ["abertura", "capitulo", "frase", "entrada", "texto", "nota"]) {
+    assert.match(css, new RegExp(`--${estilo}:`));
+  }
+  assert.match(css, /--entrada: 380 clamp\(1\.15rem, 1\.7vw, 1\.5rem\)\/1\.45/);
+  assert.doesNotMatch(css, /font-size\s*:/);
+  const fontes = [...css.matchAll(/font:\s*([^;]+);/g)].map((item) => item[1]);
+  assert.ok(fontes.every((valor) => /^(inherit|var\(--(abertura|capitulo|frase|entrada|texto|nota|numero-ganho)\))$/.test(valor)));
+  for (const texto of ["textos.apoio", "config.textos.origem.texto", "textos.contato.texto"]) {
+    assert.ok(ler("experimento.js").includes(`elemento("p", "entrada", ${texto})`));
+  }
+});
+
+test("A-05: contato agrupa serviços com rótulos do textos e respostas do config", () => {
+  assert.equal(textos.contato.entrega, "Entrega");
+  assert.equal(textos.contato.pagamento, "Pagamento");
+  const js = ler("experimento.js");
+  assert.match(js, /config\.textos\.faq\.itens\.find/);
+  assert.match(js, /contato-servico/);
+  assert.match(js, /contato-legais/);
+  assert.match(js, /join\(" · "\)/);
+});
+
+test("A-08: depois da conta fica só o convite à degustação", () => {
+  const js = ler("experimento.js");
+  assert.doesNotMatch(js, /botaoConta|config\.textos\.hero\.conta/);
+  assert.match(js, /botoesVenda\.append\(degustacao\(\)\)/);
+  assert.match(js, /vender\.append\(tituloVender, abas, \.\.\.paineis, botoesVenda\)/);
+});
+
+test("A-06: origem termina de entrar com 40% de tela de leitura parada", () => {
+  for (const altura of [900, 844]) {
+    const percurso = altura * 1.6;
+    for (const p of [.75, .8, 1]) assert.equal(faixa(p, .55, .75), 1);
+    assert.ok(percurso * .25 >= altura * .35);
+  }
+  assert.match(ler("experimento.css"), /\.com-movimento \.capitulos \{ height: 260vh; \}/);
+  assert.match(ler("experimento.js"), /"--entrar": faixa\(p, \.55, \.75\)/);
+});
+
+test("A-11: JavaScript do experimento respeita 30.000 bytes", () => {
+  const pasta = new URL("../experimento/", import.meta.url);
+  const bytes = readdirSync(pasta).filter((nome) => nome.endsWith(".js"))
+    .reduce((total, nome) => total + statSync(new URL(nome, pasta)).size, 0);
+  assert.ok(bytes <= 30000, `${bytes} bytes`);
+});
 
 test("progresso: início, meio e fim do percurso do wrapper", () => {
   assert.equal(progressoDoCapitulo(0, 2200, 1000), 0);

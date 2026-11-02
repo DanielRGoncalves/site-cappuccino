@@ -6,13 +6,14 @@
   font-display: swap;
 }
 
-/* Cinco estilos compartilhados. O ganho usa a escala especial pedida na X3. */
+/* Seis estilos compartilhados. O ganho usa a escala especial pedida na X3. */
 :root {
   --fonte-titulo: Fraunces, Georgia, serif;
   --fonte-texto: system-ui, sans-serif;
   --abertura: 400 clamp(2.6rem, 9vw, 7.5rem)/1 var(--fonte-titulo);
   --capitulo: 400 clamp(2.4rem, 5vw, 4.6rem)/1.05 var(--fonte-titulo);
   --frase: 400 clamp(1.4rem, 2.4vw, 2.1rem)/1.35 var(--fonte-titulo);
+  --entrada: 380 clamp(1.15rem, 1.7vw, 1.5rem)/1.45 var(--fonte-titulo);
   --texto: 400 17px/1.6 var(--fonte-texto);
   --nota: 400 14px/1.5 var(--fonte-texto);
   --numero-ganho: 450 clamp(2.4rem, 5vw, 4rem)/1.35 var(--fonte-titulo);
@@ -97,10 +98,10 @@ img { display: block; max-width: 100%; object-fit: cover; }
 .cena { padding: 130px 6vw 80px; min-height: 100svh; }
 .hero { background: var(--torra); color: var(--leite); }
 .hero h1 { font: var(--abertura);  line-height: 1; letter-spacing: -.045em; max-width: 10ch; }
-.hero p { margin: 24px 0 28px; max-width: 37ch; }
+.entrada { font: var(--entrada); max-width: 34ch; margin: 28px 0 0; }
+.entrada + .botoes, .entrada + .contato-links { margin-top: 32px; }
 .origem { background: var(--leite); color: var(--cacau); }
 .origem h2 {  max-width: 13ch; letter-spacing: -.035em; }
-.origem p { max-width: 34ch; margin-top: 28px; }
 .cena .conteudo { position: relative; z-index: 2; }
 .arco {
   overflow: hidden;
@@ -122,7 +123,7 @@ img { display: block; max-width: 100%; object-fit: cover; }
 .origem .foto-estatica { float: left; margin-right: 8vw; }
 .arco-viajante { display: none; }
 
-.com-movimento .capitulos { height: 220vh; }
+.com-movimento .capitulos { height: 260vh; }
 .com-movimento .palco {
   --p: 0;
   --fundo: 0;
@@ -185,7 +186,7 @@ img { display: block; max-width: 100%; object-fit: cover; }
 .palavra { display: inline-block; white-space: nowrap; }
 .letra { font-variation-settings: "wght" 400, "opsz" 72; }
 
-.vender { background: var(--torra-2); padding: 100px 6vw 90px; scroll-margin-top: 90px; }
+.vender { background: var(--torra-2); padding: 100px max(6vw, calc((100% - 1280px) / 2)) 90px; scroll-margin-top: 90px; }
 .vender > h2 {  max-width: 13ch; letter-spacing: -.035em; }
 .abas { display: flex; gap: 32px; flex-wrap: wrap; margin: 48px 0; border-bottom: 1px solid var(--ouro); }
 .abas button {
@@ -207,13 +208,16 @@ img { display: block; max-width: 100%; object-fit: cover; }
 .aba-painel ul { padding-left: 20px; max-width: 46ch; }
 .aba-painel li { padding: 5px 0 5px 5px; }
 .aba-painel li::marker { color: var(--ouro); }
-.aba-painel .arco { width: min(100%, 330px); height: 410px; justify-self: end; }
+.aba-painel .arco { width: min(100%, 330px); height: 410px; justify-self: start; }
 .aba-painel.entrou { animation: entrar-aba 280ms ease-out both; }
 @keyframes entrar-aba { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 .vender > .botoes { margin-top: 45px; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
 .conta {
   grid-column: 1 / -1;
+  width: 100%;
+  max-width: 880px;
+  justify-self: center;
   min-width: 0;
   margin-top: 48px;
   padding: 48px;
@@ -222,9 +226,10 @@ img { display: block; max-width: 100%; object-fit: cover; }
   color: var(--cacau);
   scroll-margin-top: 85px;
 }
-.conta .conta-titulo { font: var(--nota); margin: 0 0 24px; }
+.conta::before { content: ""; display: block; width: 32px; height: 2px; background: var(--ouro); margin-bottom: 28px; }
 .conta .conta-frase { font: var(--frase); max-width: none; margin: 0; }
-.conta-campo { display: inline-block; max-width: 100%; vertical-align: baseline; }
+.conta-campo { display: inline-block; max-width: 100%; vertical-align: baseline; white-space: nowrap; }
+.conta-venda { display: inline-block; white-space: nowrap; }
 .conta input, .conta select {
   width: 6ch;
   max-width: 100%;
@@ -246,37 +251,42 @@ img { display: block; max-width: 100%; object-fit: cover; }
 }
 .conta option { color: var(--cacau); background: var(--leite); }
 .conta input:focus, .conta select:focus { border-bottom: 3px solid var(--ouro); outline: 3px solid var(--ouro); outline-offset: 5px; }
-.conta-resultado { display: block; margin-top: 12px; }
+.conta-resultado { display: grid; grid-template-columns: max-content minmax(0, max-content) max-content; align-items: baseline; column-gap: .25em; margin-top: 12px; }
+.conta-unidade { white-space: nowrap; }
 .conta-ganho {
   display: inline-block;
   width: 7.5ch;
   height: 1.4em;
   max-width: 100%;
   vertical-align: middle;
-  text-align: center;
+  text-align: left;
   white-space: nowrap;
   color: var(--cacau);
   border-bottom: 3px solid var(--ouro);
   font: var(--numero-ganho);
   font-variant-numeric: tabular-nums;
 }
-.conta .conta-pendente { font: var(--nota); max-width: none; min-height: 1.5em; margin: 12px 0 0; }
+.conta .conta-pendente { grid-column: 2 / -1; font: var(--nota); max-width: none; min-height: 1.5em; margin: 8px 0 0; }
 .conta-dicas { display: grid; margin: 12px 0 24px; }
 .conta .conta-dicas p { grid-area: 1 / 1; visibility: hidden; font: var(--nota); max-width: none; margin: 0; }
 .conta .conta-dicas .ativa { visibility: visible; }
 .conta-detalhes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; padding-top: 24px; margin: 0; border-top: 1px solid color-mix(in srgb, var(--cacau) 20%, transparent); }
-.conta-detalhes dt { font: var(--nota); }
+.conta-detalhes dt { font: var(--texto); }
 .conta-detalhes dd { font: var(--frase); margin: 8px 0 0; overflow-wrap: anywhere; }
 .conta .conta-aviso { font: var(--nota); max-width: none; margin: 24px 0 0; padding-top: 20px; border-top: 1px solid color-mix(in srgb, var(--cacau) 20%, transparent); }
-.contato { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1fr); align-items: center; gap: 8vw; padding: 100px 6vw; background: var(--torra); color: var(--leite); scroll-margin-top: 70px; }
+.contato { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1fr); align-items: center; gap: 8vw; padding: 100px max(6vw, calc((100% - 1280px) / 2)); background: var(--torra); color: var(--leite); scroll-margin-top: 70px; }
+.contato { row-gap: 32px; }
 .contato-foto { width: 100%; aspect-ratio: 3 / 4; }
 .contato h2 { font: var(--capitulo); letter-spacing: -.035em; }
 .contato-conteudo { min-width: 0; }
 .contato-links { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; margin: 28px 0 32px; }
 .contato a { display: inline-flex; align-items: center; gap: 12px; min-height: 44px; max-width: 100%; }
 .contato svg { width: 24px; height: 24px; flex-shrink: 0; }
-.contato-notas { border-top: 1px solid var(--ouro); padding-top: 24px; font: var(--nota); }
-.contato-notas p { margin: 0 0 14px; }
+.contato-notas { grid-column: 1 / -1; border-top: 1px solid var(--ouro); padding-top: 24px; font: var(--nota); }
+.contato-servico { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.contato-notas p { margin: 0; }
+.contato-notas .contato-rotulo { color: var(--ouro); margin-bottom: 8px; }
+.contato-notas .contato-legais { max-width: none; margin-top: 24px; color: color-mix(in srgb, var(--leite) 75%, var(--torra)); }
 .contato-notas a { margin-top: 8px; }
 
 .menu-camada { position: fixed; inset: 0; z-index: 20; pointer-events: none; }
@@ -335,22 +345,28 @@ img { display: block; max-width: 100%; object-fit: cover; }
   .cabecalho { top: 75px; }
   .marca img { width: 38px; height: 38px; }
   .hero h1 { max-width: 15ch; }
-  .hero p { margin: 16px 0 20px; }
   .cena { padding: 140px 6vw 65px; }
   .foto-estatica, .hero .foto-estatica, .origem .foto-estatica {
     float: none; width: min(100%, 430px); height: 40svh; margin: 0 auto 30px;
   }
   .com-movimento .hero .conteudo { top: calc(84px + 29svh); width: 88vw; }
   .com-movimento .hero h1 {  max-width: 18ch; }
-  .com-movimento .hero p { max-width: 47ch; margin: 14px 0 18px; }
   .com-movimento .origem .conteudo { top: calc(105px + 45svh); left: 6vw; right: 6vw; }
   .origem h2 {  max-width: 20ch; }
-  .origem p { margin-top: 20px; max-width: 45ch; }
   .aba-painel { gap: 0 5vw; grid-template-columns: 1fr .7fr; }
   .aba-painel .arco { height: 330px; }
 }
 
 @media (max-width: 540px) {
+  .conta-resultado { grid-template-columns: minmax(0, 1fr) max-content; }
+  .conta-prefixo { grid-column: 1 / -1; }
+  .conta-ganho { width: 5ch; }
+  .conta .conta-pendente { grid-column: 1 / -1; min-height: 3em; }
+  .entrada { margin-top: 18px; }
+  .contato-servico { grid-template-columns: minmax(0, 1fr); }
+  .menu-botao { transition: transform 200ms, opacity 200ms; }
+  .menu-recolhido .menu-botao:not(:focus) { transform: translateY(-90px); opacity: 0; pointer-events: none; }
+  .menu-aberto .menu-botao { transform: none !important; opacity: 1 !important; pointer-events: auto !important; }
   .conta { padding: 24px; }
   .contato { padding: 70px 6vw; }
   .contato .botao { padding: 16px 20px; }

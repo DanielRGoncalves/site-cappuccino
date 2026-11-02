@@ -16,9 +16,7 @@ export function montarConta(revenda, reduzido) {
   };
   const bloco = criar("section", "conta");
   bloco.id = `conta-${tipo}`;
-  const titulo = criar("h3", "conta-titulo", frase.titulo);
-  titulo.id = `${bloco.id}-titulo`;
-  bloco.setAttribute("aria-labelledby", titulo.id);
+  bloco.setAttribute("aria-label", frase.titulo);
   const sentenca = criar("p", "conta-frase");
   const dicas = criar("div", "conta-dicas");
   const dicaCompra = criar("p", "", revenda ? rotulos.dicaPacote : rotulos.dicaKg);
@@ -46,10 +44,12 @@ export function montarConta(revenda, reduzido) {
   const compra = campo("compra", revenda ? rotulos.precoPacote : rotulos.precoKg, dicaCompra.id);
   const venda = campo("venda", revenda ? rotulos.precoVendaPacote : rotulos.precoVenda, dicaVenda.id);
   venda.grupo.append(",");
+  const vendaJunta = criar("span", "conta-venda");
+  vendaJunta.append(`${frase.venda} `, venda.grupo);
   sentenca.append(`${frase.compra} `, compra.grupo, " ");
   let tamanho;
   if (revenda) {
-    sentenca.append(`${frase.pacote} `, venda.grupo);
+    sentenca.append(frase.pacote.slice(0, -frase.venda.length), vendaJunta);
   } else {
     tamanho = campo("tamanho", rotulos.tamanhoXicara, dicaCompra.id, true);
     for (const { ml } of config.calculadora.xicara.tamanhos) {
@@ -58,7 +58,7 @@ export function montarConta(revenda, reduzido) {
       opcao.selected = ml === config.calculadora.xicara.tamanhoInicialMl;
       tamanho.entrada.append(opcao);
     }
-    sentenca.append(`${frase.xicara} `, tamanho.grupo, ` ${frase.venda} `, venda.grupo);
+    sentenca.append(`${frase.xicara} `, tamanho.grupo, " ", vendaJunta);
   }
 
   const resultado = criar("span", "conta-resultado");
@@ -66,9 +66,11 @@ export function montarConta(revenda, reduzido) {
   const anuncio = criar("span", "sr-only");
   anuncio.setAttribute("aria-live", "polite");
   anuncio.setAttribute("aria-atomic", "true");
-  const pendente = criar("p", "conta-pendente");
+  const pendente = criar("span", "conta-pendente");
   const ganho = criar("strong", "conta-ganho");
-  resultado.append(`${frase.ganho} `, ganho, ` ${revenda ? frase.porPacote : frase.porXicara}`);
+  const moeda = frase.vazio.split(" ")[0];
+  const unidade = revenda ? frase.porPacote : frase.porXicara;
+  resultado.append(criar("span", "conta-prefixo", `${frase.ganho} ${moeda}`), ganho, criar("span", "conta-unidade", unidade), pendente);
   sentenca.append(" ", resultado);
   const detalhes = criar("dl", "conta-detalhes");
   function detalhe(chave) {
@@ -91,11 +93,11 @@ export function montarConta(revenda, reduzido) {
       : calcularResultado(venda.entrada.value, compra.entrada.value, config.calculadora.xicara.pesoGramas, xicara.gramas);
     if (copos) copos.valor.textContent = coposPorPacote(config.calculadora.xicara.pesoGramas, xicara.gramas);
     const anterior = ganho.textContent;
-    ganho.textContent = conta ? formatarReais(conta.ganhoCentavos) : frase.vazio;
+    ganho.textContent = conta ? formatarReais(conta.ganhoCentavos).replace(moeda, "").replace(/\s/g, "") : "—";
     const semResultado = revenda ? rotulos.semResultadoRevenda : rotulos.semResultado;
     pendente.textContent = semResultado;
     pendente.style.visibility = conta ? "hidden" : "visible";
-    anuncio.textContent = conta ? resultado.textContent : semResultado;
+    anuncio.textContent = conta ? `${frase.ganho} ${moeda} ${ganho.textContent} ${unidade}` : semResultado;
     margem.valor.textContent = conta ? `${percentual.format(conta.margemPercentual)}%` : "—";
     if (custo) custo.valor.textContent = conta ? formatarReais(conta.custoCentavos) : "—";
     if (porKg) porKg.valor.textContent = conta ? formatarReais(conta.ganhoPacoteCentavos) : "—";
@@ -104,7 +106,7 @@ export function montarConta(revenda, reduzido) {
       ganho.animate([{ opacity: .45 }, { opacity: 1 }], { duration: 180 });
     }
   }
-  bloco.append(titulo, sentenca, anuncio, pendente, dicas, detalhes);
+  bloco.append(sentenca, anuncio, dicas, detalhes);
   // As dicas ocupam a mesma linha reservada; só a do campo em foco aparece.
   bloco.addEventListener("focusin", (evento) => {
     const id = evento.target.getAttribute("aria-describedby");

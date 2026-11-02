@@ -75,14 +75,14 @@ tituloHero.tabIndex = -1;
 const conteudoHero = elemento("div", "conteudo");
 const botoesHero = elemento("div", "botoes");
 botoesHero.append(degustacao(), link(textos.verFormas, "#vender", "botao secundario"));
-conteudoHero.append(tituloHero, elemento("p", "", textos.apoio), botoesHero);
+conteudoHero.append(tituloHero, elemento("p", "entrada", textos.apoio), botoesHero);
 hero.append(fotoEstatica(config.apresentacao.hero, true), conteudoHero);
 
 const conteudoOrigem = elemento("div", "conteudo");
 const tituloOrigem = elemento("h2", "", config.textos.origem.titulo);
 tituloOrigem.id = "titulo-origem";
 tituloOrigem.tabIndex = -1;
-conteudoOrigem.append(tituloOrigem, elemento("p", "", config.textos.origem.texto));
+conteudoOrigem.append(tituloOrigem, elemento("p", "entrada", config.textos.origem.texto));
 origem.append(fotoEstatica(config.textos.origem), conteudoOrigem);
 arco.append(imagem(config.apresentacao.hero, "foto-hero", true), imagem(config.textos.origem, "foto-origem"));
 // O arco viajante duplica as fotos estáticas, mas é só decorativo para leitores de tela.
@@ -144,16 +144,7 @@ textos.vender.abas.forEach((dados, i) => {
   paineis.push(painel);
 });
 const botoesVenda = elemento("div", "botoes");
-const botaoConta = elemento("button", "botao secundario", config.textos.hero.conta);
-botaoConta.type = "button";
-botaoConta.setAttribute("aria-label", config.textos.hero.conta);
-botaoConta.dataset.rotulo = config.textos.hero.conta;
-botaoConta.addEventListener("click", () => {
-  const conta = paineis[abaAtual].querySelector(".conta");
-  conta.scrollIntoView({ behavior: reduzido.matches ? "instant" : "smooth", block: "start" });
-  conta.querySelector("input").focus({ preventScroll: true });
-});
-botoesVenda.append(botaoConta, degustacao());
+botoesVenda.append(degustacao());
 vender.append(tituloVender, abas, ...paineis, botoesVenda);
 selecionarAba(0);
 
@@ -191,18 +182,20 @@ const instagram = link(config.instagram.usuario, config.instagram.url);
 instagram.prepend(iconeContato(true));
 linksContato.append(conversa, instagram);
 const notasContato = elemento("div", "contato-notas");
-for (const pergunta of ["Como é a entrega?", "Como posso pagar?"]) {
+const servicos = elemento("div", "contato-servico");
+["Como é a entrega?", "Como posso pagar?"].forEach((pergunta, i) => {
   const item = config.textos.faq.itens.find((item) => item.pergunta === pergunta);
-  if (item?.resposta) notasContato.append(elemento("p", "", pergunta === "Como é a entrega?" ? item.resposta.replace("pela família ", "") : item.resposta));
-}
-notasContato.append(
-  elemento("p", "", config.dadosLegais.razaoSocial),
-  elemento("p", "", `${config.textos.contato.cnpj} ${config.dadosLegais.cnpj}`),
-  elemento("p", "", config.dadosLegais.endereco),
+  if (!item?.resposta) return;
+  const grupo = elemento("div");
+  grupo.append(elemento("p", "contato-rotulo", i ? textos.contato.pagamento : textos.contato.entrega), elemento("p", "", i ? item.resposta : item.resposta.replace("pela família ", "")));
+  servicos.append(grupo);
+});
+notasContato.append(servicos,
+  elemento("p", "contato-legais", [config.dadosLegais.razaoSocial, `${config.textos.contato.cnpj} ${config.dadosLegais.cnpj}`, config.dadosLegais.endereco].filter(Boolean).join(" · ")),
   link(textos.voltar, "../index.html"),
 );
-conteudoContato.append(tituloContato, elemento("p", "", textos.contato.texto), linksContato, notasContato);
-contato.append(molduraContato, conteudoContato);
+conteudoContato.append(tituloContato, elemento("p", "entrada", textos.contato.texto), linksContato);
+contato.append(molduraContato, conteudoContato, notasContato);
 
 const camadaMenu = $("menu-camada");
 const botaoMenu = $("menu-botao");
@@ -325,10 +318,10 @@ function atualizarScroll() {
   const variaveis = {
     "--p": p,
     // O fundo fica escuro até o hero apagar; a origem espera o fundo claro.
-    "--fundo": faixa(p, .35, .6),
-    "--sair": faixa(p, 0, .35),
-    "--entrar": faixa(p, .6, 1),
-    "--troca": faixa(p, .4, .6),
+    "--fundo": faixa(p, .3, .55),
+    "--sair": faixa(p, 0, .3),
+    "--entrar": faixa(p, .55, .75),
+    "--troca": faixa(p, .35, .55),
     "--arco-x": `${misturar(g.x0, g.x1)}px`,
     "--arco-y": `${misturar(g.y0, g.y1)}px`,
     "--arco-sx": escala.sx,
@@ -338,10 +331,10 @@ function atualizarScroll() {
     "--foto-sy": escala.fotoSy,
   };
   for (const [chave, valor] of Object.entries(variaveis)) palco.style.setProperty(chave, valor);
-  hero.inert = p >= .35;
-  origem.inert = p <= .6;
-  hero.setAttribute("aria-hidden", String(p >= .35));
-  origem.setAttribute("aria-hidden", String(p <= .6));
+  hero.inert = p >= .3;
+  origem.inert = p <= .55;
+  hero.setAttribute("aria-hidden", String(p >= .3));
+  origem.setAttribute("aria-hidden", String(p <= .55));
   ultimoP = p;
 }
 function pedirQuadro() {
@@ -363,7 +356,13 @@ function modoDeMovimento() {
   }
   configurarLetras();
 }
-window.addEventListener("scroll", pedirQuadro, { passive: true });
+let ultimaRolagem = window.scrollY;
+window.addEventListener("scroll", () => {
+  const y = window.scrollY;
+  camadaMenu.classList.toggle("menu-recolhido", !menuAberto && y > 120 && y > ultimaRolagem);
+  ultimaRolagem = y;
+  pedirQuadro();
+}, { passive: true });
 window.addEventListener("resize", () => {
   if (!reduzido.matches) { medirArco(); pedirQuadro(); }
   clearTimeout(resizeLetras);
@@ -471,7 +470,7 @@ function animarLetras() {
   if (precisaContinuar) quadroLetras = requestAnimationFrame(animarLetras);
 }
 tituloHero.addEventListener("pointermove", (evento) => {
-  if (!letras.length || menuAberto || ultimoP >= .35) return;
+  if (!letras.length || menuAberto || ultimoP >= .3) return;
   if (!ponteiro) medirLetras();
   ponteiro = { x: evento.clientX, y: evento.clientY };
   if (!quadroLetras) quadroLetras = requestAnimationFrame(animarLetras);
