@@ -2,7 +2,7 @@
 
 > Arquivo de contexto para qualquer chat novo (Claude ou Codex). Resume onde o projeto está, o que já foi decidido e o que falta. **Não é uma tarefa**: as tarefas ficam nos arquivos `p*.md`. Atualizar ao fim de cada tarefa.
 >
-> Última atualização: 02/11/2026 (experimento visual X1 a X4 feitos e commitados na branch `experimento-capitulos`; Daniel não gostou da organização das seções; o diretor pesquisou a Graza, fez um protótipo e Daniel **aprovou o desenho da X5** (xícara que enche, borda de espuma, faixa correndo, cartões empilhados); **X5 escrita em `x5-capitulos-personalidade.md`, aguardando o Codex**. Número do WhatsApp trocado e publicado em 30/10).
+> Última atualização: 03/11/2026 (X5 executada pelo Codex, revisada e aprovada pelo diretor depois de uma correção; **conferir se o commit da X5 foi feito**. Depois Daniel quis trocar a xícara por uma cena no estilo Graza com desenhos feitos no ChatGPT; quatro protótipos foram feitos e **nenhum atingiu a qualidade que ele quer**. Projeto pausado para Daniel pesquisar ferramentas e caminhos melhores: ver "Cena da gota" e "Para a pesquisa".)
 
 ## O que é
 
@@ -54,8 +54,9 @@ Nota: na `prototipo`, `ESTADO.md`, `brief.md` e `criterios.md` foram apagados (l
 | Avaliação do experimento | — | feita em 02/11 (ver "Experimento visual"): direção aprovada |
 | X3b ajustes da avaliação (estilo Entrada, textos pequenos, tempo da origem, Menu no celular, vírgula, botão redundante, largura máxima) | `x3b-ajustes-avaliacao.md` | feita e commitada; teve duas correções (aviso da calculadora; folha de 880 px sem "Faça a conta" visível) |
 | X4 resto do conteúdo como capítulos | `x4-capitulos-conteudo.md` | feita e commitada (44 testes, JS 33.718 bytes, teto 40.000); teve uma correção de acabamento (notas em faixa, destaque em Entrada, dica do preparo) |
-| X5 personalidade dos capítulos (trecho origem → produtos → faixa → duas formas de vender): xícara que enche com a rolagem, borda de espuma, faixa correndo com "Pausar animações", cartões empilhados com a calculadora | `x5-capitulos-personalidade.md` | **escrita em 02/11**, desenho aprovado por Daniel com protótipo; executar no Codex (chat novo "site-capuccino X5", GPT-6.1 Sol, esforço alto); não fazer commit |
-| X6 personalidade do resto (como preparar, como funciona, dúvidas, contato) na mesma linguagem | a escrever | depois da aprovação da X5 |
+| X5 personalidade dos capítulos (trecho origem → produtos → faixa → duas formas de vender): xícara que enche com a rolagem, borda de espuma, faixa correndo com "Pausar animações", cartões empilhados com a calculadora | `x5-capitulos-personalidade.md` | **feita e aprovada em 02–03/11** (47 testes, JS 34.790 bytes, CSS 24.356 bytes). Teve uma correção: linha do resultado da calculadora numa linha só a partir de 541 px; espaço vazio da xícara encolhido com movimento reduzido. O diretor conferiu no navegador (sem rolagem lateral, sem erro no console, foco nunca coberto, pausar sem mudar a altura, fluido com CPU 6× mais lenta). Commit: Daniel confirma |
+| X5b cena da gota no estilo Graza (substitui a xícara da X5) | a escrever | **em pausa**: protótipos não agradaram (ver "Cena da gota") |
+| X6 personalidade do resto (como preparar, como funciona, dúvidas, contato) na mesma linguagem | a escrever | depois da cena da gota |
 | X7 revisão no celular real e desempenho no 4G | a escrever | depois da X6 |
 
 ## Fatos do negócio (confirmados pela família)
@@ -110,6 +111,48 @@ Objetivo (pedido de Daniel em 30/10): descobrir, navegando, uma direção visual
 **Regras da X5:** sem bibliotecas nem build; preferir CSS (sticky, scroll-driven animations com fallback, SVG); reduced-motion sem movimento; no celular os cartões ficam um embaixo do outro; JS ≤ 45.000 bytes (propor e justificar se precisar subir o teto); começar só pelo trecho origem → produtos → duas formas de vender; se Daniel aprovar, o resto vira a X6.
 
 Depois da X5: X6 = o resto dos capítulos na mesma linguagem; X7 = revisão no celular real e desempenho no 4G; em seguida a família vê e decide se o experimento vira o site novo.
+
+## A ideia completa de Daniel (03/11)
+
+O que ele quer do site, nas palavras dele resumidas:
+
+- Um site de marca artesanal **com vida**, no nível da Graza: cada seção com formato próprio, desenhos com personalidade, movimento que dá **sensação de natureza e de processo** ("um processo que já existe"), e não desenhos trocando.
+- A ideia atual de cena: no lugar da xícara da X5, **um fruto de café com uma torneira** (como a azeitona com torneira da Graza) pinga **uma gota de café**; a gota desce pela página acompanhando a rolagem; no caminho, **desenhos com texto ao lado**, alternando os lados (galho de café = "Café Conilon", cacau = "Cacau 100%", a moça com a cesta = "Feito à mão, em casa", xícara = "Taparuba, MG"); no fim a gota **cai no título "Cheiro das Águas", grande, e molha o título** de leve. No celular: desenho à esquerda, texto à direita, a gota passando entre os dois (como a Graza no celular).
+- Decidido com Daniel em 03/11: a xícara que enche deixa de ser o fim (vira só um desenho com texto); a cena é um capítulo próprio, antes dos pacotes; cor única marrom (#3B2618) como os desenhos do ChatGPT, no lugar do colorido.
+- Daniel quer **abstrair o esforço**: usar o caminho mais simples que dê um resultado bonito, em vez de construir tudo à mão.
+
+## Cena da gota: o que já foi tentado (03/11)
+
+| Tentativa | O que foi feito | Por que não serviu |
+|---|---|---|
+| v1 | Desenhos simples feitos pelo Claude em SVG; um objeto que troca de forma (fruto → grão → gota → fio) por CSS com a rolagem; xícara da X5 no fim | "Desenhos ruins", transição dura |
+| v2 | Mesma cena com as formas se transformando aos poucos (morph de caminhos por JS), fruto descascando, grão torrando, derretendo, xícara com onda e respingos; dois estilos (colorido e traço) | Ainda "desenhos mudando", sem fluidez de natureza |
+| v3 | Desenhos gerados pelo Daniel no ChatGPT (10 PNG, estilo Graza, ótimo resultado), convertidos pelo Claude em SVG nítido; tela `canvas` com vento no galho, pêndulo, queda em zigue-zague com inércia, troca de imagens, café espirrando e manchando o pires | Daniel gostou dos desenhos, **não da animação**: troca entre imagens parece ruim |
+| v4 | Ideia do Daniel no estilo Graza: fruto + torneira provisória (desenhada pelo Claude), **uma gota só** (desenho 06) descendo com a rolagem, desenhos parados com leve balanço, título "Cheiro das Águas" com ondas, respingos, letras ondulando e gotinhas escorrendo | Não chegou no nível que ele quer |
+
+Arquivos dessa fase:
+
+- **Desenhos do ChatGPT:** `E:\cheiro-das-aguas\desenhos\` (01 galho, 02 fruto, 03 fruto aberto, 04 grão cru, 05 grão torrado, 06 gota, 07 cacau, 08 tigela, 09 xícara, 10 moça com cesta; fora do Git). Falta o **11 fruto com torneira** (prompt já passado ao Daniel, no mesmo chat do ChatGPT dos outros).
+- **Versões em SVG** (feitas com potrace, uma cor, 2 a 32 KB cada) + xícara vazia e cheia: dentro de `prototipo-descida/desenhos/`.
+- **Protótipo v4 para testar com Live Server:** `prototipo-descida/index.html`. É uma cópia descartável do experimento; **não entra no commit** (não usar `git add` nessa pasta; apagar quando a cena for decidida).
+
+O que o diretor aprendeu:
+
+- A Graza funciona porque **só a gota se move**; os desenhos ficam parados com pouca vida, e quem faz a diferença são ilustrações profissionais e o acabamento (GSAP, ritmo, tipografia própria grossa).
+- Trocar uma imagem por outra (ou deformar formas) **não** dá sensação de processo; para movimento de verdade (fruto caindo, líquido, respingo) o caminho são **animações feitas por animador** ou **vídeo/sequência de quadros**.
+- O título da Graza usa uma fonte própria grossa; a Fraunces do experimento fica fina demais para esse efeito.
+
+## Para a pesquisa (o que Daniel vai buscar)
+
+Perguntas abertas para destravar o projeto:
+
+1. **Animação:** qual ferramenta dá movimento de natureza sem programar quadro a quadro? Candidatas: **Rive** (animação interativa controlada pela rolagem; runtime ~150 KB), **Lottie** (After Effects / LottieFiles; lottie-web ~250 KB ou dotLottie), **GSAP + ScrollTrigger** (o que a Graza usa; hoje grátis), vídeo gerado por IA (Sora, Veo, Kling, Runway) tocado pela rolagem como no AirPods (sequência de imagens WebP), ou contratar um animador/ilustrador (Workana, 99Freelas, Fiverr). Qualquer biblioteca **quebra as regras atuais** (sem bibliotecas, JS ≤ 40.000 bytes): decidir se o teto sobe.
+2. **Desenho:** continuar com o ChatGPT (bom estilo, mas cada imagem é solta e não anima) ou pedir um conjunto feito para animar (partes separadas: galho, folhas, fruto, torneira, gota).
+3. **Fluxo de trabalho:** se outra ferramenta (ex.: um construtor visual como Webflow/Framer, ou um agente que vê a tela e testa sozinho) faria esse tipo de site andar mais rápido que o fluxo Claude diretor + Codex executor + Daniel testando.
+4. **Tipografia:** uma fonte de título grossa e com personalidade (licença livre) para o "Cheiro das Águas" grande.
+5. **Peso:** o público está no celular com 4G; qualquer animação nova precisa de um orçamento de peso (sugestão: até ~1,5 MB na página toda).
+
+Enquanto isso: X5 está pronta e pode seguir como está; o site publicado (`prototipo`) não muda.
 
 ## Ideias em espera
 
