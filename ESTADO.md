@@ -2,7 +2,7 @@
 
 > Arquivo de contexto para qualquer chat novo (Claude ou Codex). Diz onde o projeto está e **o que falta agora**. O histórico (tarefas P1–P11, experimento X1–X5, tentativas da cena da gota, protótipos G4/G6/G7) está no Git: `git log -- ESTADO.md` e os arquivos `p*.md`, `x*.md`, `g*.md`. **Não é uma tarefa.** Atualizar ao fim de cada tarefa.
 >
-> Última atualização: 04/11/2026. **Daniel aprovou o site novo** (pasta `novo/`, publicada para teste em `/novo/`). Falta só trocar o rótulo do sem açúcar e depois fazer o novo virar o principal (G5).
+> Última atualização: 04/11/2026. **Daniel aprovou o site novo**. Rótulo do diet atualizado e G5 concluída localmente: principal na raiz, anterior em `antigo/`. Falta publicar; nenhuma troca de branch, commit ou push foi feita na G5.
 
 ## O que é
 
@@ -12,21 +12,21 @@ Site de apresentação do **Cheiro das Águas** (Agropecuária Cheiro das Águas
 
 - **Claude** = diretor/revisor: planeja, escreve as tarefas com critérios, revisa lendo os arquivos e mede no navegador. Não faz commit nem push.
 - **Codex** = executor: edita, roda `node --test testes/`. Um chat novo por tarefa, com nome "site-capuccino" + código (ex.: "site-capuccino G5"). Modelos: **GPT-6.1 Sol, esforço médio** = tarefas com lógica, layout ou imagens; **GPT-6.1 Terra, esforço médio** = tarefas pequenas e bem especificadas; **Sol alto** só se o mesmo critério falhar duas vezes. O Codex **não faz commit**.
-- **Daniel** confere no **Live Server do VS Code** (VS Code aberto dentro de `site-cappuccino`; botão direito no `index.html` > "Open with Live Server"), testa no celular e faz commit e push. Página nova: `127.0.0.1:5500/novo/index.html`. Se a porta 5500 abrir outro projeto, fechar todas as janelas do VS Code e reabrir só esta pasta.
+- **Daniel** confere no **Live Server do VS Code** (VS Code aberto dentro de `site-cappuccino`; botão direito no `index.html` > "Open with Live Server"), testa no celular e faz commit e push. Página principal: `127.0.0.1:5500/index.html`; anterior: `127.0.0.1:5500/antigo/index.html`. Se a porta 5500 abrir outro projeto, fechar todas as janelas do VS Code e reabrir só esta pasta.
 - Git Bash: `cd /e/cheiro-das-aguas/site-cappuccino`; um comando por linha; `git add` por nome de arquivo (nunca `git add .`); **o diretor só lista arquivos para o `git add` depois de ver o `git status` do Daniel**. Depois de cada tarefa: `git status`, `git log --oneline -3`, `node --test testes/`.
 
-## Técnica (site novo, pasta `novo/`)
+## Técnica (site principal na raiz)
 
-- Site estático: HTML, CSS e JS (módulos), sem backend e sem build. Única biblioteca permitida: **GSAP** (gsap, ScrollTrigger, MorphSVGPlugin), cópia local em `novo/vendor/`, sem CDN.
-- `novo/` é **independente**: tem o próprio `js/config.js` (fonte única de textos do `novo/`, inclusive `textos.pagina`), `calculadora.js`, `pedido.js`, `img/` (com `img/reais/`), fontes, desenhos e vendor. Nenhum caminho com `../`.
-- O `js/config.js` da raiz alimenta o site antigo e o `experimento/`; não mexer nele por causa do `novo/`.
+- Site estático: HTML, CSS e JS (módulos), sem backend e sem build. Única biblioteca permitida: **GSAP** (gsap, ScrollTrigger, MorphSVGPlugin), cópia local em `vendor/`, sem CDN.
+- A raiz é **independente**: `index.html`, `css/estilo.css`, `css/fontes/`, `js/` (config, montagem, movimento, calculadora e pedido), `img/` (com `img/reais/`), `desenhos/` e `vendor/`. `js/config.js` é a fonte única de textos da página principal, inclusive `textos.pagina`. Nenhum caminho com `../` nas fontes do principal.
+- O site anterior está em `antigo/` (`index.html`, `css/`, `js/` e `img/`); `antigo/js/config.js` alimenta esse site e os experimentos. Não alterar por causa do principal. `assets/` está vazia, sem referências e foi mantida na raiz.
 - Meta tags no bloco `<!-- SINCRONIZAR COM js/config.js -->`; o `<noscript>` também é sincronizado e conferido por teste.
 - Movimento da gota e do derretido (`cena.js`, objeto `ajustes`) foi ajustado à mão e medido: **não mexer** sem pedido do Daniel.
-- Teto de JS próprio de `novo/js/`: 50.000 bytes (sem contar as cópias de config, calculadora e pedido); `vendor/` ≤ 160.000. Texto informativo com no mínimo 14 px. Sem `innerHTML` com dados; imagens com `width`, `height` e `alt`; contraste ≥ 4,5:1.
-- `novo/index.html` ainda tem `<meta name="robots" content="noindex">` (sai na G5).
+- Teto de JS próprio de `js/`: 50.000 bytes (sem contar as cópias de config, calculadora e pedido); `vendor/` ≤ 160.000. Texto informativo com no mínimo 14 px. Sem `innerHTML` com dados; imagens com `width`, `height` e `alt`; contraste ≥ 4,5:1.
+- `index.html` da raiz sem `noindex`; `antigo/index.html` mantém `noindex`, canonical e `og:url` em `/antigo/`. A imagem de compartilhamento foi copiada para `img/og.jpg` na raiz, preservando as URLs de imagem dos dois sites.
 - Testes: `testes/novo.test.mjs` (+ os antigos); `node --test testes/` inteiro passando.
 - Ao preparar imagens: os testes contam 1 KB = 1.000 bytes; imagens gravadas pelo Claude na pasta do PC ganham ~5.800 bytes (bloco C2PA): deixar 7.000 bytes de folga e conferir o tamanho final na pasta.
-- Publicação: GitHub Pages, branch **`prototipo`**, domínio https://cheirodasaguasgourmet.com.br/ (arquivo `CNAME`). Para atualizar o `/novo/`: `git switch prototipo`, `git checkout prototipo-graza -- novo`, commit, `git push origin prototipo`.
+- Publicação: GitHub Pages, branch **`prototipo`**, domínio https://cheirodasaguasgourmet.com.br/ (arquivo `CNAME`). **Procedimento a reescrever na publicação** (Claude passa os comandos). Histórico obsoleto: o procedimento que usava `git checkout prototipo-graza -- novo` servia à estrutura anterior e não deve ser executado.
 
 ## Branches
 
@@ -34,7 +34,7 @@ Site de apresentação do **Cheiro das Águas** (Agropecuária Cheiro das Águas
 |---|---|
 | `main` | loja antiga, com preços (tag `loja-v1`); guardada, não usar |
 | `prototipo` | **publicada** no domínio: site antigo na raiz + página nova em `/novo/` |
-| `prototipo-graza` | onde o site novo é trabalhado (`novo/`, tarefas `g*.md`, este arquivo) |
+| `prototipo-graza` | trabalho local: site principal na raiz e anterior em `antigo/` (G5); tarefas `g*.md`, este arquivo |
 | `visual`, `experimento-capitulos` | experimentos antigos; não publicar |
 
 Nota: na `prototipo`, `ESTADO.md`, `brief.md` e `criterios.md` foram apagados. Se um `cherry-pick` der conflito neles: `git rm -f` nos três e `git cherry-pick --continue`.
@@ -42,19 +42,23 @@ Nota: na `prototipo`, `ESTADO.md`, `brief.md` e `criterios.md` foram apagados. S
 ## Pendente agora (nesta ordem)
 
 1. **Rótulo novo do diet**.
-   - [x] Fotos novas do pacote diet colocadas pelo Claude em `novo/img/reais/produto-sem-800.webp` e `produto-sem-400.webp` (800×800 e 400×400), mantendo os caminhos no config.
-   - [x] Textos do diet atualizados no `novo/js/config.js`: nome, selo, frase, alt e `venderPacote`; mantido o `id: "sem-acucar"`.
-   - [ ] conferir o verso do rótulo novo (achocolatado, café solúvel, 30 g).
-2. **G5 — o novo vira o principal** (tarefa a escrever; Codex GPT-6.1 Terra, esforço médio).
-   - Mover o site antigo (raiz: `index.html`, `css/`, `js/`, `img/`) para `/antigo/`, com `noindex`.
-   - Mover o `novo/` para a raiz; garantir `img/og.jpg` na raiz; **tirar o `noindex`**; conferir `canonical` e `og:*`; testes ajustados.
-   - Antes de escrever, confirmar com Daniel: (a) a família aprovou; (b) aceita perder a seção "Dúvidas" (saiu do `novo/`).
-   - Depois de publicar: testar no celular real e no 4G.
+   - [x] Fotos novas do pacote diet em `img/reais/produto-sem-800.webp` e `produto-sem-400.webp` (800×800 e 400×400), mantendo os caminhos no config.
+   - [x] Textos do diet em `js/config.js`: nome, selo, frase, alt e `venderPacote`; mantido o `id: "sem-acucar"`.
+   - [ ] Conferir o verso do rótulo novo (30 g); os ingredientes foram confirmados pelo Daniel em 04/11/2026.
+2. **G5 — o novo vira o principal: feito localmente em 04/11/2026**.
+   - [x] Anterior em `antigo/`, com `noindex`; principal na raiz, sem `noindex`, com `img/og.jpg`, metas conferidas e testes ajustados. A pasta anterior do principal não existe mais.
+
+Próximos passos:
+
+- Publicar na branch `prototipo` (Claude passa os comandos; procedimento a reescrever na publicação).
+- Testar no celular real e no 4G.
+- Limpar `prototipo-graza/`, `prototipo-descida/`, `experimento/` e documentos antigos da loja, se o Daniel quiser.
 
 ## Fatos do negócio (confirmados pela família)
 
 - Produtos exibidos: **com açúcar** e **sem açúcar**; descafeinado existe no config com `exibir: false`. Varejo: pacote de **250 g**. Quem serve na xícara compra **por kg** (pacote de 1 kg, embalagem ainda não definida; o cartão "por kg" saiu do site até haver foto).
 - Ingredientes com açúcar: "Leite em pó integral, bicarbonato de sódio, canela em pó, cacau 100%, açúcar refinado e café Conilon." Sem açúcar: os mesmos, sem o açúcar refinado.
+- O diet tem os mesmos ingredientes do com açúcar, sem o açúcar (confirmado pelo Daniel em 04/11/2026).
 - Avisos: "Contém leite e derivados. Não contém glúten." Conservação: "Local seco, ventilado e protegido da luz solar." Validade: 365 dias.
 - Café Conilon **plantado pela própria família**; cacau 100%, não achocolatado; feito à mão, em casa, sem processo industrial e **sem máquinas**. Não precisa de leite: já vem no pó, o preparo é só com água.
 - Entrega pela família na Grande Vitória, sem taxa, de um dia para o outro. Pagamento: Pix, cartão na maquininha na entrega ou dinheiro.

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { config } from "../js/config.js";
-import { formatarReais, linkWhatsApp, montarMensagemDegustacao, validarDegustacao } from "../js/pedido.js";
+import { config } from "../antigo/js/config.js";
+import { formatarReais, linkWhatsApp, montarMensagemDegustacao, validarDegustacao } from "../antigo/js/pedido.js";
 
 test("os preços do config são centavos e são formatados em reais", () => {
   assert.deepEqual(config.produtos.map((produto) => produto.precoCentavos), [3000, 3500, 3500]);

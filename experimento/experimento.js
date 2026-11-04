@@ -1,4 +1,4 @@
-import { config } from "../js/config.js";
+import { config } from "../antigo/js/config.js";
 import { progressoDoCapitulo, faixa, escalaDoArco } from "./capitulo.js";
 import { textos } from "./textos.js";
 import { montarConta } from "./conta.js";
@@ -39,16 +39,16 @@ const degustacao = () => link(config.textos.hero.degustacao, linkDegustacao, "bo
 
 function imagem(dados, classe = "", primeira = false) {
   const no = elemento("img", classe);
-  no.src = `../${dados.foto}`;
+  no.src = `../antigo/${dados.foto}`;
   no.width = dados.largura;
   no.height = dados.altura;
   no.alt = dados.alt;
   if (dados.fotoPequena && dados.foto.startsWith("img/reais/produto-")) {
-    no.srcset = `../${dados.fotoPequena} 400w, ../${dados.foto} 800w`;
+    no.srcset = `../antigo/${dados.fotoPequena} 400w, ../antigo/${dados.foto} 800w`;
     no.sizes = "(max-width: 540px) 78vw, (max-width: 919px) 40vw, 360px";
   }
   if (dados.foto === config.textos.origem.foto) {
-    no.srcset = `../${dados.foto} 720w, img/origem-1440.webp 1440w`;
+    no.srcset = `../antigo/${dados.foto} 720w, img/origem-1440.webp 1440w`;
     no.sizes = classe === "foto-origem"
       ? "(max-width: 919px) 88vw, 46vw"
       : "(max-width: 919px) min(88vw, 430px), min(440px, 36vw)";

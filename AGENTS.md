@@ -21,18 +21,23 @@ HTML, CSS e JS puros. JS em **ES modules** (`<script type="module">`). Sem backe
 
 ```
 index.html          estrutura; no <head>, só as meta tags marcadas
-css/style.css       todo o CSS
+css/estilo.css      CSS da página principal; fontes locais em css/fontes/
 js/config.js        ÚNICA fonte de marca, contatos, preços, produtos, fotos e textos variáveis
-js/main.js          inicialização e montagem da página
+js/pagina.js        inicialização da página principal
+js/montar.js        montagem da página principal
 js/calculadora.js   funções puras: custo por xícara, ganho e margem (sem DOM)
-js/preparo.js       funções puras: dados do preparo a partir do config
 js/pedido.js        funções puras: montar o objeto do pedido, a mensagem e o link do WhatsApp, formatar R$
-img/                imagens otimizadas (img/produtos/, logo, og)
+vendor/             GSAP, ScrollTrigger e MorphSVGPlugin locais
+desenhos/           desenhos SVG da página principal
+img/                imagens otimizadas (img/reais/, logo, og)
+antigo/             site anterior: index.html, css/style.css, js/main.js, js/preparo.js e img/
 testes/*.test.mjs   testes com `node --test` (sem dependências)
-README.md           como mudar preço, foto e agenda, e como publicar
+README.md           como mudar preço e foto
 ```
 
 Funções com regra de negócio (agenda, mensagem, preço) ficam em módulos **sem acesso ao DOM**, para que o Node consiga testá-las.
+
+O site principal fica na raiz. O site anterior usa `antigo/js/config.js`; os caminhos de imagens desse config são relativos a `antigo/`. Experimentos que dependem dele importam `../antigo/js/config.js`.
 
 ## Regras fixas
 

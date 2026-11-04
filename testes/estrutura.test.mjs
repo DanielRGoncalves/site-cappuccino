@@ -1,10 +1,10 @@
 import assert from "node:assert/strict";
 import { readFile, access, stat } from "node:fs/promises";
 import { test } from "node:test";
-import { config } from "../js/config.js";
-import { produtosVisiveis, indiceDaAba } from "../js/produtos.js";
+import { config } from "../antigo/js/config.js";
+import { produtosVisiveis, indiceDaAba } from "../antigo/js/produtos.js";
 
-const root = new URL("../", import.meta.url);
+const root = new URL("../antigo/", import.meta.url);
 const html = await readFile(new URL("index.html", root), "utf8");
 const main = await readFile(new URL("js/main.js", root), "utf8");
 
@@ -62,8 +62,8 @@ test("meta tags de título, descrição e URL seguem o config", () => {
   assert.equal(meta("og:description"), config.meta.descricao);
   assert.equal(meta("twitter:title"), config.meta.titulo);
   assert.equal(meta("twitter:description"), config.meta.descricao);
-  assert.equal(bloco.match(/<link rel="canonical" href="([^"]+)"\s*\/>/)?.[1], config.siteUrl);
-  assert.equal(meta("og:url"), config.siteUrl);
+  assert.equal(bloco.match(/<link rel="canonical" href="([^"]+)"\s*\/>/)?.[1], new URL("antigo/", config.siteUrl).href);
+  assert.equal(meta("og:url"), new URL("antigo/", config.siteUrl).href);
   assert.equal(meta("og:image"), imagemUrl);
   assert.equal(meta("twitter:image"), imagemUrl);
   assert.equal(meta("og:image:alt"), config.meta.imagemAlt);

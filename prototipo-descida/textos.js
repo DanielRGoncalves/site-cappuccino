@@ -1,4 +1,4 @@
-import { config } from "../js/config.js";
+import { config } from "../antigo/js/config.js";
 
 export const textos = {
   aviso: "Experimento visual. Este não é o site oficial.",

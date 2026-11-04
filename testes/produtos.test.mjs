@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { config } from "../js/config.js";
-import { produtosVisiveis, indiceDaAba } from "../js/produtos.js";
+import { config } from "../antigo/js/config.js";
+import { produtosVisiveis, indiceDaAba } from "../antigo/js/produtos.js";
 
 test("as abas respeitam exibir e a ordem do config sem alterar os produtos", () => {
   const antes = structuredClone(config.produtos);

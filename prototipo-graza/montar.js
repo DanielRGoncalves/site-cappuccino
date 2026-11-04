@@ -102,7 +102,7 @@ function produtos() {
   const visiveis = config.produtos.filter((p) => p.exibir);
   const cartao = (p) => el("article", { class: "produto" },
     el("div", { class: "produto-foto" },
-      el("img", { src: `../${p.foto}`, srcset: `../${p.fotoPequena} 400w, ../${p.foto} 800w`, sizes: "(min-width: 920px) 30vw, 90vw", alt: p.alt, width: 800, height: 800, loading: "lazy" }),
+      el("img", { src: `../antigo/${p.foto}`, srcset: `../antigo/${p.fotoPequena} 400w, ../antigo/${p.foto} 800w`, sizes: "(min-width: 920px) 30vw, 90vw", alt: p.alt, width: 800, height: 800, loading: "lazy" }),
       el("span", { class: "etiqueta", text: p.selo }),
       el("span", { class: "produto-peso", text: p.peso })),
     el("p", { class: "produto-meta" }, el("span", { text: textos.produtos.rende }), el("span", { text: p.peso })),
@@ -136,7 +136,7 @@ function vender(reduzido) {
         el("h3", { id: `titulo-venda-${i}`, text: c.titulo }),
         el("p", { class: "vender-frase", text: c.frase }),
         el("ul", {}, c.lista.map((item) => el("li", { text: item }))),
-        el("div", { class: "arco venda-foto" }, el("img", { src: `../${foto.foto}`, alt: foto.alt, width: foto.largura, height: foto.altura, loading: "lazy" }))),
+        el("div", { class: "arco venda-foto" }, el("img", { src: `../antigo/${foto.foto}`, alt: foto.alt, width: foto.largura, height: foto.altura, loading: "lazy" }))),
       montarConta(i === 1, reduzido));
   }));
   $("vender").append(
@@ -148,8 +148,8 @@ function vender(reduzido) {
 
 function palco() {
   const h = textos.hero, o = textos.origem;
-  const foto = (dados, classe, primeira, srcset, sizes) => el("img", { class: classe, src: `../${dados.foto}`, srcset, sizes, alt: dados.alt, width: dados.largura, height: dados.altura, loading: primeira ? null : "lazy", decoding: "async" });
-  const srcOrigem = `../${o.foto.foto} 720w, ${o.grande} 1440w`;
+  const foto = (dados, classe, primeira, srcset, sizes) => el("img", { class: classe, src: `../antigo/${dados.foto}`, srcset, sizes, alt: dados.alt, width: dados.largura, height: dados.altura, loading: primeira ? null : "lazy", decoding: "async" });
+  const srcOrigem = `../antigo/${o.foto.foto} 720w, ${o.grande} 1440w`;
   $("inicio").append(
     el("div", { class: "arco foto-estatica" }, foto(h.foto, "", true)),
     el("div", { class: "conteudo" },
@@ -177,7 +177,7 @@ function preparo() {
       el("li", { class: `preparo-passo passo-${i + 1}` },
         el("div", { class: "preparo-moldura" },
           el("div", { class: "preparo-foto" },
-            el("img", { src: `../${passo.foto}`, alt: passo.alt, width: passo.largura, height: passo.altura, loading: "lazy" }))),
+            el("img", { src: `../antigo/${passo.foto}`, alt: passo.alt, width: passo.largura, height: passo.altura, loading: "lazy" }))),
         el("div", { class: "preparo-texto" },
           el("span", { class: "preparo-numero", "aria-hidden": "true", text: String(i + 1).padStart(2, "0") }),
           el("h3", {}, el("span", { class: "sr", text: `${textos.passo} ${i + 1}: ` }), passo.titulo),

@@ -1,17 +1,20 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync, readdirSync, statSync } from "node:fs";
+import { readFileSync, readdirSync, statSync, existsSync } from "node:fs";
 import { execFileSync } from "node:child_process";
-import { config } from "../novo/js/config.js";
-import { config as configRaiz } from "../js/config.js";
-import { textos } from "../novo/js/textos.js";
-import { montar } from "../novo/js/montar.js";
+import { config } from "../js/config.js";
+import { config as configAntigo } from "../antigo/js/config.js";
+import { textos } from "../js/textos.js";
+import { montar } from "../js/montar.js";
 
-const base = new URL("../novo/", import.meta.url);
+const base = new URL("../", import.meta.url);
 const ler = (nome) => readFileSync(new URL(nome, base), "utf8");
 const strings = (objeto) => typeof objeto === "string" ? [objeto]
   : objeto && typeof objeto === "object" ? Object.values(objeto).flatMap(strings) : [];
-const arquivos = (pasta = "") => readdirSync(new URL(pasta || ".", base), { withFileTypes: true })
+const pastasPublicadas = ["css/", "js/", "vendor/", "desenhos/", "img/"];
+const arquivos = (pasta) => pasta === undefined
+  ? ["index.html", ...pastasPublicadas.flatMap((nome) => arquivos(nome))]
+  : readdirSync(new URL(pasta, base), { withFileTypes: true })
   .flatMap((item) => item.isDirectory() ? arquivos(`${pasta}${item.name}/`) : [`${pasta}${item.name}`]);
 const fontes = () => arquivos().filter((nome) => /\.(html|js|css)$/.test(nome) && !nome.startsWith("vendor/"));
 const html = ler("index.html");
@@ -97,7 +100,7 @@ test("G4-1: todas as strings exportadas vêm do config ou de derivações explí
   const original = p.contato.titulo;
   try {
     p.contato.titulo = "Teste de configuração";
-    const atualizado = await import(`../novo/js/textos.js?config=${Date.now()}`);
+    const atualizado = await import(`../js/textos.js?config=${Date.now()}`);
     assert.equal(atualizado.textos.contato.titulo, p.contato.titulo);
   } finally { p.contato.titulo = original; }
   for (const no of montados()) {
@@ -123,7 +126,7 @@ test("G4-2: head e noscript sincronizados com o config, sem avisos de protótipo
     "twitter:title": config.meta.titulo, "twitter:description": config.meta.descricao, "twitter:image": imagem,
   })) assert.equal(tags[nome], valor, nome);
   assert.ok(head.includes(`rel="canonical" href="${config.siteUrl}"`));
-  assert.match(html, /<meta name="robots" content="noindex">/);
+  assert.doesNotMatch(html, /<meta\b[^>]*name="robots"[^>]*content="[^"]*noindex/i);
   assert.match(html, /rel="icon" href="img\/logo.webp"/);
   const semJs = html.match(/<noscript>([\s\S]*?)<\/noscript>/)[1];
   assert.match(semJs, /SINCRONIZAR COM js\/config.js/);
@@ -324,8 +327,9 @@ test("G6-3: Dúvidas foi removida do HTML, montagem, menu e CSS", () => {
   assert.ok(!Object.hasOwn(textos, "faq"));
 });
 
-test("G7-3: config da raiz é exatamente o HEAD sem textos.pagina", async () => {
-  const original = execFileSync("git", ["show", "HEAD:js/config.js"], {
+test("G7-3: config do antigo preserva a versão anterior à migração sem textos.pagina", async () => {
+  // Snapshot anterior à G5: continua verificando o mesmo config após o futuro commit.
+  const original = execFileSync("git", ["show", "ee5f33800dbb8388dbf2a73de25c2b7d53b14bbb:js/config.js"], {
     cwd: new URL("../", import.meta.url), encoding: "utf8",
   });
   const { config: anterior } = await import(`data:text/javascript;base64,${Buffer.from(original).toString("base64")}`);
@@ -334,8 +338,54 @@ test("G7-3: config da raiz é exatamente o HEAD sem textos.pagina", async () => 
     delete copia.textos.pagina;
     return copia;
   };
-  assert.ok(!Object.hasOwn(configRaiz.textos, "pagina"));
-  assert.deepEqual(configRaiz, semPagina(anterior));
+  assert.ok(!Object.hasOwn(configAntigo.textos, "pagina"));
+  assert.deepEqual(configAntigo, semPagina(anterior));
+});
+
+test("G5-a: a página principal não tem noindex", () => {
+  const robots = [...html.matchAll(/<meta\b[^>]*>/gi)].map(([tag]) => atributos(tag))
+    .filter((a) => /^(robots|googlebot)$/i.test(a.name || ""));
+  for (const a of robots) assert.doesNotMatch(a.content || "", /noindex/i);
+});
+
+test("G5-b: a página antiga mantém noindex e sua URL própria", () => {
+  const antigo = ler("antigo/index.html");
+  assert.match(antigo, /<meta name="robots" content="noindex"\s*\/>/);
+  const url = new URL("antigo/", config.siteUrl).href;
+  assert.ok(antigo.includes(`rel="canonical" href="${url}"`));
+  assert.ok(antigo.includes(`property="og:url" content="${url}"`));
+});
+
+test("G5-c: imagem de compartilhamento existe e é a citada em og:image e twitter:image", () => {
+  const imagem = new URL("img/og.jpg", base);
+  assert.ok(statSync(imagem).isFile());
+  assert.deepEqual(readFileSync(imagem), readFileSync(new URL("antigo/img/og.jpg", base)));
+  const url = new URL("img/og.jpg", config.siteUrl).href;
+  for (const nome of ["og:image", "twitter:image"]) {
+    const tag = [...html.matchAll(/<meta\b[^>]*>/g)].map(([t]) => atributos(t))
+      .find((a) => (a.property || a.name) === nome);
+    assert.equal(tag?.content, url, nome);
+  }
+});
+
+test("G5-d: a pasta anterior da página principal não existe mais", () => {
+  assert.equal(existsSync(new URL("novo", base)), false);
+});
+
+test("G5-e: todos os src/href locais do HTML antigo existem", () => {
+  const origem = new URL("antigo/index.html", base);
+  const antigo = readFileSync(origem, "utf8");
+  const ids = new Set([...antigo.matchAll(/\bid="([^"]+)"/g)].map(([, id]) => id));
+  let locais = 0;
+  for (const [, caminho] of antigo.matchAll(/\b(?:src|href)="([^"]*)"/g)) {
+    if (!caminho || /^(?:[a-z][a-z\d+.-]*:|\/\/)/i.test(caminho)) continue;
+    if (caminho.startsWith("#")) { assert.ok(ids.has(caminho.slice(1)), caminho); continue; }
+    const url = new URL(caminho, origem);
+    url.hash = ""; url.search = "";
+    assert.ok(statSync(url).isFile(), caminho);
+    locais++;
+  }
+  assert.ok(locais > 0, "Verificou arquivos locais além das âncoras");
 });
 
 test("G7-1: novo é independente, sem ../ e com recursos dentro da pasta", () => {
@@ -363,9 +413,9 @@ test("G7-1: novo é independente, sem ../ e com recursos dentro da pasta", () =>
     for (const candidato of (no.atributos.srcset || "").split(",").filter(Boolean)) existeDentro(candidato.trim().split(/\s/)[0]);
   }
   for (const nome of ["calculadora.js", "pedido.js"]) {
-    assert.equal(ler(`js/${nome}`), readFileSync(new URL(`../js/${nome}`, import.meta.url), "utf8"));
+    assert.equal(ler(`js/${nome}`), readFileSync(new URL(`../antigo/js/${nome}`, import.meta.url), "utf8"));
   }
-  assert.ok(ler("js/config.js").startsWith("// Config da página nova (novo/). O site da raiz usa js/config.js."));
+  assert.ok(ler("js/config.js").startsWith("// Config da página principal (raiz). O site antigo usa antigo/js/config.js."));
 });
 
 test("G7-2: fotos novas nos três lugares, dimensões, alt, srcset e legenda", () => {

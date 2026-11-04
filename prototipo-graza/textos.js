@@ -1,6 +1,6 @@
 // Protótipo no estilo Graza. Textos do negócio vêm de js/config.js (fonte única);
 // aqui ficam só os textos novos do protótipo e a escolha de onde cada um aparece.
-import { config } from "../js/config.js";
+import { config } from "../antigo/js/config.js";
 
 const t = config.textos;
 const entrega = t.faq.itens[5].resposta.replace(" pela família", "");

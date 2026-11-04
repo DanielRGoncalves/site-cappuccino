@@ -3,7 +3,7 @@ import { test } from "node:test";
 import { progressoDoCapitulo, faixa, escalaDoArco } from "../experimento/capitulo.js";
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { textos } from "../experimento/textos.js";
-import { config } from "../js/config.js";
+import { config } from "../antigo/js/config.js";
 
 const ler = (nome) => readFileSync(new URL(`../experimento/${nome}`, import.meta.url), "utf8");
 
@@ -161,7 +161,7 @@ test("B-05/B-06/B-07: produtos, listas e dúvidas usam todo o conteúdo do confi
   visiveis.forEach((produto, i) => {
     for (const chave of ["selo", "frase", "peso", "ingredientes", "avisos"]) assert.ok(itens[i].textContent.includes(produto[chave]));
     assert.equal(porTag(itens[i], "summary")[0].textContent, config.textos.produtos.ingredientesTitulo);
-    assert.equal(porTag(itens[i], "img")[0].srcset, `../${produto.fotoPequena} 400w, ../${produto.foto} 800w`);
+    assert.equal(porTag(itens[i], "img")[0].srcset, `../antigo/${produto.fotoPequena} 400w, ../antigo/${produto.foto} 800w`);
     assert.equal(porTag(itens[i], "img")[0].alt, produto.alt);
     assert.equal(porClasse(itens[i], "produto-selo")[0].textContent, produto.selo);
     assert.equal(porClasse(itens[i], "produto-peso")[0].textContent, produto.peso);

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { config } from "../js/config.js";
-import { montarPreparo } from "../js/preparo.js";
+import { config } from "../antigo/js/config.js";
+import { montarPreparo } from "../antigo/js/preparo.js";
 
 test("preparo devolve os três passos, a dica e o rendimento do config", () => {
   const resultado = montarPreparo(config.textos.preparo);

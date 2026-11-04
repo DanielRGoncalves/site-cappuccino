@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { config } from "../js/config.js";
-import { calcularResultado, calcularRevenda, coposPorPacote, precoVendaCentavos } from "../js/calculadora.js";
+import { config } from "../antigo/js/config.js";
+import { calcularResultado, calcularRevenda, coposPorPacote, precoVendaCentavos } from "../antigo/js/calculadora.js";
 
 test("K-03: tamanhos de xícara rendem 22, 16 e 11 por kg; começa em 200 ml", () => {
   assert.deepEqual(config.calculadora.xicara.tamanhos, [
