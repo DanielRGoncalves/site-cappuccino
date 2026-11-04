@@ -174,7 +174,7 @@ ul, ol { padding: 0; list-style: none; }
 
 /* Produtos */
 .produtos { padding: 0 var(--margem) clamp(64px, 10vw, 120px); }
-.produtos-grade { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 2vw, 24px); max-width: var(--max); margin: 0 auto; }
+.produtos-grade { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(20px, 3vw, 44px); max-width: min(var(--max), 860px); margin: 0 auto; }
 .produto { display: flex; flex-direction: column; align-items: center; text-align: center; }
 .produto-foto { position: relative; width: 100%; aspect-ratio: 5 / 6; overflow: hidden; border-radius: var(--raio); background: var(--leite-2); transition: transform .35s cubic-bezier(.2, .7, .2, 1); }
 .produto:hover .produto-foto { transform: translateY(-6px) rotate(-.6deg); }
