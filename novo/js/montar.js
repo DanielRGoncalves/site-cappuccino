@@ -352,24 +352,6 @@ function como() {
     ),
   );
 }
-function duvidas() {
-  const f = t.faq;
-  $("duvidas").append(
-    el("h2", { class: "secao-titulo", id: "titulo-duvidas", text: f.titulo }),
-    el(
-      "div",
-      { class: "duvidas-lista" },
-      f.itens.map((item) =>
-        el(
-          "details",
-          {},
-          el("summary", {}, el("span", { text: item.pergunta }), el("span", { class: "mais", "aria-hidden": "true" })),
-          el("p", { text: item.resposta }),
-        ),
-      ),
-    ),
-  );
-}
 function ct() {
   const c = t.contato;
   $("contato").append(
@@ -392,6 +374,7 @@ function ct() {
           { class: "contato-notas" },
           el("div", {}, el("dt", { text: c.entregaTitulo }), el("dd", { text: c.entrega })),
           el("div", {}, el("dt", { text: c.pagamentoTitulo }), el("dd", { text: c.pagamento })),
+          el("div", {}, el("dt", { text: c.conservacaoTitulo }), el("dd", { text: c.conservacao })),
         ),
       ),
       el(
@@ -446,7 +429,6 @@ export function montar(reduzido) {
   vd(reduzido);
   pp();
   como();
-  duvidas();
   ct();
   mn();
 }

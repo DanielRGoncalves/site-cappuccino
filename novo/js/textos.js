@@ -23,7 +23,7 @@ export const textos = {
     verFormas: p.verFormas,
     foto: config.apresentacao.hero,
   },
-  origem: { titulo: t.origem.titulo, texto: t.origem.texto, foto: t.origem, grande: p.origemGrande },
+  origem: { titulo: p.origem.titulo, texto: p.origem.texto, foto: t.origem, grande: p.origemGrande },
   titulo: [`${t.diferenca.titulo.split(", ")[0]},`, `${t.diferenca.titulo.split(", ")[1]}.`],
   plim: p.plim,
   paradas: [
@@ -32,7 +32,7 @@ export const textos = {
       largura: 373,
       altura: 375,
       titulo: t.diferenca.cartoes[0].titulo,
-      texto: t.diferenca.cartoes[0].texto,
+      texto: p.paradas[0],
     },
     {
       desenho: "07",
@@ -46,7 +46,7 @@ export const textos = {
       largura: 304,
       altura: 439,
       titulo: t.diferenca.cartoes[2].titulo,
-      texto: t.diferenca.cartoes[2].texto,
+      texto: p.paradas[2],
     },
     {
       desenho: "09",
@@ -59,7 +59,7 @@ export const textos = {
   apoio: t.diferenca.destaque,
   produtos: {
     titulo: t.produtos.titulo,
-    igual: t.produtos.igual,
+    igual: p.produtosIgual,
     rende: p.rende,
     ingredientes: t.produtos.ingredientesTitulo,
   },
@@ -69,25 +69,24 @@ export const textos = {
   retomar: p.retomar,
   vender: {
     titulo: p.venderTitulo,
-    entrada: t.porque.motivos[0],
+    entrada: p.venderEntrada,
     fotos: [
       t.diferenca.cartoes.find((c) => c.foto.endsWith("/aroma-720.webp")),
       { ...config.produtos.find((p) => p.id === "sem-acucar"), largura: 800, altura: 800 },
     ],
     cartoes: [
-      { titulo: t.padarias.abaXicara, frase: p.venderXicara, lista: [t.porque.motivos[2], p.venderPreparo] },
+      { titulo: t.padarias.abaXicara, frase: p.venderXicara, lista: [p.venderSemLeite] },
       {
         titulo: t.padarias.abaRevenda,
         frase: p.venderPacote,
-        lista: [t.porque.motivos[1], t.porque.motivos[3], t.porque.motivos[4]],
+        lista: [t.porque.motivos[3]],
       },
     ],
   },
   conta: p.conta,
   preparo: t.preparo,
   passo: p.passo,
-  como: t.como,
-  faq: t.faq,
+  como: { ...t.como, passos: [t.como.passos[0], t.como.passos[1], p.comoPasso3] },
   contato: {
     titulo: p.contato.titulo,
     texto: p.contato.texto,
@@ -97,6 +96,8 @@ export const textos = {
     entrega,
     pagamentoTitulo: p.contato.pagamentoTitulo,
     pagamento,
+    conservacaoTitulo: p.contato.conservacaoTitulo,
+    conservacao: t.conservacao,
     alt: p.contato.alt,
     legal: config.dadosLegais,
     cnpj: t.contato.cnpj,

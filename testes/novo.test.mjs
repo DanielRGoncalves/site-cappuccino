@@ -71,7 +71,21 @@ test("G4-1: todas as strings exportadas vêm do config ou de derivações explí
   esperado.origem.grande = config.textos.pagina.origemGrande;
   esperado.pular = config.textos.pagina.pular;
   esperado.destaques = config.textos.pagina.destaques;
-  assert.deepEqual(textos, esperado, "Mesmas palavras do protótipo, exceto as remoções pedidas");
+  esperado.links = esperado.links.filter((link) => link.href !== "#duvidas");
+  esperado.origem.titulo = config.textos.pagina.origem.titulo;
+  esperado.origem.texto = config.textos.pagina.origem.texto;
+  esperado.paradas[0].texto = config.textos.pagina.paradas[0];
+  esperado.paradas[2].texto = config.textos.pagina.paradas[2];
+  esperado.produtos.igual = config.textos.pagina.produtosIgual;
+  esperado.vender.entrada = config.textos.pagina.venderEntrada;
+  esperado.vender.cartoes[0].lista = [config.textos.pagina.venderSemLeite];
+  esperado.vender.cartoes[1].lista = [config.textos.porque.motivos[3]];
+  esperado.como.passos[2] = config.textos.pagina.comoPasso3;
+  esperado.contato.texto = config.textos.pagina.contato.texto;
+  esperado.contato.conservacaoTitulo = config.textos.pagina.contato.conservacaoTitulo;
+  esperado.contato.conservacao = config.textos.conservacao;
+  delete esperado.faq;
+  assert.deepEqual(textos, esperado, "Mesmas palavras do protótipo, exceto as mudanças da G4/G6");
   // Mudar os textos novos muda o objeto montado: impede cópias literais silenciosas.
   const p = config.textos.pagina;
   const original = p.contato.titulo;
@@ -182,7 +196,10 @@ test("G4-7: ajustes e módulos de movimento idênticos ao protótipo; CSS só co
     assert.equal(ler(`vendor/${nome}`), prototipo(`vendor/${nome}`), nome);
   }
   const esperado = prototipo("estilo.css").replace(/^\/\* Protótipo[^\n]*\n/, "")
-    .replaceAll('url("fontes/', 'url("../fontes/').replace(/^\.anuncio-selo[^\n]*\n/m, "");
+    .replaceAll('url("fontes/', 'url("../fontes/').replace(/^\.anuncio-selo[^\n]*\n/m, "")
+    .replace(/^\/\* Dúvidas \*\/\n|^\.duvidas[^\n]*\n/gm, "")
+    // Única exceção de layout autorizada por Daniel na G6: três notas no computador.
+    .replace(/(\.contato-notas \{[^\n]*repeat\()2,/, "$13,");
   assert.equal(ler("css/estilo.css"), esperado);
 });
 
@@ -235,4 +252,75 @@ test("G4-10: testes antigos continuam passando", (t) => {
   const saida = execFileSync(process.execPath, ["--test", "--test-reporter=tap", ...antigos.map((url) => decodeURIComponent(url.pathname).replace(/^\/(\w:)/, "$1"))], { encoding: "utf8", env });
   assert.match(saida, /# fail 0/);
   t.diagnostic(saida.match(/# tests \d+/)?.[0] || "Testes antigos sem falhas");
+});
+
+test("G6-1: as 11 mudanças têm palavras exatas e aparecem na montagem", () => {
+  const mudancas = [
+    [textos.origem.titulo, "Feito em Taparuba, Minas Gerais"],
+    [textos.origem.texto, "Cada pacote é preparado pela família, em casa."],
+    [textos.paradas[0].texto, "Café Conilon, plantado por nós."],
+    [textos.paradas[2].texto, "Preparado à mão, em casa, sem processo industrial e sem máquinas."],
+    [textos.produtos.igual, "A única diferença entre os dois é o açúcar."],
+    [textos.vender.entrada, "Um diferencial para o seu cardápio."],
+    [textos.vender.cartoes[0].lista, ["Não precisa de leite: ele já vem no pó. É só água quente."]],
+    [textos.vender.cartoes[1].lista, ["Validade de 365 dias."]],
+    [textos.como.passos[2], "3. Se gostar, faz o pedido e entregamos."],
+    [textos.contato.texto, "Peça pelo WhatsApp e a gente combina como fazer."],
+    [[textos.contato.conservacaoTitulo, textos.contato.conservacao],
+      ["Conservação", "Local seco, ventilado e protegido da luz solar."]],
+  ];
+  const conteudo = montados().map((no) => no.textContent).join(" ");
+  for (const [atual, esperado] of mudancas) {
+    assert.deepEqual(atual, esperado);
+    // O número do passo é montado em um span separado; a frase fica no parágrafo.
+    for (const frase of strings(esperado)) assert.ok(conteudo.includes(frase.replace(/^\d+\.\s*/, "")), frase);
+  }
+  assert.deepEqual(textos.como.passos.slice(0, 2), config.textos.como.passos.slice(0, 2));
+  assert.equal(textos.vender.cartoes[1].lista[0], config.textos.porque.motivos[3]);
+  const notas = descendentes(nos.get("contato")).find((no) => no.className === "contato-notas");
+  assert.deepEqual(notas.children.map((no) => no.children[0].textContent), ["Entrega", "Pagamento", "Conservação"]);
+});
+
+// Percorre cada nó uma vez, descartando as subárvores excluídas pela G6.
+// Não usa o textContent de cada ancestral, que duplicaria a contagem.
+const textoVisivel = (no) => {
+  if (no.atributos["aria-hidden"] === "true" || ["noscript", "title", "meta"].includes(no.tagName)
+    || no.id === "faixa" || no.className === "produto-ingredientes" || no.className === "sr") return "";
+  return [no.texto, ...no.children.map(textoVisivel)].join(" ");
+};
+test("G6-2: texto visível tem até 3 cacau 100% e até 2 sem taxa", (t) => {
+  const conteudo = [...nos.values()].map(textoVisivel).join(" ");
+  const cacau = (conteudo.match(/cacau 100%/gi) || []).length;
+  const taxa = (conteudo.match(/sem taxa/gi) || []).length;
+  t.diagnostic(`Texto visível: cacau 100% = ${cacau}; sem taxa = ${taxa}`);
+  assert.ok(cacau <= 3, `cacau 100%: ${cacau}`);
+  assert.ok(taxa <= 2, `sem taxa: ${taxa}`);
+  assert.equal(cacau, 3, "Hero e título/texto da parada 2 permanecem");
+  assert.equal(taxa, 2, "Anúncio e nota de entrega permanecem");
+});
+
+test("G6-3: Dúvidas foi removida do HTML, montagem, menu e CSS", () => {
+  assert.ok(!nos.has("duvidas"));
+  assert.ok(!textos.links.some((link) => link.href === "#duvidas" || link.texto === "Dúvidas"));
+  for (const no of montados()) {
+    assert.notEqual(no.id, "duvidas");
+    assert.notEqual(no.atributos.href, "#duvidas");
+  }
+  for (const nome of ["index.html", "js/montar.js", "css/estilo.css"]) {
+    assert.doesNotMatch(ler(nome), /duvidas/i, nome);
+  }
+  assert.ok(!Object.hasOwn(textos, "faq"));
+});
+
+test("G6-4: config fora de textos.pagina permanece idêntico à G4 no HEAD", async () => {
+  const original = execFileSync("git", ["show", "HEAD:js/config.js"], {
+    cwd: new URL("../", import.meta.url), encoding: "utf8",
+  });
+  const { config: anterior } = await import(`data:text/javascript;base64,${Buffer.from(original).toString("base64")}`);
+  const semPagina = (valor) => {
+    const copia = structuredClone(valor);
+    delete copia.textos.pagina;
+    return copia;
+  };
+  assert.deepEqual(semPagina(config), semPagina(anterior));
 });
