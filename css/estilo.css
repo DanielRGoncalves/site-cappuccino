@@ -245,6 +245,10 @@ ul, ol { padding: 0; list-style: none; }
 .conta-detalhes dt { font: var(--texto); }
 .conta-detalhes dd { font: var(--frase); margin: 0; overflow-wrap: anywhere; }
 .conta .conta-aviso { font: var(--nota); max-width: none; margin: 24px 0 0; padding-top: 20px; border-top: 1.5px dashed currentColor; }
+/* G8: números da conta centralizados. */
+.conta input { text-align: center; }
+.conta-ganho { text-align: center; }
+/* /G8 */
 
 /* Como preparar */
 .preparo { position: relative; padding: clamp(56px, 8vw, 110px) var(--margem); background: var(--cacau); color: var(--leite); }

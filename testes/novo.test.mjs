@@ -213,9 +213,15 @@ test("G4-7: ajustes e módulos de movimento idênticos ao protótipo; CSS só co
     .replace(/^\/\* Dúvidas \*\/\r?\n|^\.duvidas[^\n]*\n/gm, "")
     // Única exceção de layout autorizada por Daniel na G6: três notas no computador.
     .replace(/(\.contato-notas \{[^\n]*repeat\()2,/, "$13,");
-  // G7 só acrescenta estes dois blocos de foto/grid/legenda; o restante fica literal.
-  const css = ler("css/estilo.css").replace(/\/\* G7: (?:foto e grid de Como funciona|legenda do contato fora do arco)\. \*\/[\s\S]*?\/\* \/G7 \*\/\r?\n/g, "");
+  // G7 acrescenta dois blocos de foto/grid/legenda e G8 centraliza os números; o restante fica literal.
+  const css = ler("css/estilo.css")
+    .replace(/\/\* G7: (?:foto e grid de Como funciona|legenda do contato fora do arco)\. \*\/[\s\S]*?\/\* \/G7 \*\/\r?\n/g, "")
+    .replace(/\/\* G8: números da conta centralizados\. \*\/[\s\S]*?\/\* \/G8 \*\/\r?\n/, "");
   assert.equal(css, esperado);
+});
+
+test("G8-1: bloco G8 centraliza somente os inputs e o ganho da conta", () => {
+  assert.match(ler("css/estilo.css"), /^\/\* G8: números da conta centralizados\. \*\/\r?\n\.conta input \{ text-align: center; \}\r?\n\.conta-ganho \{ text-align: center; \}\r?\n\/\* \/G8 \*\/$/m);
 });
 
 test("G4-8: fontes informativas >= 14px, sem overflow-x hidden em html/body", () => {
