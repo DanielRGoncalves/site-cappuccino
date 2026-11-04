@@ -58,6 +58,7 @@ Nota: na `prototipo`, `ESTADO.md`, `brief.md` e `criterios.md` foram apagados (l
 | X5b cena da gota no estilo Graza (substitui a xícara da X5) | `prototipo-graza/` (protótipo do diretor, 03–04/11) | **aprovado por Daniel em 04/11**; guardado na branch `prototipo-graza` (com o `prototipo-descida`). Vira a base do site novo |
 | G4 migração do protótipo Graza para `novo/` (config único em `textos.pagina`, testes, meta tags) | `g4-migracao-graza.md` | **feita pelo Codex e revisada em 04/11** (`testes/novo.test.mjs`, 10 testes; 57 no total). O diretor repetiu a medição da gota e do derretido em `novo/`: igual ao protótipo. Correção do diretor: o Codex tinha deixado `montar.js`, `pagina.js` e `textos.js` em linha única para caber no teto de 40.000 bytes; reformatados e **teto do JS próprio subido para 50.000** (hoje 44.808). Falta Daniel testar no celular e fazer o commit |
 | G6 conteúdo sem repetição no `novo/` (cada seção dona de um assunto; sai "Dúvidas"; textos novos só em `textos.pagina`) | `g6-conteudo-sem-repeticao.md` | **escrita em 04/11**, mapa aprovado por Daniel; executar no Codex (chat novo "site-capuccino G6", GPT-6.1 Terra, esforço médio); não fazer commit |
+| G7 `novo/` independente (config, calculadora, pedido e fotos dentro da pasta) para publicar em `/novo/`; 3 fotos novas (contato = Davi e Gustavo; cartão Revender = mão abrindo o pacote; Como funciona = moça com pacote e bule) | `g7-novo-independente.md` | **escrita em 04/11**; fotos preparadas pelo diretor em `novo/img/`; executar no Codex ("site-capuccino G7", GPT-6.1 Terra, esforço médio); não fazer commit |
 | G5 trocar a raiz pelo `novo/` (remover `noindex`, mover arquivos, publicar) | a escrever | depois da aprovação da família e das fotos oficiais |
 | X6 personalidade do resto (como preparar, como funciona, dúvidas, contato) na mesma linguagem | a escrever | depois da cena da gota |
 | X7 revisão no celular real e desempenho no 4G | a escrever | depois da X6 |
@@ -101,7 +102,8 @@ Objetivo (pedido de Daniel em 30/10): descobrir, navegando, uma direção visual
 - **Calculadora (X3b):** folha de até 880 px, sem o texto visível "Faça a conta" (só nome acessível), rótulos dos resultados em Texto, aviso "Preencha os dois valores…" colado embaixo do número, "por R$ + campo + vírgula" sempre juntos.
 - **Menu no celular:** o botão some ao rolar para baixo e volta ao rolar para cima (só até 540 px).
 - **Aviso ignorável no console:** "[Intervention] Images loaded lazily…" é do próprio Edge.
-- **Fotos 24, 27 e 28** (bebida gelada): não usar até a família confirmar esse jeito de servir.
+- **Bebida gelada (fotos 23, 24, 25, 27, 28):** não usar. Foi ideia de uma influenciadora da marca e **não faz parte da divulgação** (Daniel, 04/11).
+- **Davi e Gustavo** (fotos 21 e 22) são "os cabeças da empresa" (Daniel, 04/11): pode usar e mostrar tudo deles.
 
 **Avaliação de 02/11:** Daniel achou ok, exceto os textos pequenos abaixo dos títulos (resolvido na X3b com o estilo Entrada). Notas do Claude: personalidade 4, fluidez 3, clareza 3,5, desempenho 4 (provisória, falta 4G), mobile 3,5.
 
