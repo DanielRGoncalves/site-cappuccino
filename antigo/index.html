@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- SINCRONIZAR COM js/config.js -->
+    <title>Cheiro das Águas | Cappuccino artesanal e gourmet</title>
+    <meta name="description" content="Cheiro das Águas: cappuccino artesanal e gourmet, com café Conilon e cacau 100%, para padarias, cafeterias, restaurantes e outros negócios da Grande Vitória." />
+    <link rel="canonical" href="https://cheirodasaguasgourmet.com.br/antigo/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content="Cheiro das Águas" />
+    <meta property="og:title" content="Cheiro das Águas | Cappuccino artesanal e gourmet" />
+    <meta property="og:description" content="Cheiro das Águas: cappuccino artesanal e gourmet, com café Conilon e cacau 100%, para padarias, cafeterias, restaurantes e outros negócios da Grande Vitória." />
+    <meta property="og:url" content="https://cheirodasaguasgourmet.com.br/antigo/" />
+    <meta property="og:image" content="https://cheirodasaguasgourmet.com.br/img/og.jpg" />
+    <meta property="og:image:alt" content="Pacote de cappuccino e logo Cheiro das Águas sobre fundo preto" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Cheiro das Águas | Cappuccino artesanal e gourmet" />
+    <meta name="twitter:description" content="Cheiro das Águas: cappuccino artesanal e gourmet, com café Conilon e cacau 100%, para padarias, cafeterias, restaurantes e outros negócios da Grande Vitória." />
+    <meta name="twitter:image" content="https://cheirodasaguasgourmet.com.br/img/og.jpg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png" />
+    <!-- /SINCRONIZAR -->
+
+    <!-- Remover ao publicar a versão oficial -->
+    <meta name="robots" content="noindex" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <div class="prototype-banner" id="prototype-banner" hidden></div>
+    <header class="site-header" aria-label="Cabeçalho principal">
+      <div class="container header-inner">
+        <a
+          href="#inicio"
+          class="logo-wrap"
+        >
+          <!-- O espaço agora respeita a proporção circular do seu leão -->
+          <img class="logo" width="140" height="168" alt="" />
+          <span class="logo-fallback"></span>
+        </a>
+
+        <nav class="nav" id="site-nav" aria-label="Navegação principal">
+          <a href="#diferenca"></a>
+          <a href="#produtos"></a>
+          <a href="#porque"></a>
+          <a href="#padarias"></a>
+          <a href="#como"></a>
+          <a href="#faq"></a>
+          <a href="#contato"></a>
+        </nav>
+
+        <div class="header-actions">
+          <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-controls="site-nav" aria-expanded="false">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M4 7h16M4 12h16M4 17h16"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="inicio">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="container hero-layout">
+          <div class="hero-content">
+            <h1 id="hero-title"></h1>
+            <p id="hero-subtitle"></p>
+            <div class="hero-cta">
+              <a class="btn btn-primary" id="pedir-degustacao" href="#degustacao"></a>
+              <a class="btn btn-secondary" id="ver-conta" href="#padarias"></a>
+            </div>
+          </div>
+          <div class="hero-photo" id="hero-photo"></div>
+        </div>
+      </section>
+
+      <section class="section origin-section" id="origem" aria-labelledby="origem-title">
+        <div class="container origin-layout">
+          <div class="origin-photo" id="origem-photo"></div>
+          <div class="section-heading">
+            <h2 id="origem-title"></h2>
+            <p id="origem-text"></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section difference-section" id="diferenca" aria-labelledby="diferenca-title">
+        <div class="container">
+          <div class="section-heading"><h2 id="diferenca-title"></h2></div>
+          <div class="difference-grid" id="diferenca-cards"></div>
+          <p class="difference-highlight" id="diferenca-destaque"></p>
+        </div>
+      </section>
+
+      <section
+        class="section products-section"
+        id="produtos"
+        aria-labelledby="products-title"
+      >
+        <div class="container">
+          <div class="section-heading">
+            <h2 id="products-title"></h2>
+            <p id="products-intro"></p>
+          </div>
+
+          <div class="product-tabs" id="product-tabs" role="tablist" aria-labelledby="products-title"></div>
+          <div class="products-grid" id="product-panels"></div>
+          <p class="products-shared" id="products-shared"></p>
+        </div>
+      </section>
+
+      <section class="section reasons-section" id="porque" aria-labelledby="porque-title">
+        <div class="container">
+          <div class="section-heading"><h2 id="porque-title"></h2></div>
+          <div class="reasons-grid" id="porque-cards"></div>
+        </div>
+      </section>
+
+      <section
+        class="section bakery-section"
+        id="padarias"
+        aria-labelledby="padarias-title"
+      >
+        <div class="container">
+          <div class="section-heading">
+            <h2 id="padarias-title"></h2>
+            <p id="padarias-description"></p>
+          </div>
+
+          <div class="calculator-card">
+            <div class="product-tabs calculator-tabs" role="tablist" aria-labelledby="padarias-title">
+              <button type="button" class="product-tab" id="calculator-tab-resale" role="tab" aria-controls="calculator-panel-resale" aria-selected="true"></button>
+              <button type="button" class="product-tab" id="calculator-tab-cup" role="tab" aria-controls="calculator-panel-cup" aria-selected="false" tabindex="-1"></button>
+            </div>
+
+            <div class="calculator-panel" id="calculator-panel-resale" role="tabpanel" aria-labelledby="calculator-tab-resale" tabindex="0">
+              <div class="calculator-fields">
+                <div>
+                  <label for="calculator-package-price" id="calculator-package-price-label"></label>
+                  <input id="calculator-package-price" class="calculator-input" type="text" inputmode="decimal" autocomplete="off" aria-describedby="calculator-package-hint" />
+                  <p id="calculator-package-hint" class="field-hint"></p>
+                </div>
+                <div>
+                  <label for="calculator-resale-price" id="calculator-resale-price-label"></label>
+                  <input id="calculator-resale-price" class="calculator-input" type="text" inputmode="decimal" autocomplete="off" aria-describedby="calculator-resale-hint" />
+                  <p id="calculator-resale-hint" class="field-hint"></p>
+                </div>
+              </div>
+              <div class="calculator-result" aria-live="polite" aria-atomic="true">
+                <p id="calculator-resale-empty"></p>
+                <dl id="calculator-resale-result" hidden>
+                  <div><dt id="calculator-resale-gain-label"></dt><dd id="calculator-resale-gain"></dd></div>
+                  <div><dt id="calculator-resale-margin-label"></dt><dd id="calculator-resale-margin"></dd></div>
+                </dl>
+              </div>
+            </div>
+
+            <div class="calculator-panel" id="calculator-panel-cup" role="tabpanel" aria-labelledby="calculator-tab-cup" tabindex="0" hidden>
+              <p id="calculator-example-notice" class="calculator-example" hidden></p>
+              <div class="calculator-fields">
+                <div>
+                  <label for="calculator-kg-price" id="calculator-kg-price-label"></label>
+                  <input id="calculator-kg-price" class="calculator-input" type="text" inputmode="decimal" autocomplete="off" aria-describedby="calculator-kg-hint" />
+                  <p id="calculator-kg-hint" class="field-hint"></p>
+                </div>
+                <fieldset class="cup-fieldset">
+                  <legend id="calculator-cup-label"></legend>
+                  <div class="cup-options" id="calculator-cups"></div>
+                </fieldset>
+                <div>
+                  <label for="calculator-price" id="calculator-price-label"></label>
+                  <input id="calculator-price" class="calculator-input" type="text" inputmode="decimal" autocomplete="off" aria-describedby="calculator-price-hint" />
+                  <p id="calculator-price-hint" class="field-hint"></p>
+                </div>
+              </div>
+              <div class="calculator-result" aria-live="polite" aria-atomic="true">
+                <dl><div><dt id="calculator-cups-label"></dt><dd id="calculator-cups-count"></dd></div></dl>
+                <p id="calculator-empty"></p>
+                <dl id="calculator-result" hidden>
+                  <div><dt id="calculator-cost-label"></dt><dd id="calculator-cost"></dd></div>
+                  <div><dt id="calculator-gain-label"></dt><dd id="calculator-gain"></dd></div>
+                  <div><dt id="calculator-margin-label"></dt><dd id="calculator-margin"></dd></div>
+                  <div><dt id="calculator-package-gain-label"></dt><dd id="calculator-package-gain"></dd></div>
+                </dl>
+                <p id="calculator-notice"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="section preparation"
+        id="preparo"
+        aria-labelledby="preparo-title"
+      >
+        <div class="container">
+          <div class="section-heading">
+            <h2 id="preparo-title"></h2>
+          </div>
+          <div class="steps" id="preparo-steps"></div>
+          <p id="preparo-dica"></p>
+          <p id="preparo-rendimento"></p>
+        </div>
+      </section>
+
+      <section class="section process-section" id="como" aria-labelledby="como-title">
+        <div class="container">
+          <div class="section-heading"><h2 id="como-title"></h2></div>
+          <div class="process-grid" id="como-passos"></div>
+        </div>
+      </section>
+
+      <section class="section tasting-section" id="degustacao" aria-labelledby="degustacao-title" tabindex="-1">
+        <div class="container">
+          <div class="section-heading">
+            <h2 id="degustacao-title"></h2>
+            <p id="degustacao-description"></p>
+          </div>
+          <form id="degustacao-form" class="tasting-form" novalidate autocomplete="off">
+            <div>
+              <label for="degustacao-nome" id="degustacao-nome-label"></label>
+              <input id="degustacao-nome" name="nome" class="calculator-input" type="text" required aria-describedby="degustacao-nome-error" />
+              <p id="degustacao-nome-error" class="field-error" aria-live="polite"></p>
+            </div>
+            <div>
+              <label for="degustacao-tipo" id="degustacao-tipo-label"></label>
+              <select id="degustacao-tipo" name="tipo" class="calculator-input" required aria-describedby="degustacao-tipo-error"></select>
+              <p id="degustacao-tipo-error" class="field-error" aria-live="polite"></p>
+            </div>
+            <div>
+              <label for="degustacao-local" id="degustacao-local-label"></label>
+              <input id="degustacao-local" name="local" class="calculator-input" type="text" required aria-describedby="degustacao-local-error" />
+              <p id="degustacao-local-error" class="field-error" aria-live="polite"></p>
+            </div>
+            <div>
+              <label for="degustacao-quantidade" id="degustacao-quantidade-label"></label>
+              <input id="degustacao-quantidade" name="quantidade" class="calculator-input" type="number" min="0" step="1" />
+            </div>
+            <button id="degustacao-submit" class="btn btn-primary" type="submit"></button>
+          </form>
+        </div>
+      </section>
+
+      <section class="section faq-section" id="faq" aria-labelledby="faq-title">
+        <div class="container">
+          <div class="section-heading"><h2 id="faq-title"></h2></div>
+          <div class="faq-list" id="faq-items"></div>
+        </div>
+      </section>
+
+      <section class="brand-story" hidden>
+        <div class="container">
+          <div class="story-card">
+            <div class="eyebrow"></div>
+            <h2></h2>
+            <p></p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="contato">
+      <div class="container">
+        <div class="section-heading"><h2 id="contact-title"></h2></div>
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <h3></h3>
+          </div>
+
+          <div>
+            <div class="footer-meta" id="legal-name"></div>
+            <div class="footer-meta" id="legal-cnpj"></div>
+            <div class="footer-meta" id="legal-address"></div>
+            <div class="footer-meta" style="margin-top: 12px">
+              <strong id="storage-label"></strong> <span id="storage-text"></span>
+            </div>
+          </div>
+
+          <div>
+            <div class="footer-meta" style="margin-bottom: 12px">
+              <strong id="contact-label"></strong>
+            </div>
+            <div class="socials">
+              <a class="social-link" id="contact-whatsapp" href="#contato"></a>
+              <a class="social-link" id="instagram-link" target="_blank" aria-label="Instagram"></a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span id="copyright-prefix"></span> <span id="copyright-name"></span> <span id="copyright-text"></span>
+        </div>
+      </div>
+    </footer>
+
+    <a class="floating-whatsapp" id="floating-whatsapp" href="#contato"></a>
+
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>
