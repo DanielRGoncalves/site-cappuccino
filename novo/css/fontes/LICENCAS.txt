@@ -1,0 +1,4 @@
+Fontes locais, todas com licenca livre SIL Open Font License 1.1 (https://openfontlicense.org):
+- Fraunces (Undercase Type): nome grande "Cheiro das Aguas". Mesmo arquivo do experimento.
+- Instrument Serif (Instrument): titulos e frases grandes. Pacote @fontsource/instrument-serif 5.3.0 (npm).
+Subconjunto "latin" (tem os acentos do portugues).
