@@ -81,6 +81,7 @@ test("G4-1: todas as strings exportadas vêm do config ou de derivações explí
   esperado.vender.entrada = config.textos.pagina.venderEntrada;
   esperado.vender.cartoes[0].lista = [config.textos.pagina.venderSemLeite];
   esperado.vender.cartoes[1].lista = [config.textos.porque.motivos[3]];
+  esperado.vender.cartoes[1].frase = config.textos.pagina.venderPacote;
   esperado.como.passos[2] = config.textos.pagina.comoPasso3;
   esperado.contato.texto = config.textos.pagina.contato.texto;
   esperado.contato.conservacaoTitulo = config.textos.pagina.contato.conservacaoTitulo;
@@ -206,7 +207,7 @@ test("G4-7: ajustes e módulos de movimento idênticos ao protótipo; CSS só co
   }
   const esperado = prototipo("estilo.css").replace(/^\/\* Protótipo[^\n]*\n/, "")
     .replace(/^\.anuncio-selo[^\n]*\n/m, "")
-    .replace(/^\/\* Dúvidas \*\/\n|^\.duvidas[^\n]*\n/gm, "")
+    .replace(/^\/\* Dúvidas \*\/\r?\n|^\.duvidas[^\n]*\n/gm, "")
     // Única exceção de layout autorizada por Daniel na G6: três notas no computador.
     .replace(/(\.contato-notas \{[^\n]*repeat\()2,/, "$13,");
   // G7 só acrescenta estes dois blocos de foto/grid/legenda; o restante fica literal.

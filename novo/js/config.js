@@ -71,9 +71,9 @@ export const config = {
     {
       id: "sem-acucar",
       exibir: true,
-      nome: "Cappuccino sem açúcar",
-      selo: "Sem açúcar",
-      frase: "Sem açúcar refinado na receita, para quem prefere adoçar a gosto.",
+      nome: "Cappuccino diet",
+      selo: "Diet",
+      frase: "Sem adição de açúcares e sem adoçantes artificiais, para quem prefere adoçar a gosto.",
       descricao: "Com cacau 100%.",
       ingredientes: "Leite em pó integral, bicarbonato de sódio, canela em pó, cacau 100% e café Conilon.",
       avisos: "Contém leite e derivados. Não contém glúten.",
@@ -81,7 +81,7 @@ export const config = {
       precoCentavos: 3500,
       foto: "img/reais/produto-sem-800.webp",
       fotoPequena: "img/reais/produto-sem-400.webp",
-      alt: "Dois pacotes de cappuccino de 250 g lado a lado",
+      alt: "Pacote de cappuccino diet de 250 g, com rótulo azul, segurado na mão",
     },
     {
       id: "descafeinado",
@@ -152,7 +152,7 @@ export const config = {
         alt: "Mão abrindo um pacote de cappuccino Cheiro das Águas",
       },
       comoPasso3: "3. Se gostar, faz o pedido e entregamos.",
-      venderPacote: "Pacote de 250 g, com açúcar ou sem açúcar.",
+      venderPacote: "Pacote de 250 g, com açúcar ou diet.",
       conta: {
         vazio: "R$ —",
         titulo: "Faça a conta",

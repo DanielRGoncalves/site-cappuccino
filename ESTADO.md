@@ -25,6 +25,7 @@ Site de apresentação do **Cheiro das Águas** (Agropecuária Cheiro das Águas
 - Teto de JS próprio de `novo/js/`: 50.000 bytes (sem contar as cópias de config, calculadora e pedido); `vendor/` ≤ 160.000. Texto informativo com no mínimo 14 px. Sem `innerHTML` com dados; imagens com `width`, `height` e `alt`; contraste ≥ 4,5:1.
 - `novo/index.html` ainda tem `<meta name="robots" content="noindex">` (sai na G5).
 - Testes: `testes/novo.test.mjs` (+ os antigos); `node --test testes/` inteiro passando.
+- Ao preparar imagens: os testes contam 1 KB = 1.000 bytes; imagens gravadas pelo Claude na pasta do PC ganham ~5.800 bytes (bloco C2PA): deixar 7.000 bytes de folga e conferir o tamanho final na pasta.
 - Publicação: GitHub Pages, branch **`prototipo`**, domínio https://cheirodasaguasgourmet.com.br/ (arquivo `CNAME`). Para atualizar o `/novo/`: `git switch prototipo`, `git checkout prototipo-graza -- novo`, commit, `git push origin prototipo`.
 
 ## Branches
@@ -40,11 +41,10 @@ Nota: na `prototipo`, `ESTADO.md`, `brief.md` e `criterios.md` foram apagados. S
 
 ## Pendente agora (nesta ordem)
 
-1. **Rótulo novo do sem açúcar** (Daniel faz antes do novo virar o principal).
-   - Trocar as fotos do pacote sem açúcar: no `novo/js/config.js`, produto `id: "sem-acucar"` usa `img/reais/produto-sem-800.webp` e `produto-sem-400.webp` (manter nomes e proporção, ou atualizar `largura`/`altura` no config).
-   - Conferir se outras fotos da página mostram o rótulo antigo do sem açúcar (hero, paradas da gota, preparo, "abrindo", "bule", "equipe") e trocar as que mostrarem.
-   - Com o rótulo novo: decidir com Daniel se o selo "Sem açúcar" vira **"diet"** (o sem açúcar tem aprovação para ser chamado de diet; ficou combinado trocar quando chegasse a embalagem nova) e conferir se o rótulo novo já corrige os pontos abaixo (achocolatado, café solúvel, 35 g → 30 g).
-   - Ao preparar imagens: os testes contam 1 KB = 1.000 bytes; imagens gravadas pelo Claude na pasta do PC ganham ~5.800 bytes (bloco C2PA): deixar 7.000 bytes de folga e conferir o tamanho final na pasta.
+1. **Rótulo novo do diet**.
+   - [x] Fotos novas do pacote diet colocadas pelo Claude em `novo/img/reais/produto-sem-800.webp` e `produto-sem-400.webp` (800×800 e 400×400), mantendo os caminhos no config.
+   - [x] Textos do diet atualizados no `novo/js/config.js`: nome, selo, frase, alt e `venderPacote`; mantido o `id: "sem-acucar"`.
+   - [ ] conferir o verso do rótulo novo (achocolatado, café solúvel, 30 g).
 2. **G5 — o novo vira o principal** (tarefa a escrever; Codex GPT-6.1 Terra, esforço médio).
    - Mover o site antigo (raiz: `index.html`, `css/`, `js/`, `img/`) para `/antigo/`, com `noindex`.
    - Mover o `novo/` para a raiz; garantir `img/og.jpg` na raiz; **tirar o `noindex`**; conferir `canonical` e `og:*`; testes ajustados.
