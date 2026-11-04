@@ -57,6 +57,7 @@ Nota: na `prototipo`, `ESTADO.md`, `brief.md` e `criterios.md` foram apagados (l
 | X5 personalidade dos capítulos (trecho origem → produtos → faixa → duas formas de vender): xícara que enche com a rolagem, borda de espuma, faixa correndo com "Pausar animações", cartões empilhados com a calculadora | `x5-capitulos-personalidade.md` | **feita e aprovada em 02–03/11** (47 testes, JS 34.790 bytes, CSS 24.356 bytes). Teve uma correção: linha do resultado da calculadora numa linha só a partir de 541 px; espaço vazio da xícara encolhido com movimento reduzido. O diretor conferiu no navegador (sem rolagem lateral, sem erro no console, foco nunca coberto, pausar sem mudar a altura, fluido com CPU 6× mais lenta). Commit: Daniel confirma |
 | X5b cena da gota no estilo Graza (substitui a xícara da X5) | `prototipo-graza/` (protótipo do diretor, 03–04/11) | **aprovado por Daniel em 04/11**; guardado na branch `prototipo-graza` (com o `prototipo-descida`). Vira a base do site novo |
 | G4 migração do protótipo Graza para `novo/` (config único em `textos.pagina`, testes, meta tags) | `g4-migracao-graza.md` | **feita pelo Codex e revisada em 04/11** (`testes/novo.test.mjs`, 10 testes; 57 no total). O diretor repetiu a medição da gota e do derretido em `novo/`: igual ao protótipo. Correção do diretor: o Codex tinha deixado `montar.js`, `pagina.js` e `textos.js` em linha única para caber no teto de 40.000 bytes; reformatados e **teto do JS próprio subido para 50.000** (hoje 44.808). Falta Daniel testar no celular e fazer o commit |
+| G6 conteúdo sem repetição no `novo/` (cada seção dona de um assunto; sai "Dúvidas"; textos novos só em `textos.pagina`) | `g6-conteudo-sem-repeticao.md` | **escrita em 04/11**, mapa aprovado por Daniel; executar no Codex (chat novo "site-capuccino G6", GPT-6.1 Terra, esforço médio); não fazer commit |
 | G5 trocar a raiz pelo `novo/` (remover `noindex`, mover arquivos, publicar) | a escrever | depois da aprovação da família e das fotos oficiais |
 | X6 personalidade do resto (como preparar, como funciona, dúvidas, contato) na mesma linguagem | a escrever | depois da cena da gota |
 | X7 revisão no celular real e desempenho no 4G | a escrever | depois da X6 |
@@ -66,7 +67,7 @@ Nota: na `prototipo`, `ESTADO.md`, `brief.md` e `criterios.md` foram apagados (l
 - Produtos exibidos: **com açúcar** e **sem açúcar**; descafeinado existe no config com `exibir: false`. No varejo, só há pacote de **250 g** (a embalagem é a mesma para os dois). Negócios que **servem na xícara** compram **por kg**, num pacote de 1 kg separado (embalagem ainda não definida). Preço do kg em 28/10: **R$ 84 tradicional** e **R$ 108 diet** (negociável, fora do site). O sem açúcar tem aprovação para ser chamado de **diet**: hoje só a calculadora usa "diet"; a aba dos produtos troca "Sem açúcar" por "diet" quando chegar a embalagem nova.
 - Ingredientes com açúcar: "Leite em pó integral, bicarbonato de sódio, canela em pó, cacau 100%, açúcar refinado e café Conilon." Sem açúcar: os mesmos, sem o açúcar refinado.
 - Avisos: "Contém leite e derivados. Não contém glúten." Conservação: "Local seco, ventilado e protegido da luz solar." Validade: 365 dias.
-- Café Conilon; cacau 100%, não achocolatado; feito à mão, em casa, sem processo industrial.
+- Café Conilon **plantado pela própria família** (confirmado por Daniel em 04/11); cacau 100%, não achocolatado; feito à mão, em casa, sem processo industrial e **sem máquinas** (nenhuma etapa mecanizada, confirmado em 04/11). Não precisa adicionar leite: o leite já vem no pó, o preparo é só com água.
 - Entrega pela família na Grande Vitória, sem taxa, de um dia para o outro. Pagamento: Pix, cartão na maquininha na entrega ou dinheiro.
 - **Degustação gratuita** antes da primeira venda: a família leva uma pequena quantidade do cappuccino e a água quente, e a pessoa experimenta na hora.
 - WhatsApp 5533999096791; Instagram @cheirodasaguasgourmet.
@@ -74,7 +75,7 @@ Nota: na `prototipo`, `ESTADO.md`, `brief.md` e `criterios.md` foram apagados (l
 
 ## Proibido escrever (vale em tudo)
 
-Premium, melhor, saudável ou benefício de saúde; conservante, aditivo ("sem aditivos" é falso: o bicarbonato é aditivo), natural, orgânico, selos; "achocolatado" ou "café solúvel" como ingrediente (só vale a frase "Cacau 100%, não achocolatado."); origem do café, pontuação; marcas concorrentes ou ataques ao industrial.
+Premium, melhor, saudável ou benefício de saúde; conservante, aditivo ("sem aditivos" é falso: o bicarbonato é aditivo), natural, orgânico, selos; "achocolatado" ou "café solúvel" como ingrediente (só vale a frase "Cacau 100%, não achocolatado."); origem do café, pontuação; marcas concorrentes ou ataques ao industrial. **Exceção desde 04/11:** pode dizer que o café é **plantado por nós** (fato confirmado); continua proibido inventar região, pontuação ou "origem" como selo.
 
 ## A confirmar (bloqueia a calculadora e a versão oficial)
 
@@ -166,6 +167,7 @@ Pasta `prototipo-graza/` (ver o `LEIA-ME.md` dela). Feito pelo diretor; branch `
 3. **Sem JavaScript:** a página mostra o essencial (nome, título, texto do hero, botões de degustação e Instagram, faixa, entrega, pagamento, dados legais e a foto em arco), no mesmo estilo, num bloco `<noscript>` marcado `SINCRONIZAR COM js/config.js`. **Daniel quer conferir se isso não descaracteriza o site.**
 4. **O protótipo Graza vira a base**; a xícara da X5 sai.
 5. **"Você sabia?" saiu por enquanto.** Volta quando a família trouxer curiosidades reais (montar junto com Daniel).
+6. **Mapa de conteúdo (04/11):** cada seção é dona de um assunto. Origem = onde e quem; cena = o que vai dentro (café plantado por nós, cacau, à mão sem máquinas, aroma); produtos = a escolha; vender = por que vale para o negócio (+ "não precisa de leite"); como preparar = preparo e rendimento; como funciona = degustação e pedido; contato = entrega, pagamento e conservação. **"Dúvidas" sai** do `novo/`. "Você sabia?" só volta com histórias da família que não caibam em outro lugar (como começou, desde quando).
 
 **Também em 04/11:** cartão "Cappuccino por kg" removido (sem foto da embalagem de 1 kg); textos pequenos com no mínimo 14 px (inclusive o botão "Degustação" do topo no celular); paradas da gota como `h3`; menos repetição (apoio do hero = começo do subtítulo do config; frase embaixo do nome = `diferenca.destaque`).
 
