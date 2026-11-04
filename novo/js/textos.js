@@ -1,4 +1,4 @@
-import { config } from "../../js/config.js";
+import { config } from "./config.js";
 const t = config.textos;
 const p = t.pagina;
 const entrega = t.faq.itens[5].resposta.replace(" pela família", "");
@@ -72,7 +72,7 @@ export const textos = {
     entrada: p.venderEntrada,
     fotos: [
       t.diferenca.cartoes.find((c) => c.foto.endsWith("/aroma-720.webp")),
-      { ...config.produtos.find((p) => p.id === "sem-acucar"), largura: 800, altura: 800 },
+      p.venderFoto,
     ],
     cartoes: [
       { titulo: t.padarias.abaXicara, frase: p.venderXicara, lista: [p.venderSemLeite] },
@@ -86,7 +86,7 @@ export const textos = {
   conta: p.conta,
   preparo: t.preparo,
   passo: p.passo,
-  como: { ...t.como, passos: [t.como.passos[0], t.como.passos[1], p.comoPasso3] },
+  como: { ...t.como, foto: p.como.foto, passos: [t.como.passos[0], t.como.passos[1], p.comoPasso3] },
   contato: {
     titulo: p.contato.titulo,
     texto: p.contato.texto,
@@ -99,6 +99,7 @@ export const textos = {
     conservacaoTitulo: p.contato.conservacaoTitulo,
     conservacao: t.conservacao,
     alt: p.contato.alt,
+    legenda: p.contato.legenda,
     legal: config.dadosLegais,
     cnpj: t.contato.cnpj,
   },

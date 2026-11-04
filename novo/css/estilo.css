@@ -1,6 +1,6 @@
-@font-face { font-family: "Instrument Serif"; src: url("../fontes/instrument-serif-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
-@font-face { font-family: "Instrument Serif"; src: url("../fontes/instrument-serif-latin-400-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
-@font-face { font-family: Fraunces; src: url("../fontes/fraunces-latin-full-normal.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: "Instrument Serif"; src: url("fontes/instrument-serif-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Instrument Serif"; src: url("fontes/instrument-serif-latin-400-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: Fraunces; src: url("fontes/fraunces-latin-full-normal.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
 
 :root {
   --leite: #f1e7d8;
@@ -275,6 +275,17 @@ ul, ol { padding: 0; list-style: none; }
 .como-lista li { display: grid; grid-template-columns: clamp(64px, 10vw, 120px) 1fr; align-items: center; gap: clamp(16px, 3vw, 40px); padding: clamp(18px, 3vw, 32px) 0; border-bottom: 1.5px dashed var(--cacau); }
 .como-numero { display: grid; place-items: center; width: clamp(56px, 8vw, 96px); aspect-ratio: 1; border: 1.5px solid var(--cacau); border-radius: 50%; font: 400 clamp(2rem, 4vw, 3.4rem)/1 var(--serif); }
 .como-lista p { font: 400 clamp(1.35rem, 2.3vw, 2rem)/1.15 var(--serif); }
+/* G7: foto e grid de Como funciona. */
+.como-grade { display: grid; gap: clamp(28px, 5vw, 80px); align-items: center; max-width: var(--max); margin: clamp(32px, 5vw, 64px) auto 0; }
+.como-grade .como-lista { margin: 0; }
+.como-foto { justify-self: center; width: min(70%, 320px); overflow: hidden; border-radius: 999px 999px 28px 28px; border: 1.5px solid var(--ouro); }
+.como-foto img { width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; object-position: 50% 30%; }
+@media (min-width: 920px) {
+  .como-grade { grid-template-columns: minmax(0, 1.3fr) minmax(0, .7fr); }
+  .como-grade .como-lista { grid-column: 1; grid-row: 1; }
+  .como-foto { grid-column: 2; grid-row: 1; width: min(100%, 360px); }
+}
+/* /G7 */
 
 .mais { position: relative; flex: none; width: 34px; height: 34px; border: 1.5px solid var(--cacau); border-radius: 50%; }
 .mais::before, .mais::after { content: ""; position: absolute; left: 50%; top: 50%; width: 14px; height: 1.5px; background: currentColor; translate: -50% -50%; transition: rotate .25s; }
@@ -293,6 +304,11 @@ ul, ol { padding: 0; list-style: none; }
 .contato-notas dt { margin-bottom: 6px; color: var(--ouro); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: 14px; }
 .contato-foto { justify-self: center; width: min(100%, 440px); overflow: hidden; border-radius: 999px 999px 28px 28px; border: 1.5px solid var(--ouro); }
 .contato-foto img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 30%; }
+/* G7: legenda do contato fora do arco. */
+.contato-retrato { justify-self: center; width: min(100%, 440px); }
+.contato-retrato figcaption { margin-top: 12px; font: var(--nota); text-align: center; }
+@media (max-width: 919px) { .contato-retrato { max-width: 420px; } }
+/* /G7 */
 .rodape-marca { display: block; margin: clamp(48px, 8vw, 110px) calc(var(--margem) * -1) 0; font: 750 12.1vw/.9 var(--marca-fonte); letter-spacing: -.05em; text-align: center; white-space: nowrap; color: var(--leite); }
 .rodape-marca .palavra { display: inline-block; }
 .rodape-marca .letra { display: inline-block; font-variation-settings: "wght" 750, "opsz" 72, "SOFT" 100; }

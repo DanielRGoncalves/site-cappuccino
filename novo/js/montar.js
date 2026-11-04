@@ -145,8 +145,8 @@ function pr() {
         "div",
         { class: "produto-foto" },
         el("img", {
-          src: `../${p.foto}`,
-          srcset: `../${p.fotoPequena} 400w, ../${p.foto} 800w`,
+          src: `${p.foto}`,
+          srcset: `${p.fotoPequena} 400w, ${p.foto} 800w`,
           sizes: "(min-width: 920px) 30vw, 90vw",
           alt: p.alt,
           width: 800,
@@ -225,7 +225,7 @@ function vd(reduzido) {
             "div",
             { class: "arco venda-foto" },
             el("img", {
-              src: `../${foto.foto}`,
+              src: `${foto.foto}`,
               alt: foto.alt,
               width: foto.largura,
               height: foto.altura,
@@ -250,7 +250,7 @@ function palco() {
   const foto = (dados, classe, primeira, srcset, sizes) =>
     el("img", {
       class: classe,
-      src: `../${dados.foto}`,
+      src: `${dados.foto}`,
       srcset,
       sizes,
       alt: dados.alt,
@@ -259,7 +259,7 @@ function palco() {
       loading: primeira ? null : "lazy",
       decoding: "async",
     });
-  const srcOrigem = `../${o.foto.foto} 720w, ${o.grande} 1440w`;
+  const srcOrigem = `${o.foto.foto} 720w, ${o.grande} 1440w`;
   $("inicio").append(
     el("div", { class: "arco foto-estatica" }, foto(h.foto, "", true)),
     el(
@@ -312,7 +312,7 @@ function pp() {
               "div",
               { class: "preparo-foto" },
               el("img", {
-                src: `../${passo.foto}`,
+                src: `${passo.foto}`,
                 alt: passo.alt,
                 width: passo.largura,
                 height: passo.altura,
@@ -335,20 +335,34 @@ function pp() {
 }
 function como() {
   const c = t.como;
+  const lista = el(
+    "ol",
+    { class: "como-lista" },
+    c.passos.map((passo) => {
+      const [, numero, resto] = passo.match(/^(\d+)\.\s*(.*)$/) || [null, "", passo];
+      return el(
+        "li",
+        {},
+        el("span", { class: "como-numero", "aria-hidden": "true", text: numero }),
+        el("p", { text: resto }),
+      );
+    }),
+  );
   $("como").append(
     el("h2", { class: "secao-titulo", id: "titulo-como", text: c.titulo }),
     el(
-      "ol",
-      { class: "como-lista" },
-      c.passos.map((passo) => {
-        const [, numero, resto] = passo.match(/^(\d+)\.\s*(.*)$/) || [null, "", passo];
-        return el(
-          "li",
-          {},
-          el("span", { class: "como-numero", "aria-hidden": "true", text: numero }),
-          el("p", { text: resto }),
-        );
-      }),
+      "div",
+      { class: "como-grade" },
+      el("div", { class: "como-foto" }, el("img", {
+        src: c.foto.foto,
+        srcset: `${c.foto.fotoPequena} 600w, ${c.foto.foto} 1080w`,
+        sizes: "(min-width: 920px) 360px, min(70vw, 320px)",
+        alt: c.foto.alt,
+        width: c.foto.largura,
+        height: c.foto.altura,
+        loading: "lazy",
+      })),
+      lista,
     ),
   );
 }
@@ -378,17 +392,22 @@ function ct() {
         ),
       ),
       el(
-        "div",
-        { class: "contato-foto" },
-        el("img", {
-          src: q.textos.pagina.contato.foto,
-          srcset: `${q.textos.pagina.contato.fotoPequena} 600w, ${q.textos.pagina.contato.foto} 1200w`,
-          sizes: "(min-width: 920px) 40vw, 90vw",
-          alt: c.alt,
-          width: 1200,
-          height: 1600,
-          loading: "lazy",
-        }),
+        "figure",
+        { class: "contato-retrato" },
+        el(
+          "div",
+          { class: "contato-foto" },
+          el("img", {
+            src: q.textos.pagina.contato.foto,
+            srcset: `${q.textos.pagina.contato.fotoPequena} 600w, ${q.textos.pagina.contato.foto} 1200w`,
+            sizes: "(min-width: 920px) 40vw, 90vw",
+            alt: c.alt,
+            width: q.textos.pagina.contato.largura,
+            height: q.textos.pagina.contato.altura,
+            loading: "lazy",
+          }),
+        ),
+        el("figcaption", { text: c.legenda }),
       ),
     ),
     letreiro(t.marca, "rodape-marca"),

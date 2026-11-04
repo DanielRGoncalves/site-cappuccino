@@ -1,6 +1,6 @@
-import { config } from "../../js/config.js";
-import { calcularResultado, coposPorPacote, calcularRevenda } from "../../js/calculadora.js";
-import { formatarReais } from "../../js/pedido.js";
+import { config } from "./config.js";
+import { calcularResultado, coposPorPacote, calcularRevenda } from "./calculadora.js";
+import { formatarReais } from "./pedido.js";
 import { textos } from "./textos.js";
 
 // Só apresentação e eventos: as regras da conta continuam nos módulos do site atual.

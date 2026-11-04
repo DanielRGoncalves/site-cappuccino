@@ -2,7 +2,8 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { execFileSync } from "node:child_process";
-import { config } from "../js/config.js";
+import { config } from "../novo/js/config.js";
+import { config as configRaiz } from "../js/config.js";
 import { textos } from "../novo/js/textos.js";
 import { montar } from "../novo/js/montar.js";
 
@@ -51,7 +52,7 @@ try {
 const montados = () => [...nos.values()].flatMap(descendentes);
 
 test("G4-1: todas as strings exportadas vêm do config ou de derivações explícitas", async () => {
-  assert.match(ler("js/textos.js"), /import\s*\{\s*config\s*\}\s*from\s*"\.\.\/\.\.\/js\/config\.js"/);
+  assert.match(ler("js/textos.js"), /import\s*\{\s*config\s*\}\s*from\s*"\.\/config\.js"/);
   const permitidas = new Set([...strings(config),
     `${config.textos.hero.subtitulo.split(":")[0]}.`,
     `${config.textos.diferenca.titulo.split(", ")[0]},`,
@@ -84,8 +85,12 @@ test("G4-1: todas as strings exportadas vêm do config ou de derivações explí
   esperado.contato.texto = config.textos.pagina.contato.texto;
   esperado.contato.conservacaoTitulo = config.textos.pagina.contato.conservacaoTitulo;
   esperado.contato.conservacao = config.textos.conservacao;
+  esperado.contato.alt = config.textos.pagina.contato.alt;
+  esperado.contato.legenda = config.textos.pagina.contato.legenda;
+  esperado.como.foto = config.textos.pagina.como.foto;
+  esperado.vender.fotos[1] = config.textos.pagina.venderFoto;
   delete esperado.faq;
-  assert.deepEqual(textos, esperado, "Mesmas palavras do protótipo, exceto as mudanças da G4/G6");
+  assert.deepEqual(textos, esperado, "Mesmas palavras do protótipo, exceto as mudanças da G4/G6/G7");
   // Mudar os textos novos muda o objeto montado: impede cópias literais silenciosas.
   const p = config.textos.pagina;
   const original = p.contato.titulo;
@@ -118,7 +123,7 @@ test("G4-2: head e noscript sincronizados com o config, sem avisos de protótipo
   })) assert.equal(tags[nome], valor, nome);
   assert.ok(head.includes(`rel="canonical" href="${config.siteUrl}"`));
   assert.match(html, /<meta name="robots" content="noindex">/);
-  assert.match(html, /rel="icon" href="\.\.\/img\/logo.webp"/);
+  assert.match(html, /rel="icon" href="img\/logo.webp"/);
   const semJs = html.match(/<noscript>([\s\S]*?)<\/noscript>/)[1];
   assert.match(semJs, /SINCRONIZAR COM js\/config.js/);
   const textosSemJs = [...semJs.matchAll(/>([^<>]+)</g)].map(([, s]) => s.trim()).filter(Boolean);
@@ -133,7 +138,8 @@ test("G4-2: head e noscript sincronizados com o config, sem avisos de protótipo
   assert.ok(semJs.includes(`href="${config.instagram.url}"`));
   assert.ok(semJs.includes(`alt="${config.apresentacao.hero.alt}"`));
   // Comentários históricos dos módulos congelados não aparecem na página.
-  for (const nome of fontes()) assert.doesNotMatch(ler(nome).replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, ""), /protótipo|prototipo|Site atual|Voltar ao site atual/i, nome);
+  // O config copiado conserva dados antigos não usados; não aparecem na página nova.
+  for (const nome of fontes().filter((n) => n !== "js/config.js")) assert.doesNotMatch(ler(nome).replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, ""), /protótipo|prototipo|Site atual|Voltar ao site atual/i, nome);
 });
 
 test("G4-3: palavras proibidas ausentes das fontes e do conteúdo renderizado", () => {
@@ -169,6 +175,8 @@ test("G4-5: sem APIs inseguras nem recursos externos; WhatsApp codificado", () =
     // A exceção é restrita ao bloco de metadados, cujo conteúdo exato é testado acima.
     if (nome === "index.html") codigo = codigo.replace(/<!-- SINCRONIZAR COM js\/config.js -->[\s\S]*?<!-- \/SINCRONIZAR -->/, "");
     for (const [url] of codigo.matchAll(/https?:\/\/[^\s"'<>`]+/g)) {
+      // O config copiado contém o domínio canônico usado só nos metadados.
+      if (nome === "js/config.js" && url === config.siteUrl) continue;
       assert.match(url, /^https?:\/\/(?:wa\.me|instagram\.com|www\.w3\.org)(?:\/|$)/, `${nome}: ${url}`);
     }
   }
@@ -180,7 +188,8 @@ test("G4-5: sem APIs inseguras nem recursos externos; WhatsApp codificado", () =
 
 test("G4-6: JS próprio e vendor dentro dos tetos de bytes", (t) => {
   for (const [pasta, teto] of [["js/", 50000], ["vendor/", 160000]]) {
-    const bytes = arquivos().filter((nome) => nome.startsWith(pasta)).reduce((n, nome) => n + statSync(new URL(nome, base)).size, 0);
+    const copias = ["js/config.js", "js/calculadora.js", "js/pedido.js"];
+    const bytes = arquivos().filter((nome) => nome.startsWith(pasta) && !copias.includes(nome)).reduce((n, nome) => n + statSync(new URL(nome, base)).size, 0);
     t.diagnostic(`${pasta}: ${bytes} bytes / ${teto}`);
     assert.ok(bytes <= teto, `${pasta}: ${bytes}`);
   }
@@ -191,16 +200,18 @@ test("G4-7: ajustes e módulos de movimento idênticos ao protótipo; CSS só co
   const ajustes = (texto) => texto.match(/const ajustes = \{[\s\S]*?\n\};/)[0];
   assert.equal(ajustes(ler("js/cena.js")), ajustes(prototipo("cena.js")));
   for (const nome of ["cena.js", "palco.js", "capitulo.js"]) assert.equal(ler(`js/${nome}`), prototipo(nome), nome);
-  assert.equal(ler("js/conta.js"), prototipo("conta.js").replaceAll('from "../js/', 'from "../../js/'));
+  assert.equal(ler("js/conta.js"), prototipo("conta.js").replaceAll('from "../js/', 'from "./'));
   for (const nome of ["gsap.min.js", "ScrollTrigger.min.js", "MorphSVGPlugin.min.js"]) {
     assert.equal(ler(`vendor/${nome}`), prototipo(`vendor/${nome}`), nome);
   }
   const esperado = prototipo("estilo.css").replace(/^\/\* Protótipo[^\n]*\n/, "")
-    .replaceAll('url("fontes/', 'url("../fontes/').replace(/^\.anuncio-selo[^\n]*\n/m, "")
+    .replace(/^\.anuncio-selo[^\n]*\n/m, "")
     .replace(/^\/\* Dúvidas \*\/\n|^\.duvidas[^\n]*\n/gm, "")
     // Única exceção de layout autorizada por Daniel na G6: três notas no computador.
     .replace(/(\.contato-notas \{[^\n]*repeat\()2,/, "$13,");
-  assert.equal(ler("css/estilo.css"), esperado);
+  // G7 só acrescenta estes dois blocos de foto/grid/legenda; o restante fica literal.
+  const css = ler("css/estilo.css").replace(/\/\* G7: (?:foto e grid de Como funciona|legenda do contato fora do arco)\. \*\/[\s\S]*?\/\* \/G7 \*\/\r?\n/g, "");
+  assert.equal(css, esperado);
 });
 
 test("G4-8: fontes informativas >= 14px, sem overflow-x hidden em html/body", () => {
@@ -312,7 +323,7 @@ test("G6-3: Dúvidas foi removida do HTML, montagem, menu e CSS", () => {
   assert.ok(!Object.hasOwn(textos, "faq"));
 });
 
-test("G6-4: config fora de textos.pagina permanece idêntico à G4 no HEAD", async () => {
+test("G7-3: config da raiz é exatamente o HEAD sem textos.pagina", async () => {
   const original = execFileSync("git", ["show", "HEAD:js/config.js"], {
     cwd: new URL("../", import.meta.url), encoding: "utf8",
   });
@@ -322,5 +333,59 @@ test("G6-4: config fora de textos.pagina permanece idêntico à G4 no HEAD", asy
     delete copia.textos.pagina;
     return copia;
   };
-  assert.deepEqual(semPagina(config), semPagina(anterior));
+  assert.ok(!Object.hasOwn(configRaiz.textos, "pagina"));
+  assert.deepEqual(configRaiz, semPagina(anterior));
+});
+
+test("G7-1: novo é independente, sem ../ e com recursos dentro da pasta", () => {
+  const existeDentro = (caminho, origem = base) => {
+    if (!caminho || caminho.startsWith("#") || /^https?:/.test(caminho)) return;
+    assert.doesNotMatch(caminho, /\.\.\//);
+    const url = new URL(caminho, origem);
+    assert.ok(url.href.startsWith(base.href), `${origem}: ${caminho}`);
+    assert.ok(statSync(url).isFile(), caminho);
+  };
+  for (const nome of arquivos().filter((n) => /\.(html|css|js)$/.test(n))) {
+    const codigo = ler(nome);
+    assert.doesNotMatch(codigo, /\.\.\//, nome);
+    for (const [, caminho] of codigo.matchAll(/(?:from\s*|import\s*\(\s*)["']([^"']+)["']/g)) {
+      assert.ok(caminho.startsWith("./"), `${nome}: ${caminho}`);
+      existeDentro(caminho, new URL(nome, base));
+    }
+  }
+  for (const [tag] of html.matchAll(/<(?:script|link|img)\b[^>]*>/g)) {
+    const a = atributos(tag); existeDentro(a.src || a.href);
+  }
+  for (const [, caminho] of ler("css/estilo.css").matchAll(/url\(["']?([^"')]+)["']?\)/g)) existeDentro(caminho, new URL("css/", base));
+  for (const no of montados()) {
+    existeDentro(no.atributos.src);
+    for (const candidato of (no.atributos.srcset || "").split(",").filter(Boolean)) existeDentro(candidato.trim().split(/\s/)[0]);
+  }
+  for (const nome of ["calculadora.js", "pedido.js"]) {
+    assert.equal(ler(`js/${nome}`), readFileSync(new URL(`../js/${nome}`, import.meta.url), "utf8"));
+  }
+  assert.ok(ler("js/config.js").startsWith("// Config da página nova (novo/). O site da raiz usa js/config.js."));
+});
+
+test("G7-2: fotos novas nos três lugares, dimensões, alt, srcset e legenda", () => {
+  const imagem = (raiz, src, alt, largura, altura, srcset) => {
+    const foto = descendentes(raiz).find((no) => no.tagName === "img" && no.atributos.src === src);
+    assert.ok(foto, src);
+    assert.equal(foto.atributos.alt, alt);
+    assert.equal(foto.atributos.width, String(largura));
+    assert.equal(foto.atributos.height, String(altura));
+    assert.equal(foto.atributos.loading, "lazy");
+    if (srcset) assert.equal(foto.atributos.srcset, srcset);
+  };
+  imagem(nos.get("contato"), "img/equipe-1200.webp", "Davi e Gustavo, da Cheiro das Águas, rindo à mesa com o cappuccino", 1200, 1500,
+    "img/equipe-600.webp 600w, img/equipe-1200.webp 1200w");
+  const legenda = descendentes(nos.get("contato")).find((no) => no.tagName === "figcaption");
+  assert.equal(legenda.textContent, "Davi e Gustavo, à frente da Cheiro das Águas.");
+  assert.equal(legenda.textContent, config.textos.pagina.contato.legenda);
+  const revenda = descendentes(nos.get("vender")).find((no) => no.atributos["aria-labelledby"] === "titulo-venda-1");
+  imagem(revenda, "img/abrindo-600.webp", "Mão abrindo um pacote de cappuccino Cheiro das Águas", 600, 800);
+  imagem(nos.get("como"), "img/bule-1080.webp", "Moça sorrindo com um pacote de cappuccino e um bule vermelho", 1080, 1440,
+    "img/bule-600.webp 600w, img/bule-1080.webp 1080w");
+  for (const nome of fontes()) assert.doesNotMatch(ler(nome), /contato-(600|1200)\.webp/, nome);
+  assert.ok(!arquivos().some((nome) => /contato-(600|1200)\.webp/.test(nome)));
 });
