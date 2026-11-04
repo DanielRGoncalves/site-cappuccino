@@ -12,6 +12,7 @@ Você implementa **uma tarefa por vez** de `tarefas.md`. O planejamento e os cri
 - Faça **só** a tarefa pedida. Nada de refatorar, renomear, reformatar ou "melhorar" o que a tarefa não pede.
 - Não mude a identidade visual (cores, fontes, estilo), a menos que a tarefa peça.
 - Não adicione bibliotecas, frameworks, CDNs, fontes externas, analytics nem build.
+- Exceção autorizada por Daniel em 04/11/2026: GSAP, ScrollTrigger e MorphSVGPlugin são permitidos somente nas três cópias locais de `vendor/`, sem CDN; qualquer outra biblioteca continua proibida.
 - Se notar um problema fora do escopo, **anote no relatório**. Não corrija.
 
 ## Stack e estrutura

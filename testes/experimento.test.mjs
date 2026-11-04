@@ -134,7 +134,10 @@ test("C-02/B-02: faixa entre produtos e vender; topo claro, espuma e corpo café
 
 test("B-03: textos existentes são referenciados, sem literais copiados do config", () => {
   const strings = (valor) => typeof valor === "string" ? [valor] : valor && typeof valor === "object" ? Object.values(valor).flatMap(strings) : [];
-  const existentes = new Set(strings(config).filter(Boolean));
+  // A migração G4 acrescenta pagina com os textos antes exclusivos dos protótipos.
+  // Esta verificação continua cobrindo o config anterior; novo.test.mjs cobre pagina.
+  const { pagina, ...textosAnteriores } = config.textos;
+  const existentes = new Set(strings({ ...config, textos: textosAnteriores }).filter(Boolean));
   const literais = [...ler("textos.js").matchAll(/"([^"\n]*)"/g)].map(([, valor]) => valor);
   assert.deepEqual(literais.filter((valor) => existentes.has(valor)), []);
   assert.deepEqual(textos.vender.abas[0].lista, [config.textos.porque.motivos[2], "30 g para cada 100 ml de água fervente."]);
