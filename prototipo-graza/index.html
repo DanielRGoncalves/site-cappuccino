@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Cheiro das Águas · protótipo estilo Graza</title>
+  <link rel="icon" href="../img/logo.webp" type="image/webp">
+  <link rel="preload" href="fontes/instrument-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fontes/courier-prime-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fontes/fraunces-latin-full-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="estilo.css">
+  <script src="vendor/gsap.min.js" defer></script>
+  <script src="vendor/ScrollTrigger.min.js" defer></script>
+  <script src="vendor/MorphSVGPlugin.min.js" defer></script>
+  <script type="module" src="pagina.js"></script>
+</head>
+<body>
+  <noscript>
+    <div class="sem-js">
+      <p>Este protótipo precisa de JavaScript.</p>
+      <a href="../index.html">Voltar ao site atual</a>
+    </div>
+  </noscript>
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+  <div class="anuncio" id="anuncio"></div>
+  <header class="topo" id="topo"></header>
+  <main id="conteudo">
+    <div class="capitulos" id="capitulos">
+      <div class="palco" id="palco">
+        <section class="ato hero" id="inicio" aria-labelledby="titulo-hero"></section>
+        <div class="arco arco-viajante" id="arco" aria-hidden="true"></div>
+        <section class="ato origem" id="origem" aria-labelledby="titulo-origem"></section>
+      </div>
+    </div>
+    <section class="cena" id="cena" aria-labelledby="titulo"></section>
+    <section class="produtos" id="produtos" aria-labelledby="titulo-produtos"></section>
+    <section class="faixa" id="faixa" aria-label="Destaques"></section>
+    <section class="sabia" id="sabia" aria-labelledby="titulo-sabia"></section>
+    <section class="vender" id="vender" aria-labelledby="titulo-vender"></section>
+    <section class="preparo" id="preparo" aria-labelledby="titulo-preparo"></section>
+    <section class="como" id="como" aria-labelledby="titulo-como"></section>
+    <section class="duvidas" id="duvidas" aria-labelledby="titulo-duvidas"></section>
+  </main>
+  <footer class="contato" id="contato" aria-labelledby="titulo-contato"></footer>
+  <div class="menu" id="menu" hidden></div>
+  <div class="camada-gota" id="camada-gota" aria-hidden="true"></div>
+</body>
+</html>

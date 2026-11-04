@@ -1,0 +1,6 @@
+Copias locais do GSAP 3.15.0, tiradas do pacote oficial "gsap" no npm em 03/11/2026.
+Licenca: GSAP Standard "no charge" License (https://gsap.com/standard-license). Nao remover os cabecalhos de licenca dos arquivos.
+Uso so neste prototipo (prototipo-graza). Nao copiar para o site nem para experimento/ sem decisao do Daniel.
+- gsap.min.js            nucleo
+- ScrollTrigger.min.js   liga animacoes a rolagem e prende o titulo na tela (pin)
+- MorphSVGPlugin.min.js  transforma uma forma SVG em outra (nascimento da gota)

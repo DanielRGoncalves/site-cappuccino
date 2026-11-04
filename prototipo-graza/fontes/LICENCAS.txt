@@ -1,0 +1,5 @@
+Fontes locais, todas com licenca livre SIL Open Font License 1.1 (https://openfontlicense.org):
+- Fraunces (Undercase Type): nome grande "Cheiro das Aguas" e "Voce sabia?". Mesmo arquivo do experimento.
+- Instrument Serif (Instrument): titulos e frases grandes, no papel da serifada estreita da Graza. Pacote @fontsource/instrument-serif 5.3.0 (npm).
+- Courier Prime (Quote-Unquote Apps): textos pequenos e legendas, no papel da fonte de maquina de escrever da Graza. Pacote @fontsource/courier-prime 5.3.0 (npm).
+Subconjunto "latin" (tem os acentos do portugues).

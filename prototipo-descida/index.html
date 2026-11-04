@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title></title>
+  <link rel="icon" href="../img/logo.webp" type="image/webp">
+  <link rel="preload" href="fontes/fraunces-latin-full-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="experimento.css">
+  <script type="module" src="experimento.js"></script>
+  <script type="module" src="descida.js"></script>
+</head>
+<body>
+  <!-- Fallback estático autorizado por Daniel: sem duplicar conteúdo do config. -->
+  <noscript>
+    <div class="sem-js">
+      <p>Este experimento precisa de JavaScript.</p>
+      <a href="../index.html">Voltar ao site atual</a>
+    </div>
+  </noscript>
+  <div id="pagina" hidden>
+    <div class="aviso" id="aviso"></div>
+    <header class="cabecalho" id="cabecalho"></header>
+    <main>
+      <div class="capitulos" id="capitulos">
+        <div class="palco" id="palco">
+          <section class="cena hero" id="inicio" aria-labelledby="titulo-hero"></section>
+          <div class="arco arco-viajante" id="arco" aria-hidden="true"></div>
+          <section class="cena origem" id="origem" aria-labelledby="titulo-origem"></section>
+        </div>
+      </div>
+      <section class="produtos" id="produtos" aria-labelledby="titulo-produtos">
+        <div class="descida" id="descida">
+          <div class="descida-topo">
+            <div class="torneira" id="torneira" aria-hidden="true">
+              <img class="torneira-fruto" src="desenhos/02.svg" alt="" width="136" height="175">
+              <svg class="torneira-bico" viewBox="0 0 80 60"><path class="corpo" d="M2 20H48Q62 20 62 34V46H50V36Q50 33 47 33H2Z"/><path class="registro" d="M28 19V8M16 7H40"/></svg>
+              <span class="plim plim-1">*plim*</span><span class="plim plim-2">*plim*</span>
+            </div>
+            <p class="descida-titulo"></p>
+          </div>
+          <img class="gota" id="gota" src="desenhos/06.svg" alt="" width="76" height="126" aria-hidden="true">
+          <div class="parada lado-dir"><div class="parada-grupo"><img class="ilustra galho" id="galho" src="desenhos/01.svg" alt="" width="373" height="375"><div class="parada-texto"></div></div></div>
+          <div class="parada lado-esq"><div class="parada-grupo"><img class="ilustra cacau" src="desenhos/07.svg" alt="" width="244" height="279"><div class="parada-texto"></div></div></div>
+          <div class="parada lado-dir"><div class="parada-grupo"><img class="ilustra mulher" src="desenhos/10.svg" alt="" width="304" height="439"><div class="parada-texto"></div></div></div>
+          <div class="parada lado-esq"><div class="parada-grupo"><img class="ilustra xicara-desenho" src="desenhos/09.svg" alt="" width="309" height="360"><div class="parada-texto"></div></div></div>
+          <div class="descida-fim"><p class="marca-molhada" id="marca"></p><p class="marca-apoio frase" id="marca-apoio"></p></div>
+        </div>
+        <svg class="espuma" id="espuma" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <path d="M0 46C80 20 160 20 240 40s160 34 240 10 160-38 240-14 160 40 240 16 160-38 240-14 160 36 240 12V90H0Z"/>
+        </svg>
+      </section>
+      <section class="faixa" id="faixa"></section>
+      <section class="vender" id="vender" aria-labelledby="titulo-vender"></section>
+      <section class="capitulo claro preparo" id="preparo" aria-labelledby="titulo-preparo"></section>
+      <section class="capitulo como" id="como" aria-labelledby="titulo-como"></section>
+      <section class="capitulo claro duvidas" id="duvidas" aria-labelledby="titulo-duvidas"></section>
+    </main>
+    <footer id="contato" class="contato" aria-labelledby="titulo-contato"></footer>
+  </div>
+  <div class="menu-camada" id="menu-camada" hidden>
+    <div class="menu-painel" id="menu-painel" inert aria-hidden="true"></div>
+    <button class="menu-botao" id="menu-botao" type="button" aria-expanded="false" aria-controls="menu-painel"></button>
+  </div>
+</body>
+</html>
