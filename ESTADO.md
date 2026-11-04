@@ -2,7 +2,7 @@
 
 > Arquivo de contexto para qualquer chat novo (Claude ou Codex). Resume onde o projeto está, o que já foi decidido e o que falta. **Não é uma tarefa**: as tarefas ficam nos arquivos `p*.md`. Atualizar ao fim de cada tarefa.
 >
-> Última atualização: 03/11/2026 (X5 executada pelo Codex, revisada e aprovada pelo diretor depois de uma correção; **conferir se o commit da X5 foi feito**. Depois Daniel quis trocar a xícara por uma cena no estilo Graza com desenhos feitos no ChatGPT; quatro protótipos foram feitos e **nenhum atingiu a qualidade que ele quer**. Projeto pausado para Daniel pesquisar ferramentas e caminhos melhores: ver "Cena da gota" e "Para a pesquisa".)
+> Última atualização: 04/11/2026 (o diretor fez, na noite de 03 para 04/11, o **protótipo estilo Graza** em `prototipo-graza/` (GSAP, gota que desce, nome que derrete, topo que troca, calculadora nos cartões). **Daniel aprovou e ele vira a base do site novo** (a xícara da X5 sai). Decisões de 04/11 na seção "Protótipo Graza". Próximo passo: tarefa de migração para o Codex.)
 
 ## O que é
 
@@ -55,7 +55,8 @@ Nota: na `prototipo`, `ESTADO.md`, `brief.md` e `criterios.md` foram apagados (l
 | X3b ajustes da avaliação (estilo Entrada, textos pequenos, tempo da origem, Menu no celular, vírgula, botão redundante, largura máxima) | `x3b-ajustes-avaliacao.md` | feita e commitada; teve duas correções (aviso da calculadora; folha de 880 px sem "Faça a conta" visível) |
 | X4 resto do conteúdo como capítulos | `x4-capitulos-conteudo.md` | feita e commitada (44 testes, JS 33.718 bytes, teto 40.000); teve uma correção de acabamento (notas em faixa, destaque em Entrada, dica do preparo) |
 | X5 personalidade dos capítulos (trecho origem → produtos → faixa → duas formas de vender): xícara que enche com a rolagem, borda de espuma, faixa correndo com "Pausar animações", cartões empilhados com a calculadora | `x5-capitulos-personalidade.md` | **feita e aprovada em 02–03/11** (47 testes, JS 34.790 bytes, CSS 24.356 bytes). Teve uma correção: linha do resultado da calculadora numa linha só a partir de 541 px; espaço vazio da xícara encolhido com movimento reduzido. O diretor conferiu no navegador (sem rolagem lateral, sem erro no console, foco nunca coberto, pausar sem mudar a altura, fluido com CPU 6× mais lenta). Commit: Daniel confirma |
-| X5b cena da gota no estilo Graza (substitui a xícara da X5) | a escrever | **em pausa**: protótipos não agradaram (ver "Cena da gota") |
+| X5b cena da gota no estilo Graza (substitui a xícara da X5) | `prototipo-graza/` (protótipo do diretor, 03–04/11) | **aprovado por Daniel em 04/11**; guardado na branch `prototipo-graza` (com o `prototipo-descida`). Vira a base do site novo |
+| G4 migração do protótipo Graza para a estrutura do site (config único, testes, meta tags) | a escrever | próxima; ver "Protótipo Graza" |
 | X6 personalidade do resto (como preparar, como funciona, dúvidas, contato) na mesma linguagem | a escrever | depois da cena da gota |
 | X7 revisão no celular real e desempenho no 4G | a escrever | depois da X6 |
 
@@ -93,7 +94,7 @@ Objetivo (pedido de Daniel em 30/10): descobrir, navegando, uma direção visual
 - **Direção:** cores atuais (torra, leite, ouro, cacau, folha); fonte de títulos **Fraunces** local (OFL, em `experimento/fontes/`); o elemento marcante é o **arco** com fio dourado, que muda de lugar, tamanho e foto na rolagem do hero para a origem (palco `sticky`, rolagem nativa, sem travar). Menu em tela cheia; botões em pílula; efeito de peso nas letras do título só com mouse.
 - **Sistema de texto (X3, X3b):** 6 estilos para tudo: Abertura (só o h1), Capítulo, Entrada (Fraunces ~18–24 px, a frase logo abaixo de um título grande), Frase, Texto (17 px) e Nota (14 px). **Voz:** a marca fala como "nós", frases curtas, sem caixa alta nem exclamação; só a calculadora fala como "eu".
 - **Calculadora:** em frase ("Se eu pago R$ … ganho R$ — por xícara."), dentro das abas "Servir na xícara" e "Revender o pacote", numa folha clara; reaproveita `js/calculadora.js`; campos vazios; dicas uma por vez.
-- **Contato:** foto 10 (moça sorrindo com dois pacotes) no arco; título "Vamos marcar uma degustação?"; WhatsApp e Instagram com ícones genéricos (balão e câmera, **não** os logos oficiais); notas de entrega e pagamento vindas do FAQ do config. **Não dizer "família" junto dessa foto**, porque nenhuma foto com pessoas mostra os pais; se a moça for da família, Daniel avisa e ajustamos. Na nota de entrega, o trecho "pela família" é removido por código.
+- **Contato:** foto 10 (moça sorrindo com dois pacotes) no arco; título "Vamos marcar uma degustação?"; WhatsApp e Instagram com ícones genéricos (balão e câmera, **não** os logos oficiais); notas de entrega e pagamento vindas do FAQ do config. **Não dizer "família" junto dessa foto**: a moça **não é da família**, faz parte do grupo de influenciadoras da empresa (Daniel, 04/11). Na nota de entrega, o trecho "pela família" é removido por código.
 - **Teto de JS do experimento:** 40.000 bytes (20.000 na X1, 30.000 com a calculadora, 40.000 na X4).
 - **Calculadora (X3b):** folha de até 880 px, sem o texto visível "Faça a conta" (só nome acessível), rótulos dos resultados em Texto, aviso "Preencha os dois valores…" colado embaixo do número, "por R$ + campo + vírgula" sempre juntos.
 - **Menu no celular:** o botão some ao rolar para baixo e volta ao rolar para cima (só até 540 px).
@@ -153,6 +154,23 @@ Perguntas abertas para destravar o projeto:
 5. **Peso:** o público está no celular com 4G; qualquer animação nova precisa de um orçamento de peso (sugestão: até ~1,5 MB na página toda).
 
 Enquanto isso: X5 está pronta e pode seguir como está; o site publicado (`prototipo`) não muda.
+
+## Protótipo Graza (04/11) — base do site novo
+
+Pasta `prototipo-graza/` (ver o `LEIA-ME.md` dela). Feito pelo diretor; branch `prototipo-graza` guarda ele e o `prototipo-descida`.
+
+**Decisões de Daniel em 04/11:**
+1. **GSAP aceito** (gsap, ScrollTrigger e MorphSVGPlugin, cópia local em `vendor/`, licença sem custo). A regra "sem bibliotecas" do AGENTS.md passa a ter essa exceção, e o teto de JS precisa ser revisto (JS próprio ~32 KB + GSAP ~150 KB).
+2. **Fontes:** Instrument Serif (títulos) + Fraunces (o nome grande). A Courier Prime saiu: os textos pequenos usam a fonte do sistema (`system-ui`).
+3. **Sem JavaScript:** a página mostra o essencial (nome, título, texto do hero, botões de degustação e Instagram, faixa, entrega, pagamento, dados legais e a foto em arco), no mesmo estilo, num bloco `<noscript>` marcado `SINCRONIZAR COM js/config.js`. **Daniel quer conferir se isso não descaracteriza o site.**
+4. **O protótipo Graza vira a base**; a xícara da X5 sai.
+5. **"Você sabia?" saiu por enquanto.** Volta quando a família trouxer curiosidades reais (montar junto com Daniel).
+
+**Também em 04/11:** cartão "Cappuccino por kg" removido (sem foto da embalagem de 1 kg); textos pequenos com no mínimo 14 px (inclusive o botão "Degustação" do topo no celular); paradas da gota como `h3`; menos repetição (apoio do hero = começo do subtítulo do config; frase embaixo do nome = `diferenca.destaque`).
+
+**Falta para o oficial (vai para a G4):** todos os textos novos de `prototipo-graza/textos.js` para o `js/config.js`; estrutura `css/`, `js/`, `img/` (hoje usa `../experimento/img/` e `../js/`); meta tags `SINCRONIZAR`; testes `node --test` (textos do config, palavras proibidas, imagens com width/height/alt); tirar selo "Protótipo", link "Site atual" e `noindex`; atualizar AGENTS.md (GSAP) e o teto de JS; desenho 11 (fruto com torneira) no lugar da torneira provisória; teste no celular real e no 4G.
+
+**Trazer da família:** curiosidades para o "Você sabia?"; as fotos já pedidas ao Davi em 30/10; foto da embalagem de 1 kg quando existir (o cartão por kg volta).
 
 ## Ideias em espera
 

@@ -41,21 +41,6 @@ botao.addEventListener("click", () => abrirMenu(menu.hidden));
 menu.addEventListener("click", (e) => { if (e.target.closest("a")) abrirMenu(false); });
 addEventListener("keydown", (e) => { if (e.key === "Escape" && !menu.hidden) { abrirMenu(false); botao.focus(); } });
 
-// Você sabia?: um fato por vez.
-const fatos = textos.sabia.fatos;
-const fato = document.getElementById("fato");
-const contagem = document.getElementById("fato-contagem");
-let atual = 0;
-function mostrar(passo) {
-  atual = (atual + passo + fatos.length) % fatos.length;
-  const trocar = () => { fato.textContent = fatos[atual]; contagem.textContent = `${atual + 1}/${fatos.length}`; fato.classList.remove("trocando"); };
-  if (reduzido) return trocar();
-  fato.classList.add("trocando");
-  setTimeout(trocar, 220);
-}
-document.getElementById("fato-anterior").addEventListener("click", () => mostrar(-1));
-document.getElementById("fato-proximo").addEventListener("click", () => mostrar(1));
-
 // Cena da gota (GSAP local). Sem a biblioteca, a página continua legível e parada.
 let cena = null;
 if (window.gsap && window.ScrollTrigger && window.MorphSVGPlugin) {

@@ -7,7 +7,6 @@
   <title>Cheiro das Águas · protótipo estilo Graza</title>
   <link rel="icon" href="../img/logo.webp" type="image/webp">
   <link rel="preload" href="fontes/instrument-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="fontes/courier-prime-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fontes/fraunces-latin-full-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="estilo.css">
   <script src="vendor/gsap.min.js" defer></script>
@@ -17,10 +16,29 @@
 </head>
 <body>
   <noscript>
+    <!-- SINCRONIZAR COM js/config.js: versão sem JavaScript (só o essencial). -->
     <div class="sem-js">
-      <p>Este protótipo precisa de JavaScript.</p>
-      <a href="../index.html">Voltar ao site atual</a>
+      <p class="sem-js-marca">Cheiro das Águas</p>
+      <div class="sem-js-grade">
+        <div class="sem-js-texto">
+          <h1>Cappuccino com cacau 100% para o seu negócio</h1>
+          <p>Para padarias, cafeterias, restaurantes e outros negócios: artesanal e gourmet, feito à mão com café Conilon e cacau 100%. Pronto com água quente. Entregamos na Grande Vitória, sem taxa. Antes de qualquer venda, a degustação é gratuita.</p>
+          <p class="sem-js-botoes">
+            <a class="pilula pilula-ouro pilula-grande" href="https://wa.me/5533999096791?text=Ol%C3%A1!%20Vi%20o%20site%20e%20quero%20pedir%20uma%20degusta%C3%A7%C3%A3o%20do%20cappuccino%20para%20o%20meu%20neg%C3%B3cio.%0ANome%20do%20neg%C3%B3cio%3A%20"><span>Pedir degustação gratuita</span></a>
+            <a class="pilula pilula-grande pilula-vazada" href="https://instagram.com/cheirodasaguasgourmet"><span>@cheirodasaguasgourmet</span></a>
+          </p>
+          <p class="sem-js-faixa">Café Conilon · Cacau 100% · Feito à mão · Taparuba, MG</p>
+          <dl class="sem-js-notas">
+            <div><dt>Entrega</dt><dd>Na Grande Vitória, sem taxa, de um dia para o outro.</dd></div>
+            <div><dt>Pagamento</dt><dd>Por Pix, cartão na maquininha na entrega ou dinheiro.</dd></div>
+          </dl>
+        </div>
+        <div class="arco sem-js-foto"><img src="../img/reais/hero-720.webp" alt="Pacote de cappuccino Cheiro das Águas sobre grãos de café" width="720" height="1080"></div>
+      </div>
+      <p class="sem-js-legal">Agropecuária Cheiro das Águas Ltda. · CNPJ: 57.813.645/0001-60 · CRG Santa Clara, S/N, Taparuba/MG, 36953-000</p>
     </div>
+    <!-- /SINCRONIZAR -->
+    <style>.anuncio, .topo, #conteudo, .contato, .camada-gota { display: none; }</style>
   </noscript>
   <a class="pular" href="#conteudo">Pular para o conteúdo</a>
   <div class="anuncio" id="anuncio"></div>
@@ -36,7 +54,6 @@
     <section class="cena" id="cena" aria-labelledby="titulo"></section>
     <section class="produtos" id="produtos" aria-labelledby="titulo-produtos"></section>
     <section class="faixa" id="faixa" aria-label="Destaques"></section>
-    <section class="sabia" id="sabia" aria-labelledby="titulo-sabia"></section>
     <section class="vender" id="vender" aria-labelledby="titulo-vender"></section>
     <section class="preparo" id="preparo" aria-labelledby="titulo-preparo"></section>
     <section class="como" id="como" aria-labelledby="titulo-como"></section>

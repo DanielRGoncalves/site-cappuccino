@@ -20,11 +20,10 @@ Página inteira, do topo ao rodapé, com **a mesma mecânica e o mesmo ritmo da 
 | Torneira e gota | fruto com torneira e "*DRIP*"; título em duas partes desencontradas, serifada estreita | fruto 02 do ChatGPT + torneira desenhada por mim; "*plim*"; título "Feito à mão," / "do jeito simples." |
 | Descida da gota | **a gota fica parada na tela e a página sobe**; desenhos com legenda curta em fonte de máquina de escrever, alternando os lados | galho (Café Conilon), cacau (Cacau 100%), moça com cesta (Feito à mão, em casa), xícara (Aroma, sensações e cremosidade) |
 | Nome grande | o nome enorme recebe a gota | "Cheiro das Águas" fica **preso na tela** e **derrete com a rolagem** (o derretido da G3) |
-| Produtos | cartões de foto com etiqueta em pílula, legenda pequena em cima e nome sublinhado; botão largo com sombra quadriculada | com açúcar, sem açúcar e **por kg** (desenho da tigela, porque a embalagem de 1 kg ainda não existe); botão "Pedir degustação gratuita" abre o WhatsApp |
+| Produtos | cartões de foto com etiqueta em pílula, legenda pequena em cima e nome sublinhado; botão largo com sombra quadriculada | com açúcar e sem açúcar; botão "Pedir degustação gratuita" abre o WhatsApp |
 | Faixa correndo | faixa de texto que corre, com "Pause animations" | "Café Conilon · Cacau 100% · Feito à mão · Taparuba, MG" + "Pausar animações" |
-| Você sabia? | o "FUN FACT": desenho enorme saindo da borda, letreiro em curva, um fato por vez com setas | galho + fruto aberto; 6 fatos tirados do `config.js` |
 | Duas formas de vender | (não existe na Graza) | seção escura com topo em arco; dois cartões, claro e verde, **cada um com a calculadora em frase**; no computador, os cartões se empilham ao rolar |
-| Como preparar | cartões de receita | as 3 fotos do preparo |
+| Como preparar | cartões de receita | 3 cartões coloridos (dourado, verde, creme) com sombra quadriculada; cada foto num arco com pontinhos e contorno tracejado; número no círculo; no celular deslizam para o lado |
 | Como funciona e Dúvidas | linhas tracejadas, perguntas que abrem | textos do `config.js` |
 | Contato e rodapé | rodapé escuro com o nome enorme ocupando a largura | foto da moça em arco, WhatsApp, Instagram, entrega e pagamento, CNPJ e endereço; borda de espuma no topo |
 
@@ -70,3 +69,22 @@ No celular, o título vem **antes** da torneira, para a gota não cruzar o texto
 - O topo usa a Instrument Serif, como o resto do protótipo. Para voltar à Fraunces fina do experimento, troque a fonte em `.ato h1` e `.ato h2` no `estilo.css`.
 - O efeito de o título engrossar com o mouse, do experimento, não veio.
 - Conferido de novo: gota sem encostar em nada, título preso, derretido completo, conta certa (R$ 84 no kg e R$ 12 na xícara de 200 ml dá ganho de R$ 6,96; R$ 30 e R$ 39 no pacote dá R$ 9,00), movimento reduzido com o topo parado, sem rolagem lateral e sem erros no console.
+
+## Decisões de 04/11 (manhã)
+
+- **GSAP aceito**, **Fraunces + Instrument Serif** (a Courier Prime saiu: textos pequenos na fonte do sistema), **protótipo vira a base do site novo**.
+- **Saíram:** o cartão "por kg" (volta quando houver foto da embalagem de 1 kg) e o "Você sabia?" (volta com curiosidades reais da família).
+- **Letras:** nenhum texto informativo abaixo de 14 px. No celular, os botões do topo ficam em letra normal (sem caixa alta) a 320 px, para caber.
+- **Paradas da gota** agora são `h3`, abaixo do título da cena.
+- **Menos repetição:** embaixo do título do topo fica só "Para padarias, cafeterias, restaurantes e outros negócios."; embaixo do nome grande, "Artesanal e gourmet: qualidade e simplicidade no processo." (os dois do `config.js`).
+- **Sem JavaScript:** aparece uma versão curta, no mesmo estilo (nome, título, botões, faixa, entrega, pagamento e foto em arco).
+- Conferido de novo: gota sem encostar em nada, derretido 100% antes de soltar, movimento reduzido sem animação, sem rolagem lateral de 320 a 1920 px (e sem JS), menu e "Pausar animações" funcionando, nenhum erro no console, nenhum quadro acima de 50 ms com CPU 4× mais lenta.
+- **Arquivos que ficaram sem uso:** `fontes/courier-prime-*.woff2` e `desenhos/03.svg` e `desenhos/08.svg`. Apague com `git rm` quando quiser (ver a conversa).
+
+### Como ver a versão sem JavaScript
+
+1. Abra o protótipo pelo Live Server e aperte **F12**.
+2. Aperte **Ctrl+Shift+P** (abre a caixa de comandos das ferramentas).
+3. Digite **javascript** e escolha **Desabilitar JavaScript**.
+4. Aperte **Ctrl+Shift+R**.
+5. Para voltar: Ctrl+Shift+P de novo, **Habilitar JavaScript**, e Ctrl+Shift+R.

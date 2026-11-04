@@ -86,7 +86,7 @@ function cena() {
   const paradas = el("div", { class: "paradas" }, textos.paradas.map((p, i) =>
     el("figure", { class: `parada ${i % 2 ? "lado-esq" : "lado-dir"}` },
       desenho(p.desenho, p.largura, p.altura, `parada-desenho d${p.desenho}`),
-      el("figcaption", {}, el("h2", { class: "rotulo", text: p.titulo }), el("p", { text: p.texto })))));
+      el("figcaption", {}, el("h3", { class: "rotulo", text: p.titulo }), el("p", { text: p.texto })))));
   const marca = el("div", { class: "marca-bloco", id: "marca-bloco" },
     letreiro(textos.marca, "marca"),
     el("p", { class: "marca-apoio", text: textos.apoio }));
@@ -111,18 +111,9 @@ function produtos() {
     el("details", { class: "produto-ingredientes" },
       el("summary", { text: textos.produtos.ingredientes }),
       el("p", { text: p.ingredientes }), el("p", { text: p.avisos })));
-  const k = textos.produtos.porKg;
-  const kg = el("article", { class: "produto produto-kg" },
-    el("div", { class: "produto-foto produto-desenho" },
-      desenho("08", 267, 300, "kg-desenho"),
-      el("span", { class: "etiqueta", text: k.selo }),
-      el("span", { class: "produto-peso", text: k.peso })),
-    el("p", { class: "produto-meta" }, el("span", { text: k.meta }), el("span", { text: k.peso })),
-    el("h3", { class: "produto-nome", text: k.nome }),
-    el("p", { class: "produto-frase", text: k.frase }));
   $("produtos").append(
     el("h2", { class: "sr", id: "titulo-produtos", text: textos.produtos.titulo }),
-    el("div", { class: "produtos-grade" }, visiveis.map(cartao), kg),
+    el("div", { class: "produtos-grade" }, visiveis.map(cartao)),
     el("p", { class: "produtos-igual", text: textos.produtos.igual }),
     el("a", { class: "botao-grande", href: textos.whatsappDegustacao, target: "_blank", rel: "noopener" }, el("span", { text: textos.botao }), seta()),
   );
@@ -133,23 +124,6 @@ function faixa() {
     textos.faixa.map((t) => [el("span", { text: t }), el("span", { class: "faixa-gota", "aria-hidden": "true" })]));
   const pausa = el("button", { class: "pilula pilula-linha pausar", type: "button", id: "pausar", "aria-pressed": "false" }, el("span", { text: textos.pausar }));
   $("faixa").append(el("div", { class: "faixa-janela" }, el("div", { class: "faixa-trilho" }, grupo(false), grupo(true), grupo(true), grupo(true))), pausa);
-}
-
-function sabia() {
-  const s = textos.sabia;
-  const arco = svg("svg", { class: "sabia-letreiro", viewBox: "0 0 600 230", role: "img", "aria-labelledby": "titulo-sabia" },
-    svg("title", { id: "titulo-sabia" }, document.createTextNode(s.titulo)),
-    svg("defs", {}, svg("path", { id: "sabia-curva", d: "M10 222 Q300 -6 590 222" })),
-    svg("text", { "aria-hidden": "true" }, svg("textPath", { href: "#sabia-curva", startOffset: "50%", "text-anchor": "middle" }, document.createTextNode(s.titulo.toUpperCase()))));
-  const fatos = el("div", { class: "fatos" },
-    el("p", { class: "fato", id: "fato", "aria-live": "polite", text: s.fatos[0] }),
-    el("div", { class: "fatos-botoes" },
-      el("button", { type: "button", class: "fatos-botao", id: "fato-anterior", "aria-label": s.anterior }, seta()),
-      el("span", { class: "fatos-contagem", id: "fato-contagem", text: `1/${s.fatos.length}` }),
-      el("button", { type: "button", class: "fatos-botao", id: "fato-proximo", "aria-label": s.proximo }, seta())));
-  $("sabia").append(
-    el("div", { class: "sabia-arte" }, desenho("01", 373, 375, "sabia-galho"), desenho("03", 225, 263, "sabia-fruto"), arco),
-    fatos);
 }
 
 function vender(reduzido) {
@@ -259,5 +233,5 @@ function menu() {
 }
 
 export function montar(reduzido) {
-  anuncio(); topo(); palco(); cena(); produtos(); faixa(); sabia(); vender(reduzido); preparo(); como(); duvidas(); contato(); menu();
+  anuncio(); topo(); palco(); cena(); produtos(); faixa(); vender(reduzido); preparo(); como(); duvidas(); contato(); menu();
 }
