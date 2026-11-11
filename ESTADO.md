@@ -2,7 +2,7 @@
 
 > Arquivo de contexto para qualquer chat novo (Claude ou Codex). Diz onde o projeto está e **o que falta agora**. O histórico (tarefas P1–P11, experimento X1–X5, tentativas da cena da gota, protótipos G4/G6/G7) está no Git: `git log -- ESTADO.md` e os arquivos `p*.md`, `x*.md`, `g*.md`. **Não é uma tarefa.** Atualizar ao fim de cada tarefa.
 >
-> Última atualização: 04/11/2026. **Daniel aprovou o site novo**. Rótulo do diet atualizado e G5 concluída localmente: principal na raiz, anterior em `antigo/`. Falta publicar; nenhuma troca de branch, commit ou push foi feita na G5.
+> Última atualização: 10/11/2026. **Daniel e o Davi aprovaram o site novo.** R1 (rótulo do diet), G5 (novo na raiz, anterior em `antigo/`) e G8 (números da calculadora centralizados) estão commitadas na `prototipo-graza` (HEAD `c8f2d8c`). O site novo foi **publicado** na branch `prototipo` em 04/11/2026 (tag `antes-g5` marca o estado anterior). Assunto em aberto: localização dos estabelecimentos (ver "Pendente agora").
 
 ## O que é
 
@@ -27,14 +27,14 @@ Site de apresentação do **Cheiro das Águas** (Agropecuária Cheiro das Águas
 - Testes: `testes/novo.test.mjs` (+ os antigos); `node --test testes/` inteiro passando.
 - **G8 feita em 04/11/2026:** exceção de CSS autorizada por Daniel no bloco `/* G8: números da conta centralizados. */`: inputs da `.conta` e resultado `.conta-ganho` centralizados; seletor e regras originais preservados. G4-7 aceita somente esse bloco G8 adicional; G8-1 confere suas duas regras exatas. Verificado: 69 testes passando e Playwright em 1280 e 390 px, com 50, 20 e 200 ml → 17,00, sem novas quebras ou transbordo. Capturas: `C:/Users/danda/.codex/visualizations/2026/11/04/01a1a892-b82c-7280-9ecd-3cf8712e0b9a/g8-calculadora-1280.png` e `g8-calculadora-390.png`. Servidor próprio e navegador encerrados; sem commit.
 - Ao preparar imagens: os testes contam 1 KB = 1.000 bytes; imagens gravadas pelo Claude na pasta do PC ganham ~5.800 bytes (bloco C2PA): deixar 7.000 bytes de folga e conferir o tamanho final na pasta.
-- Publicação: GitHub Pages, branch **`prototipo`**, domínio https://cheirodasaguasgourmet.com.br/ (arquivo `CNAME`). **Procedimento a reescrever na publicação** (Claude passa os comandos). Histórico obsoleto: o procedimento que usava `git checkout prototipo-graza -- novo` servia à estrutura anterior e não deve ser executado.
+- Publicação: GitHub Pages, branch **`prototipo`**, domínio https://cheirodasaguasgourmet.com.br/ (arquivo `CNAME`). Procedimento (usado em 04/11/2026), com o Git limpo na `prototipo-graza`: `git switch prototipo`; `git tag <marcador>`; `git rm -r -q index.html css js img novo` (na primeira vez; nas próximas, só as pastas do site que mudaram de lugar); `git checkout prototipo-graza -- index.html css js img vendor desenhos antigo .gitignore`; `git status` sem nada solto; commit; `git push origin prototipo`; **`git switch prototipo-graza`**. O `/novo/` deixou de existir. Para desfazer sem apagar histórico: `git revert` + push (a tag marca o estado anterior). O procedimento antigo (`git checkout prototipo-graza -- novo`) é obsoleto.
 
 ## Branches
 
 | Branch | O que é |
 |---|---|
 | `main` | loja antiga, com preços (tag `loja-v1`); guardada, não usar |
-| `prototipo` | **publicada** no domínio: site antigo na raiz + página nova em `/novo/` |
+| `prototipo` | **publicada** no domínio desde 04/11/2026: site novo na raiz + site antigo em `/antigo/` (só arquivos do site; sem ESTADO.md, AGENTS.md, testes e documentos). Tag `antes-g5` = estado anterior (antigo na raiz + `/novo/`). **Não trabalhar nela**: depois de publicar, voltar sempre para `prototipo-graza` |
 | `prototipo-graza` | trabalho local: site principal na raiz e anterior em `antigo/` (G5); tarefas `g*.md`, este arquivo |
 | `visual`, `experimento-capitulos` | experimentos antigos; não publicar |
 
@@ -42,18 +42,14 @@ Nota: na `prototipo`, `ESTADO.md`, `brief.md` e `criterios.md` foram apagados. S
 
 ## Pendente agora (nesta ordem)
 
-1. **Rótulo novo do diet**.
-   - [x] Fotos novas do pacote diet em `img/reais/produto-sem-800.webp` e `produto-sem-400.webp` (800×800 e 400×400), mantendo os caminhos no config.
-   - [x] Textos do diet em `js/config.js`: nome, selo, frase, alt e `venderPacote`; mantido o `id: "sem-acucar"`.
-   - [ ] Conferir o verso do rótulo novo (30 g); os ingredientes foram confirmados pelo Daniel em 04/11/2026.
-2. **G5 — o novo vira o principal: feito localmente em 04/11/2026**.
-   - [x] Anterior em `antigo/`, com `noindex`; principal na raiz, sem `noindex`, com `img/og.jpg`, metas conferidas e testes ajustados. A pasta anterior do principal não existe mais.
-
-Próximos passos:
-
-- Publicar na branch `prototipo` (Claude passa os comandos; procedimento a reescrever na publicação).
-- Testar no celular real e no 4G.
-- Limpar `prototipo-graza/`, `prototipo-descida/`, `experimento/` e documentos antigos da loja, se o Daniel quiser.
+1. **Confirmar a publicação** (Daniel): testar o site no ar no celular real e no 4G; mandar o link `cheirodasaguasgourmet.com.br` para si no WhatsApp e ver a prévia (título e imagem); conferir se a calculadora está centralizada no ar (G8 deve ter entrado na publicação; não confirmado).
+2. **G9 — "Onde encontrar": protótipo concluído localmente em 10/11/2026**, para avaliação do Davi, sem commit nem publicação. Decisões aprovadas por Daniel: página separada em `encontre/index.html`, com `noindex`, mesma identidade visual e sem link no menu principal; dados e textos próprios em `encontre/locais.js`, sem importar os módulos da raiz. Exceção autorizada somente para iframe do Google My Maps (`https://www.google.com/maps/d/embed`) e links de busca no Google Maps, sem biblioteca de mapa, CDN ou script externo.
+   - Quatro lugares claramente fictícios, todos com `exemplo: true`, em Vila Velha e Vitória, distribuídos por três bairros; aviso de demonstração em destaque. Lista alfabética por cidade, bairro e nome, endereço escrito, etiquetas de xícara/pacote e links "Ver no mapa". `mapa.url` permanece vazio: não há iframe nem espaço reservado até Daniel colar a URL. Referência de formato: https://sejabaco.com/encontre/ . Lista vazia mostra apenas a frase prevista, sem mapa.
+   - Verificado: **75 testes passando** (`node --test testes/`, 69 anteriores + 6 novos G9-1 a G9-6), sem alterar testes existentes nem critérios. Playwright exclusivamente headless em 320, 390, 920 e 1440 px: sem erros no console ou rolagem lateral, fontes a partir de 14 px, contraste mínimo 10,16:1 e foco visível. Conferidos agrupamento, links, dados legais, versão sem JS, mapa inválido, inativos e lista vazia. Iframe válido testado só em memória, com resposta externa simulada: largura total, alturas mínima de 320 px e máxima de 560 px e atributos exigidos; o funcionamento de um mapa real depende da URL definitiva. Capturas: `C:/Users/danda/.codex/visualizations/2026/11/10/01a1c70f-318b-7051-9cee-8a03432cb6a3/g9-encontre-390.png` e `g9-encontre-1440.png`. Servidor próprio e navegador encerrados.
+   - **Pendente com Davi/Daniel:** avaliação visual e teste no celular real; lugares reais e autorizações; URL do My Maps. O Davi liberou mostrar os lugares e vai mandar os dados; foi pedido a ele: nome do lugar, endereço comercial completo, se serve na xícara ou vende o pacote, sabor (com açúcar/diet), Instagram, se os donos autorizaram nome, endereço e logo, quantos lugares são. Ainda sem resposta. Só endereço comercial; sem superlativos nem depoimento inventado. A página principal e seu limite de JS permanecem intactos (46.116 de 50.000 bytes).
+   - **Publicação futura:** o procedimento de publicação precisará incluir também a pasta `encontre` quando Daniel autorizar publicar. Esta tarefa não publica o protótipo, não troca de branch e não adiciona link no menu ou Instagram.
+3. **Rótulo do diet**: conferir o verso do rótulo novo (30 g; sem "achocolatado" nem "café solúvel"). Os ingredientes já foram confirmados pelo Daniel em 04/11/2026.
+4. **Limpeza** (se o Daniel quiser): apagar `prototipo-graza/`, `prototipo-descida/`, `experimento/` e os documentos antigos da loja. Atenção: os testes G4-1 e G4-7 dependem de `prototipo-graza/`, e o G7-3 consulta o commit `ee5f338`; ao limpar, ajustar esses testes e não reescrever o histórico.
 
 ## Fatos do negócio (confirmados pela família)
 
@@ -79,7 +75,6 @@ Premium, melhor, saudável ou benefício de saúde; conservante, aditivo ("sem a
 - Desenho 11 (fruto com torneira, do ChatGPT) no lugar da torneira provisória (opcional).
 - Foto da embalagem de 1 kg (o cartão "por kg" volta).
 - Fotos pedidas ao Davi em 30/10 (pais preparando, entrega, pacote no balcão, xícara de louça, cacau e café de perto, verso do pacote, casa e roça).
-- Com o contador: "sem açúcar" ou "sem adição de açúcar"; nota fiscal. **INPI:** risco do nome "Cheiro das Águas". Com a família: prazo de entrega, pedido mínimo, condições para empresas.
+- Com o contador: o diet usa no site "Sem adição de açúcares e sem adoçantes artificiais" (como no rótulo); confirmar a redação; nota fiscal. **INPI:** risco do nome "Cheiro das Águas". Com a família: prazo de entrega, pedido mínimo, condições para empresas.
 - Detalhe técnico anotado: em `cena.js` há o seletor `.vender-cartao`, mas a classe na página é `.venda-cartao` (não mexer sem tarefa).
 - Área para empresas (ideia do Davi): link privado + cadastro pelo WhatsApp; login só numa fase 2.
-- Depois da G5: apagar `prototipo-graza/`, `prototipo-descida/` e `experimento/` e os documentos antigos da loja (`brief.md`, `tarefas.md`, `criterios.md`), se Daniel quiser.

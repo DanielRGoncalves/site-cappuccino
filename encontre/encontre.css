@@ -1,0 +1,62 @@
+@font-face { font-family: "Instrument Serif"; src: url("../css/fontes/instrument-serif-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: Fraunces; src: url("../css/fontes/fraunces-latin-full-normal.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+
+:root {
+  --leite: #f1e7d8;
+  --leite-2: #e7d8c3;
+  --cacau: #3b2618;
+  --cacau-suave: rgba(59, 38, 24, .55);
+  --ouro: #c9a45b;
+  --folha: #8fa67a;
+  --torra: #17110d;
+  --torra-2: #231a13;
+  --serif: "Instrument Serif", Georgia, serif;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --marca-fonte: Fraunces, Georgia, serif;
+  --max: 1240px;
+  --margem: clamp(16px, 4vw, 48px);
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { display: flex; flex-direction: column; min-height: 100svh; margin: 0; background: var(--leite); color: var(--cacau); font: 400 16px/1.55 var(--sans); overflow-wrap: anywhere; }
+h1, h2, h3, h4, p, ul { margin: 0; }
+ul { padding: 0; list-style: none; }
+a { color: inherit; text-underline-offset: .2em; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 3px solid var(--cacau); outline-offset: 4px; border-radius: 4px; }
+::selection { background: var(--cacau); color: var(--leite); }
+
+.topo { padding: 16px var(--margem); background: var(--torra); color: var(--leite); }
+.marca { display: flex; align-items: center; gap: 14px; width: fit-content; max-width: 100%; margin: 0 auto; text-decoration: none; font: 750 clamp(1.15rem, 2.2vw, 1.7rem)/1.15 var(--marca-fonte); font-variation-settings: "wght" 750, "SOFT" 100, "opsz" 72; letter-spacing: -.03em; }
+.marca img { display: block; flex: 0 0 56px; max-width: 100%; object-fit: contain; }
+.marca:focus-visible { outline-color: var(--ouro); }
+.conteudo { flex: 1; width: 100%; max-width: var(--max); margin: 0 auto; padding: clamp(40px, 6vw, 80px) var(--margem) 64px; }
+.introducao { margin-bottom: 48px; }
+h1 { font: 400 clamp(3.3rem, 7vw, 6rem)/1 var(--serif); letter-spacing: -.02em; text-wrap: balance; }
+.aviso-exemplo { width: fit-content; margin-top: 24px; padding: 12px 18px; border: 1px dashed var(--cacau); border-radius: 12px; background: var(--leite-2); font-size: 14px; font-weight: 700; }
+.texto { max-width: 65ch; margin-top: 20px; }
+#mapa:empty { display: none; }
+.mapa { display: block; width: 100%; height: 60vh; min-height: 320px; max-height: 560px; margin-bottom: 48px; border: 1px solid var(--cacau-suave); border-radius: 12px; }
+.cidades { display: grid; gap: 48px; }
+.cidade { min-width: 0; }
+.cidade-titulo { padding-bottom: 16px; border-bottom: 1px dashed var(--cacau-suave); font: 400 2.8rem/1.1 var(--serif); }
+.bairro { margin-top: 32px; }
+.bairro-titulo { margin-bottom: 16px; font-size: 18px; }
+.lista-locais { display: grid; gap: 24px; }
+.local { padding-bottom: 24px; border-bottom: 1px solid var(--leite-2); }
+.local-nome { font-size: 18px; }
+.endereco { margin-top: 4px; }
+.etiquetas { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.etiqueta { padding: 4px 10px; border: 1px solid var(--cacau-suave); border-radius: 999px; font-size: 14px; }
+.ver-mapa, .voltar { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; }
+.ver-mapa { margin-top: 8px; }
+.rodape { padding: 24px var(--margem) 32px; border-top: 1px dashed var(--cacau-suave); text-align: center; }
+.rodape .voltar { margin-bottom: 12px; }
+.legal { font-size: 14px; }
+noscript p { margin-bottom: 12px; }
+
+@media (min-width: 920px) {
+  .cidades { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 72px; }
+}
