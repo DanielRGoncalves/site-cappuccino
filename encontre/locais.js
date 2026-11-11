@@ -6,7 +6,7 @@ export const encontre = {
   mapa: { url: "https://www.google.com/maps/d/embed?mid=1qLEVYvp5AKvnz_3jJaXCJdgV7DsyE-M&ehbc=2E312F", titulo: "Mapa dos lugares que trabalham com o cappuccino Cheiro das Águas" },
   etiquetas: { xicara: "Serve na xícara", pacote: "Vende o pacote" },
   estados: { ES: "Espírito Santo", MG: "Minas Gerais" },
-  ilustracao: { src: "mae.svg", alt: "Mulher de chapéu tomando cappuccino." },
+  ilustracao: { src: "galho.svg", alt: "" },
   fraseFinal: "Feito à mão em Taparuba/MG.",
   verNoMapa: "Ver no mapa",
   verNoMapaAcessivel: "Ver {nome} no mapa",

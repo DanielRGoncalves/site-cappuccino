@@ -1,5 +1,5 @@
 import { encontre } from "./locais.js";
-import { montarLetreiro, animarTopo } from "./movimento.js";
+import { animarTopo } from "./movimento.js";
 
 const ordem = new Intl.Collator("pt-BR");
 
@@ -13,6 +13,11 @@ export function agruparLocais(locais, estados = encontre.estados) {
 
 export function dadosDaIlustracao(ilustracao) {
   return ilustracao?.src?.trim() ? ilustracao : null;
+}
+
+export function apresentacaoDoTitulo(ilustracao) {
+  const imagem = dadosDaIlustracao(ilustracao);
+  return { classe: "", ilustracao: imagem ? { ...imagem, alt: "" } : null };
 }
 
 export function linkDoLocal(local) {
@@ -74,12 +79,10 @@ export function montarPagina(dados = encontre) {
   const mapa = document.getElementById("mapa");
   const lista = document.getElementById("locais");
   const rodape = document.getElementById("rodape");
-  const marca = document.getElementById("marca");
   const introducao = document.querySelector(".introducao");
   const fecho = document.getElementById("fecho");
   for (const no of [topo, apresentacao, mapa, lista, rodape]) no.replaceChildren();
   titulo.textContent = dados.titulo;
-  montarLetreiro(marca, dados.marca);
 
   const voltar = linkDeVolta(dados);
   const logo = elemento("img");
@@ -90,13 +93,17 @@ export function montarPagina(dados = encontre) {
   voltar.prepend(logo);
   topo.append(voltar);
 
-  introducao.querySelector(".ilustracao")?.remove();
-  const ilustracao = dadosDaIlustracao(dados.ilustracao);
-  introducao.classList.toggle("com-ilustracao", !!ilustracao);
+  introducao.querySelector(".ilustracao-moldura")?.remove();
+  const { classe, ilustracao } = apresentacaoDoTitulo(dados.ilustracao);
+  titulo.className = classe;
+  let imagem;
   if (ilustracao) {
-    const imagem = elemento("img", "ilustracao");
-    Object.assign(imagem, { src: ilustracao.src, alt: ilustracao.alt || "", width: 420, height: 420 });
-    introducao.prepend(imagem);
+    imagem = elemento("img", "ilustracao");
+    Object.assign(imagem, { src: ilustracao.src, alt: ilustracao.alt, width: 1230, height: 742 });
+    imagem.setAttribute("aria-hidden", "true");
+    const moldura = elemento("div", "ilustracao-moldura");
+    moldura.append(imagem);
+    introducao.prepend(moldura);
   }
 
   const grupos = agruparLocais(dados.locais, dados.estados);
@@ -129,7 +136,7 @@ export function montarPagina(dados = encontre) {
 
   rodape.append(linkDeVolta(dados));
   for (const linha of dados.legal) rodape.append(elemento("p", "legal", linha));
-  encerrarMovimento = animarTopo(marca, mapa);
+  encerrarMovimento = animarTopo(titulo, mapa);
 }
 
 if (typeof document !== "undefined") montarPagina();

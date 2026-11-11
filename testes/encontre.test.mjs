@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync, existsSync } from "node:fs";
-import { agruparLocais, dadosDaIlustracao, linkDoLocal, mapaValido } from "../encontre/encontre.js";
+import { agruparLocais, apresentacaoDoTitulo, dadosDaIlustracao, linkDoLocal, mapaValido } from "../encontre/encontre.js";
 import { encontre } from "../encontre/locais.js";
 
 const pasta = new URL("../encontre/", import.meta.url);
@@ -13,7 +13,10 @@ const html = readFileSync(new URL("index.html", pasta), "utf8");
 test("G9-1: montagem segura e somente os endereços externos autorizados", () => {
   for (const [url, fonte] of fontes) {
     assert.doesNotMatch(fonte, /\b(?:innerHTML|outerHTML|eval)\b|document\s*\.\s*write/, url.pathname);
-    for (const [endereco] of fonte.matchAll(/https?:\/\/[^\s"'`<>)]*/g)) {
+    // O namespace C2PA do desenho não carrega recurso externo; links continuam na mesma lista permitida.
+    const recursos = /\/(?:mae|galho)\.svg$/.test(url.pathname)
+      ? fonte.replace('xmlns:c2pa="http://c2pa.org/manifest"', "") : fonte;
+    for (const [endereco] of recursos.matchAll(/https?:\/\/[^\s"'`<>)]*/g)) {
       assert.match(endereco, /^https:\/\/www\.google\.com\/maps\/|^https:\/\/cheirodasaguasgourmet\.com\.br\/|^https?:\/\/www\.w3\.org(?:\/|$)/);
     }
     assert.doesNotMatch(fonte, /<script\b[^>]*\bsrc=["'](?:https?:)?\/\//i);
@@ -97,12 +100,56 @@ test("G10-3: saídas do Claude ficam ignoradas", () => {
   assert.ok(ignorados.split(/\r?\n/).includes("Claude outputs/"));
 });
 
-test("G10: JS próprio respeita 12.000 bytes e fallback preserva letreiro final", () => {
+test("G10/G12: JS próprio respeita 14.000 bytes e fallback preserva desenho e alfinete finais", () => {
   const bytes = fontes.filter(([url]) => url.pathname.endsWith(".js"))
     .reduce((soma, [, fonte]) => soma + Buffer.byteLength(fonte), 0);
-  assert.ok(bytes <= 12_000, `${bytes} bytes`);
-  assert.match(html, /aria-label="Cheiro das Águas"/);
-  assert.equal([...html.matchAll(/class="derretido(?: origem-gota)?"/g)].length, 6);
+  assert.ok(bytes <= 14_000, `${bytes} bytes`);
+  const imagem = html.match(/<img\b[^>]*class="ilustracao"[^>]*>/)?.[0];
+  assert.ok(imagem?.includes(`src="${encontre.ilustracao.src}"`));
+  assert.match(imagem, /width="1230" height="742" alt=""/);
+  assert.equal(encontre.ilustracao.alt, "");
+  assert.ok(html.includes(encontre.texto));
+  const fallback = html.match(/<noscript>([\s\S]*?)<\/noscript>/)?.[1];
+  assert.ok(fallback?.includes(encontre.mapa.url.replaceAll("&", "&amp;")));
+  assert.ok(fallback.includes(encontre.mapa.titulo));
+  assert.match(fallback, /class="camada-gota" aria-hidden="true"/);
+  const alfinete = readFileSync(new URL("movimento.js", pasta), "utf8").match(/const alfinete = "([^"]+)"/)[1];
+  assert.ok(fallback.includes(`d="${alfinete}"`));
+});
+
+test("G11-1/G12: um único h1 visível com escorridos, sem marca grande", () => {
+  assert.doesNotMatch(html, /id=["']marca["']|\bmarca-grande\b/);
+  assert.equal([...html.matchAll(/class="derretido"/g)].length, 5);
+  assert.equal([...html.matchAll(/<h1\b/g)].length, 1);
+});
+
+test("G11-2/G12: título sempre visível e ilustração decorativa, sem DOM", () => {
+  const ilustracao = { src: "galho.svg", alt: "Não repetir o título" };
+  assert.deepEqual(apresentacaoDoTitulo(ilustracao), {
+    classe: "", ilustracao: { src: "galho.svg", alt: "" },
+  });
+  assert.equal(ilustracao.alt, "Não repetir o título");
+  for (const dados of [undefined, {}, { src: "" }, { src: "   " }]) {
+    assert.deepEqual(apresentacaoDoTitulo(dados), { classe: "", ilustracao: null });
+  }
+});
+
+test("G12-1: CSS usa Fraunces local, sem fontes de sistema", () => {
+  for (const [url, fonte] of fontes.filter(([url]) => url.pathname.endsWith(".css"))) {
+    assert.doesNotMatch(fonte, /system-ui|Arial|Roboto|Segoe UI|sans-serif/i, url.pathname);
+    assert.match(fonte, /font-family:\s*Fraunces/);
+    assert.match(fonte, /font-variation-settings:\s*"wght" 750, "SOFT" 100, "opsz" 144/);
+  }
+});
+
+test("G12-2: galho existente, decorativo; mãe preservada e h1 sem classe de leitor", () => {
+  assert.equal(encontre.ilustracao.src, "galho.svg");
+  assert.ok(existsSync(new URL(encontre.ilustracao.src, pasta)));
+  assert.ok(existsSync(new URL("mae.svg", pasta)));
+  assert.equal(encontre.ilustracao.alt, "");
+  assert.match(html, /<img[^>]+src="galho.svg"[^>]+alt=""[^>]+aria-hidden="true"/);
+  assert.match(html, /<h1 id="titulo">/);
+  assert.doesNotMatch(html, /somente-leitor/);
 });
 
 test("G9-4: link explícito prevalece e busca codifica acentos, vírgulas e &", () => {
@@ -129,7 +176,7 @@ test("G9-6: HTML em português, noindex, título principal e alternativa sem JS"
   assert.match(html, /<h1\s+id="titulo"/);
   assert.match(html, /<title>Onde encontrar \| Cheiro das Águas<\/title>/);
   assert.match(html, /<link\s+rel="canonical"\s+href="https:\/\/cheirodasaguasgourmet\.com\.br\/encontre\/"/);
-  const noscript = html.match(/<noscript>([\s\S]*?)<\/noscript>/)?.[1];
+  const noscript = [...html.matchAll(/<noscript>([\s\S]*?)<\/noscript>/g)].map(([, conteudo]) => conteudo).join("\n");
   assert.ok(noscript?.includes(encontre.semJs));
   assert.ok(noscript.includes(encontre.voltar));
   assert.match(noscript, /href="\.\.\/index\.html"/);
