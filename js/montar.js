@@ -366,6 +366,41 @@ function como() {
     ),
   );
 }
+function encontre() {
+  const e = t.encontre;
+  const titulo = el("h2", { class: "secao-titulo", id: "titulo-encontre-chamada" });
+  let indice = 0;
+  e.titulo.split(" ").forEach((palavra, i) => {
+    if (i) { titulo.append(" "); indice++; }
+    const grupo = el("span", { class: "encontre-palavra" });
+    for (const letra of palavra) {
+      const no = el("span", { class: "encontre-letra", text: letra });
+      const atual = indice++;
+      const fio = [[2, .79, .16], [6, .79, .19], [10, .48, .22]].find(([i]) => i === atual);
+      if (fio) {
+        const [, x, h] = fio, w = .1, n = w * .18, b = w * .46;
+        no.append(svg("svg", { class: "encontre-escorrido", viewBox: `-1 0 2 ${h + w}`, style: `left:${x * 100}%;height:${h + w}em`, "aria-hidden": "true", focusable: "false" },
+          svg("path", { d: `M${-w * .8} 0Q${-n} 0 ${-n} ${h * .4}C${-n} ${h * .65} ${-b} ${h * .68} ${-b} ${h - b}C${-b} ${h + b * .3} ${b} ${h + b * .3} ${b} ${h - b}C${b} ${h * .68} ${n} ${h * .65} ${n} ${h * .4}Q${n} 0 ${w * .8} 0Z` }),
+        ));
+      }
+      grupo.append(no);
+    }
+    titulo.append(grupo);
+  });
+  $("encontre-chamada").append(
+    el("img", { class: "encontre-galho", src: e.foto, width: 1230, height: 742, alt: "", "aria-hidden": "true", loading: "lazy" }),
+    el("div", { class: "encontre-texto" },
+      titulo,
+      el("p", { text: e.texto }),
+      el("div", { class: "encontre-acoes" },
+        p(e.botao, e.href, "pilula-ouro pilula-grande"),
+        svg("svg", { class: "encontre-alfinete", viewBox: "0 0 48 64", "aria-hidden": "true", focusable: "false" },
+          svg("path", { "fill-rule": "evenodd", d: "M24 0C11 0 3 10 3 23C3 40 24 64 24 64C24 64 45 40 45 23C45 10 37 0 24 0ZM24 14C36 14 36 32 24 32C12 32 12 14 24 14Z" }),
+        ),
+      ),
+    ),
+  );
+}
 function ct() {
   const c = t.contato;
   $("contato").append(
@@ -416,6 +451,7 @@ function ct() {
       { class: "rodape-linha" },
       el("p", { text: `${c.legal.razaoSocial} · ${c.cnpj} ${c.legal.cnpj}` }),
       el("p", { text: c.legal.endereco }),
+      el("a", { class: "rodape-encontre", href: t.encontre.href, text: t.encontre.titulo }),
     ),
   );
 }
@@ -448,6 +484,7 @@ export function montar(reduzido) {
   vd(reduzido);
   pp();
   como();
+  encontre();
   ct();
   mn();
 }
