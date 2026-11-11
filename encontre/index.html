@@ -9,17 +9,28 @@
   <link rel="canonical" href="https://cheirodasaguasgourmet.com.br/encontre/">
   <link rel="icon" href="../img/logo.webp" type="image/webp">
   <link rel="stylesheet" href="encontre.css">
+  <script defer src="../vendor/gsap.min.js"></script>
+  <script defer src="../vendor/MorphSVGPlugin.min.js"></script>
   <script type="module" src="encontre.js"></script>
 </head>
 <body>
   <header id="topo" class="topo"></header>
   <main id="conteudo" class="conteudo">
     <div class="introducao">
-      <h1 id="titulo"></h1>
-      <div id="apresentacao"></div>
+      <div class="introducao-textos">
+        <!-- SINCRONIZAR COM locais.js: letreiro final e título sem JavaScript. -->
+        <a id="marca" class="marca-grande" href="../index.html" aria-label="Cheiro das Águas">
+          <span class="palavra" aria-hidden="true"><span class="letra">C<svg class="derretido" style="left:28%;height:.19em" viewBox="-1 0 2 .19"><path d="M-.104 0Q-.023 0-.023 .076C-.023 .124-.06 .129-.06 .13C-.06 .208 .06 .208 .06 .13C.06 .129 .023 .124 .023 .076Q.023 0 .104 0Z"/></svg></span><span class="letra">h</span><span class="letra">e<svg class="derretido" style="left:52%;height:.32em" viewBox="-1 0 2 .32"><path d="M-.104 0Q-.023 0-.023 .128C-.023 .208-.06 .218-.06 .26C-.06 .338 .06 .338 .06 .26C.06 .218 .023 .208 .023 .128Q.023 0 .104 0Z"/></svg></span><span class="letra">i</span><span class="letra">r<svg class="derretido" style="left:22%;height:.24em" viewBox="-1 0 2 .24"><path d="M-.096 0Q-.022 0-.022 .096C-.022 .156-.055 .163-.055 .185C-.055 .257 .055 .257 .055 .185C.055 .163 .022 .156 .022 .096Q.022 0 .096 0Z"/></svg></span><span class="letra">o</span></span>
+          <span class="palavra" aria-hidden="true"><span class="letra">d</span><span class="letra">a<svg class="derretido" style="left:63%;height:.42em" viewBox="-1 0 2 .42"><path d="M-.104 0Q-.023 0-.023 .168C-.023 .273-.06 .286-.06 .36C-.06 .438 .06 .438 .06 .36C.06 .286 .023 .273 .023 .168Q.023 0 .104 0Z"/></svg></span><span class="letra">s</span></span>
+          <span class="palavra" aria-hidden="true"><span class="letra">Á</span><span class="letra">g</span><span class="letra">u</span><span class="letra">a<svg class="derretido origem-gota" style="left:65%;height:.6em" viewBox="-1 0 2 .6"><path d="M-.112 0Q-.025 0-.025 .24C-.025 .39-.064 .408-.064 .536C-.064 .619 .064 .619 .064 .536C.064 .408 .025 .39 .025 .24Q.025 0 .112 0Z"/></svg></span><span class="letra">s<svg class="derretido" style="left:48%;height:.28em" viewBox="-1 0 2 .28"><path d="M-.104 0Q-.023 0-.023 .112C-.023 .182-.06 .19-.06 .22C-.06 .298 .06 .298 .06 .22C.06 .19 .023 .182 .023 .112Q.023 0 .104 0Z"/></svg></span></span>
+        </a>
+        <h1 id="titulo">Onde encontrar</h1>
+        <div id="apresentacao"></div>
+      </div>
     </div>
     <div id="mapa"></div>
-    <div id="locais" class="cidades"></div>
+    <div id="locais" class="estados"></div>
+    <p id="fecho" class="fecho"></p>
     <noscript>
       <p>Ative o JavaScript para ver os lugares.</p>
       <a class="voltar" href="../index.html">Voltar ao site</a>

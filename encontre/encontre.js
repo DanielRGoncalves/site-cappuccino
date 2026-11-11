@@ -1,25 +1,18 @@
 import { encontre } from "./locais.js";
+import { montarLetreiro, animarTopo } from "./movimento.js";
 
 const ordem = new Intl.Collator("pt-BR");
 
-export function agruparLocais(locais) {
-  const cidades = new Map();
-  for (const local of locais) {
-    if (local.ativo !== true) continue;
-    if (!cidades.has(local.cidade)) cidades.set(local.cidade, new Map());
-    const bairros = cidades.get(local.cidade);
-    if (!bairros.has(local.bairro)) bairros.set(local.bairro, []);
-    bairros.get(local.bairro).push(local);
-  }
-  return [...cidades].sort(([a], [b]) => ordem.compare(a, b))
-    .map(([cidade, bairros]) => ({
-      cidade,
-      bairros: [...bairros].sort(([a], [b]) => ordem.compare(a, b))
-        .map(([bairro, itens]) => ({
-          bairro,
-          locais: itens.sort((a, b) => ordem.compare(a.nome, b.nome)),
-        })),
-    }));
+export function agruparLocais(locais, estados = encontre.estados) {
+  return ["ES", "MG"].filter(estado => estado in estados).map(estado => ({
+    estado, nome: estados[estado],
+    locais: locais.filter(local => local.ativo === true && local.estado === estado)
+      .sort((a, b) => ordem.compare(a.cidade, b.cidade) || ordem.compare(a.bairro, b.bairro) || ordem.compare(a.nome, b.nome)),
+  })).filter(grupo => grupo.locais.length);
+}
+
+export function dadosDaIlustracao(ilustracao) {
+  return ilustracao?.src?.trim() ? ilustracao : null;
 }
 
 export function linkDoLocal(local) {
@@ -46,10 +39,21 @@ function linkDeVolta(dados) {
 
 function montarLocal(local, dados) {
   const item = elemento("li", "local");
-  item.append(elemento("h4", "local-nome", local.nome), elemento("p", "endereco", local.endereco));
+  item.append(elemento("p", "local-regiao", `${local.cidade} · ${local.bairro}`),
+    elemento("h3", "local-nome", local.nome), elemento("p", "endereco", local.endereco));
   const etiquetas = elemento("ul", "etiquetas");
   for (const modalidade of local.modalidades) {
-    if (dados.etiquetas[modalidade]) etiquetas.append(elemento("li", "etiqueta", dados.etiquetas[modalidade]));
+    if (!dados.etiquetas[modalidade]) continue;
+    const etiqueta = elemento("li", "etiqueta");
+    const icone = elemento("img");
+    icone.src = modalidade === "xicara" ? "xicara.svg" : "pacote.svg";
+    icone.width = 24;
+    icone.height = 24;
+    icone.alt = "";
+    icone.loading = "lazy";
+    icone.setAttribute("aria-hidden", "true");
+    etiqueta.append(icone, elemento("span", "", dados.etiquetas[modalidade]));
+    etiquetas.append(etiqueta);
   }
   const link = elemento("a", "ver-mapa", dados.verNoMapa);
   link.href = linkDoLocal(local);
@@ -60,31 +64,44 @@ function montarLocal(local, dados) {
   return item;
 }
 
+let encerrarMovimento;
+
 export function montarPagina(dados = encontre) {
+  encerrarMovimento?.();
   const topo = document.getElementById("topo");
   const titulo = document.getElementById("titulo");
   const apresentacao = document.getElementById("apresentacao");
   const mapa = document.getElementById("mapa");
   const lista = document.getElementById("locais");
   const rodape = document.getElementById("rodape");
-  topo.replaceChildren();
-  apresentacao.replaceChildren();
-  mapa.replaceChildren();
-  lista.replaceChildren();
-  rodape.replaceChildren();
+  const marca = document.getElementById("marca");
+  const introducao = document.querySelector(".introducao");
+  const fecho = document.getElementById("fecho");
+  for (const no of [topo, apresentacao, mapa, lista, rodape]) no.replaceChildren();
   titulo.textContent = dados.titulo;
+  montarLetreiro(marca, dados.marca);
 
-  const marca = elemento("a", "marca");
-  marca.href = "../index.html";
+  const voltar = linkDeVolta(dados);
   const logo = elemento("img");
   logo.src = "../img/logo.webp";
   logo.width = 56;
   logo.height = 56;
   logo.alt = "";
-  marca.append(logo, elemento("span", "", dados.marca));
-  topo.append(marca);
+  voltar.prepend(logo);
+  topo.append(voltar);
 
-  const grupos = agruparLocais(dados.locais);
+  introducao.querySelector(".ilustracao")?.remove();
+  const ilustracao = dadosDaIlustracao(dados.ilustracao);
+  introducao.classList.toggle("com-ilustracao", !!ilustracao);
+  if (ilustracao) {
+    const imagem = elemento("img", "ilustracao");
+    Object.assign(imagem, { src: ilustracao.src, alt: ilustracao.alt || "", width: 420, height: 420 });
+    introducao.prepend(imagem);
+  }
+
+  const grupos = agruparLocais(dados.locais, dados.estados);
+  fecho.textContent = dados.fraseFinal;
+  fecho.hidden = !grupos.length;
   if (grupos.length) {
     if (dados.locais.some(local => local.ativo === true && local.exemplo === true)) {
       apresentacao.append(elemento("p", "aviso-exemplo", dados.avisoExemplo));
@@ -99,16 +116,12 @@ export function montarPagina(dados = encontre) {
       mapa.append(iframe);
     }
     for (const grupo of grupos) {
-      const cidade = elemento("section", "cidade");
-      cidade.append(elemento("h2", "cidade-titulo", grupo.cidade));
-      for (const grupoBairro of grupo.bairros) {
-        const bairro = elemento("div", "bairro");
-        const itens = elemento("ul", "lista-locais");
-        for (const local of grupoBairro.locais) itens.append(montarLocal(local, dados));
-        bairro.append(elemento("h3", "bairro-titulo", grupoBairro.bairro), itens);
-        cidade.append(bairro);
-      }
-      lista.append(cidade);
+      const estado = elemento("section", "estado");
+      const itens = elemento("ul", "lista-locais");
+      estado.append(elemento("h2", "estado-titulo", grupo.nome));
+      for (const local of grupo.locais) itens.append(montarLocal(local, dados));
+      estado.append(itens);
+      lista.append(estado);
     }
   } else {
     apresentacao.append(elemento("p", "texto", dados.vazio));
@@ -116,6 +129,7 @@ export function montarPagina(dados = encontre) {
 
   rodape.append(linkDeVolta(dados));
   for (const linha of dados.legal) rodape.append(elemento("p", "legal", linha));
+  encerrarMovimento = animarTopo(marca, mapa);
 }
 
 if (typeof document !== "undefined") montarPagina();
