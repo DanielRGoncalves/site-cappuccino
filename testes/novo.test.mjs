@@ -54,6 +54,48 @@ try {
 }
 const montados = () => [...nos.values()].flatMap(descendentes);
 
+test("G13-1: Onde encontrar no menu, imediatamente antes de Contato", () => {
+  const esperado = { texto: "Onde encontrar", href: "encontre/" };
+  const links = config.textos.pagina.links;
+  const indice = links.findIndex((link) => link.href === esperado.href);
+  assert.ok(indice >= 0);
+  assert.deepEqual(links[indice], esperado);
+  assert.equal(links[indice + 1]?.texto, "Contato");
+  const menu = descendentes(nos.get("menu")).filter((no) => no.tagName === "a");
+  assert.deepEqual(menu.slice(indice, indice + 2).map((no) => [no.textContent, no.atributos.href]), [[esperado.texto, esperado.href], ["Contato", "#contato"]]);
+});
+
+test("G13-2: chamada entre Como funciona e Contato, com texto e destino do config", () => {
+  const chamada = html.match(/<section\b[^>]*id="encontre-chamada"[^>]*>/)?.[0];
+  assert.equal(atributos(chamada || "").class, "encontre-chamada");
+  assert.equal(atributos(chamada)["aria-labelledby"], "titulo-encontre-chamada");
+  assert.ok(html.indexOf('id="como"') < html.indexOf(chamada));
+  assert.ok(html.indexOf(chamada) < html.indexOf('id="contato"'));
+  const e = config.textos.pagina.encontre;
+  assert.deepEqual(textos.encontre, e);
+  const filhos = descendentes(nos.get("encontre-chamada"));
+  assert.deepEqual(filhos.filter((no) => ["h2", "p", "a"].includes(no.tagName)).map((no) => no.textContent), [e.titulo, e.texto, e.botao]);
+  const fios = filhos.filter((no) => no.atributos.class === "encontre-escorrido");
+  assert.equal(fios.length, 3);
+  for (const fio of fios) assert.equal(fio.atributos["aria-hidden"], "true");
+  const botao = filhos.find((no) => no.tagName === "a");
+  assert.equal(botao.atributos.href, "encontre/");
+  assert.equal(botao.atributos.href, e.href);
+  assert.equal(botao.atributos.target, undefined, "Abre na mesma aba");
+  assert.ok(botao.className.split(" ").includes("pilula"));
+  const foto = filhos.find((no) => no.tagName === "img");
+  assert.equal(foto.atributos.src, e.foto);
+  assert.equal(foto.atributos.alt, "");
+  assert.equal(foto.atributos.loading, "lazy");
+});
+
+test("G13-3: link Onde encontrar na linha legal do rodapé", () => {
+  const linha = descendentes(nos.get("contato")).find((no) => no.className === "rodape-linha");
+  const link = linha.children.find((no) => no.tagName === "a");
+  assert.equal(link?.atributos.href, "encontre/");
+  assert.equal(link.textContent, config.textos.pagina.encontre.titulo);
+});
+
 test("G4-1: todas as strings exportadas vêm do config ou de derivações explícitas", async () => {
   assert.match(ler("js/textos.js"), /import\s*\{\s*config\s*\}\s*from\s*"\.\/config\.js"/);
   const permitidas = new Set([...strings(config),
@@ -76,6 +118,9 @@ test("G4-1: todas as strings exportadas vêm do config ou de derivações explí
   esperado.pular = config.textos.pagina.pular;
   esperado.destaques = config.textos.pagina.destaques;
   esperado.links = esperado.links.filter((link) => link.href !== "#duvidas");
+  // G13 acrescenta uma rota local antes de Contato e sua chamada, sem trocar os textos anteriores.
+  esperado.links.splice(esperado.links.findIndex((link) => link.href === "#contato"), 0, config.textos.pagina.links.find((link) => link.href === "encontre/"));
+  esperado.encontre = config.textos.pagina.encontre;
   esperado.origem.titulo = config.textos.pagina.origem.titulo;
   esperado.origem.texto = config.textos.pagina.origem.texto;
   esperado.paradas[0].texto = config.textos.pagina.paradas[0];
@@ -94,7 +139,7 @@ test("G4-1: todas as strings exportadas vêm do config ou de derivações explí
   esperado.como.foto = config.textos.pagina.como.foto;
   esperado.vender.fotos[1] = config.textos.pagina.venderFoto;
   delete esperado.faq;
-  assert.deepEqual(textos, esperado, "Mesmas palavras do protótipo, exceto as mudanças da G4/G6/G7");
+  assert.deepEqual(textos, esperado, "Mesmas palavras do protótipo, exceto as mudanças da G4/G6/G7/G13");
   // Mudar os textos novos muda o objeto montado: impede cópias literais silenciosas.
   const p = config.textos.pagina;
   const original = p.contato.titulo;
@@ -213,10 +258,11 @@ test("G4-7: ajustes e módulos de movimento idênticos ao protótipo; CSS só co
     .replace(/^\/\* Dúvidas \*\/\r?\n|^\.duvidas[^\n]*\n/gm, "")
     // Única exceção de layout autorizada por Daniel na G6: três notas no computador.
     .replace(/(\.contato-notas \{[^\n]*repeat\()2,/, "$13,");
-  // G7 acrescenta dois blocos de foto/grid/legenda e G8 centraliza os números; o restante fica literal.
+  // G7/G8 e a chamada G13 são as únicas adições autorizadas; o restante fica literal.
   const css = ler("css/estilo.css")
     .replace(/\/\* G7: (?:foto e grid de Como funciona|legenda do contato fora do arco)\. \*\/[\s\S]*?\/\* \/G7 \*\/\r?\n/g, "")
-    .replace(/\/\* G8: números da conta centralizados\. \*\/[\s\S]*?\/\* \/G8 \*\/\r?\n/, "");
+    .replace(/\/\* G8: números da conta centralizados\. \*\/[\s\S]*?\/\* \/G8 \*\/\r?\n/, "")
+    .replace(/\/\* G13: chamada para Onde encontrar e link no rodapé\. \*\/[\s\S]*?\/\* \/G13 \*\/\r?\n\r?\n/, "");
   assert.equal(css, esperado);
 });
 

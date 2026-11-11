@@ -295,6 +295,34 @@ ul, ol { padding: 0; list-style: none; }
 .mais::before, .mais::after { content: ""; position: absolute; left: 50%; top: 50%; width: 14px; height: 1.5px; background: currentColor; translate: -50% -50%; transition: rotate .25s; }
 .mais::after { rotate: 90deg; }
 
+/* G13: chamada para Onde encontrar e link no rodapé. */
+.encontre-chamada { display: grid; grid-template-columns: min(38vw, 560px) minmax(0, 1fr); align-items: center; gap: clamp(24px, 5vw, 72px); padding: 56px var(--margem) 56px 0; overflow: hidden; background: var(--leite-2); color: var(--cacau); font-family: var(--marca-fonte); font-variation-settings: "SOFT" 100; }
+.encontre-galho { width: 100%; max-width: none; height: auto; transform: translateX(-3%); }
+.encontre-texto { min-width: 0; }
+.encontre-texto .secao-titulo { font: 750 clamp(2.25rem, 4vw, 4rem)/1.12 var(--marca-fonte); font-variation-settings: "wght" 750, "SOFT" 100, "opsz" 144; text-align: left; }
+.encontre-palavra { display: inline-block; white-space: nowrap; }
+.encontre-letra { position: relative; display: inline-block; }
+.encontre-escorrido { position: absolute; top: .9em; width: 2em; max-width: none; transform: translateX(-50%); overflow: visible; fill: currentColor; pointer-events: none; }
+.encontre-texto > p { max-width: 38ch; margin-top: 24px; font: 400 clamp(18px, 1.4vw, 20px)/1.5 var(--marca-fonte); font-variation-settings: "SOFT" 100; }
+.encontre-acoes .pilula { min-height: 54px; padding: 0 26px; font: 400 clamp(1.2rem, 1.8vw, 1.5rem)/1 var(--marca-fonte); font-variation-settings: "SOFT" 100; letter-spacing: 0; text-transform: none; }
+.encontre-acoes { display: flex; align-items: center; gap: 16px; margin-top: 28px; }
+.encontre-alfinete { flex: none; width: 32px; height: 43px; fill: currentColor; transform-origin: 50% 100%; }
+.encontre-chamada :focus-visible { outline-color: var(--cacau); }
+.rodape-encontre { display: inline-flex; align-items: center; min-height: 44px; text-underline-offset: .2em; }
+@media (min-width: 1501px) {
+  .encontre-chamada { padding-inline: calc((100% - var(--max)) / 2); }
+  .encontre-galho { transform: none; }
+}
+@media (max-width: 919px) {
+  .encontre-chamada { grid-template-columns: minmax(0, 1fr); padding: 32px 0 56px; }
+  .encontre-galho { width: min(72vw, 340px); margin-left: -16px; transform: none; }
+  .encontre-texto { padding: 0 var(--margem); text-align: center; }
+  .encontre-texto .secao-titulo { text-align: center; }
+  .encontre-texto > p { margin-inline: auto; }
+  .encontre-acoes { justify-content: center; }
+}
+/* /G13 */
+
 /* Contato e rodapé */
 .contato { position: relative; margin-top: 26px; padding: clamp(56px, 8vw, 110px) var(--margem) 28px; background: var(--cacau); color: var(--leite); overflow-x: clip; }
 /* Borda de espuma: bolhas na passagem para o contato. */

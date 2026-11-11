@@ -87,6 +87,7 @@ export const textos = {
   preparo: t.preparo,
   passo: p.passo,
   como: { ...t.como, foto: p.como.foto, passos: [t.como.passos[0], t.como.passos[1], p.comoPasso3] },
+  encontre: p.encontre,
   contato: {
     titulo: p.contato.titulo,
     texto: p.contato.texto,

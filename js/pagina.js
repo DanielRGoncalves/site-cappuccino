@@ -5,6 +5,20 @@ import { iniciarPalco } from "./palco.js";
 const movimento = matchMedia("(prefers-reduced-motion: reduce)");
 const reduzido = movimento.matches;
 montar(movimento);
+let alfinete;
+if (!reduzido && window.gsap && window.ScrollTrigger) {
+  gsap.registerPlugin(ScrollTrigger);
+  alfinete = gsap.timeline({ scrollTrigger: { trigger: ".encontre-acoes", start: "top 90%", once: true } })
+    .fromTo(".encontre-alfinete", { y: -48, rotation: -12 }, { y: 0, rotation: 0, duration: .5, ease: "power2.in" })
+    .to(".encontre-alfinete", { y: -6, duration: .16, ease: "power2.out" })
+    .to(".encontre-alfinete", { y: 0, duration: .2, ease: "power2.in" });
+  movimento.addEventListener("change", () => {
+    if (movimento.matches) {
+      alfinete.scrollTrigger?.kill();
+      alfinete.progress(1).kill();
+    }
+  });
+}
 const irPara = iniciarPalco(movimento);
 const cartoes = document.getElementById("vender-cartoes");
 function medirCartoes() {
@@ -68,4 +82,5 @@ pausar.addEventListener("click", () => {
   pausar.firstChild.textContent = sim ? textos.retomar : textos.pausar;
   document.documentElement.classList.toggle("pausado", sim);
   cena?.pausar(sim);
+  alfinete?.paused(sim);
 });

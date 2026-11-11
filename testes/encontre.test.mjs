@@ -169,9 +169,12 @@ test("G9-5: iframe aceita somente o prefixo aprovado do Google My Maps", () => {
   }
 });
 
-test("G9-6: HTML em português, noindex, título principal e alternativa sem JS", () => {
+test("G9-6/G13-4: HTML em português, indexável, título principal e alternativa sem JS", () => {
   assert.match(html, /<html\s+lang="pt-BR"/);
-  assert.match(html, /<meta\s+name="robots"\s+content="noindex"\s*\/?\s*>/);
+  // G13: os lugares reais foram autorizados; a página pode entrar na busca.
+  for (const [tag] of html.matchAll(/<meta\b[^>]*>/gi)) {
+    if (/name=["'](?:robots|googlebot)["']/i.test(tag)) assert.doesNotMatch(tag, /noindex/i);
+  }
   assert.equal([...html.matchAll(/<h1\b/g)].length, 1);
   assert.match(html, /<h1\s+id="titulo"/);
   assert.match(html, /<title>Onde encontrar \| Cheiro das Águas<\/title>/);

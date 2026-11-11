@@ -113,6 +113,7 @@ export const config = {
         { texto: "Duas formas de vender", href: "#vender" },
         { texto: "Como preparar", href: "#preparo" },
         { texto: "Como funciona", href: "#como" },
+        { texto: "Onde encontrar", href: "encontre/" },
         { texto: "Contato", href: "#contato" },
       ],
       degustacaoCurta: "Degustação",
@@ -165,6 +166,13 @@ export const config = {
         porPacote: "por pacote.",
       },
       passo: "Passo",
+      encontre: {
+        titulo: "Onde encontrar",
+        texto: "Veja os lugares que já servem ou vendem o Cheiro das Águas.",
+        botao: "Ver no mapa",
+        href: "encontre/",
+        foto: "encontre/galho.svg",
+      },
       contato: {
         titulo: "Vamos marcar uma degustação?",
         texto: "Peça pelo WhatsApp e a gente combina como fazer.",
